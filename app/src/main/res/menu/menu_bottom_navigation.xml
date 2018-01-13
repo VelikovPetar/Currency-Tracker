@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/actionExchangeRates"
+        android:title="@string/exchange_rates"
+        android:icon="@drawable/ic_currency"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/actionCryptoCurrencies"
+        android:title="@string/crypto_currencies"
+        android:icon="@drawable/ic_currency"
+        app:showAsAction="ifRoom"/>
+</menu>
