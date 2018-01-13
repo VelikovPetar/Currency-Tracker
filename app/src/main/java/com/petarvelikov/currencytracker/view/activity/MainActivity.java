@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bindUi();
+        bindUi(savedInstanceState);
     }
 
-    private void bindUi() {
+    private void bindUi(Bundle savedInstanceState) {
         BottomNavigationView navigationView = findViewById(R.id.bottomNavigationView);
         navigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -38,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
         });
         navigationView.setOnNavigationItemReselectedListener(item -> {
         });
-        navigationView.setSelectedItemId(R.id.actionCryptoCurrencies);
-        replaceFragment(new CryptoCurrenciesFragment());
+        if (savedInstanceState == null) {
+            navigationView.setSelectedItemId(R.id.actionCryptoCurrencies);
+            replaceFragment(new CryptoCurrenciesFragment());
+        }
     }
 
     private void replaceFragment(Fragment fragment) {

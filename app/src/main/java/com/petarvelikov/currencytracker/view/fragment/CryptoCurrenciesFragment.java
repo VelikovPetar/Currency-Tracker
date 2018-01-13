@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,11 +64,12 @@ public class CryptoCurrenciesFragment extends Fragment {
             ccViewModel.getViewState().removeObservers(this);
         }
         ccViewModel.getViewState().observe(this, this::updateUi);
-        ccViewModel.loadCurrencies();
+        if (savedInstanceState == null) {
+            ccViewModel.loadCurrencies();
+        }
     }
 
     private void updateUi(CryptoCurrenciesViewState viewState) {
-        Log.d(TAG, "Is loading: " + viewState.isLoading());
         adapter.setCurrencies(viewState.getCurrencies());
     }
 }
