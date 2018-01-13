@@ -1,4 +1,4 @@
-package com.petarvelikov.currencytracker.view;
+package com.petarvelikov.currencytracker.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class CryptoCurrenciesFragment extends Fragment {
+public class ExchangeRatesFragment extends Fragment {
 
     @Nullable
     @Override

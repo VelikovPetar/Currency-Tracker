@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.petarvelikov.currencytracker.view.MainActivity">
+    tools:context="com.petarvelikov.currencytracker.view.activity.MainActivity">
 
     <FrameLayout
         android:id="@+id/frameContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigationView" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigationView"
