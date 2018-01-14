@@ -35,6 +35,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
         CryptoCurrency currency = this.currencies.get(position);
         holder.setName(currency.getName());
         holder.setSymbol(currency.getSymbol());
+        holder.setValue(currency.getPriceEur());
     }
 
     @Override
@@ -44,12 +45,13 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
 
     static class CryptoCurrencyViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtName, txtSymbol;
+        private TextView txtName, txtSymbol, txtValue;
 
         CryptoCurrencyViewHolder(View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtCurrencyName);
             txtSymbol = itemView.findViewById(R.id.txtCurrencySymbol);
+            txtValue = itemView.findViewById(R.id.txtCurrencyValue);
         }
 
         void setName(String name) {
@@ -58,6 +60,10 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
 
         void setSymbol(String symbol) {
             this.txtSymbol.setText(symbol);
+        }
+
+        void setValue(String value) {
+            this.txtValue.setText(value);
         }
     }
 }

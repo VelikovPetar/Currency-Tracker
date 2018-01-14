@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface CryptoCurrenciesApiRepository {
 
-    LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit);
+    LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit, String convert);
 }

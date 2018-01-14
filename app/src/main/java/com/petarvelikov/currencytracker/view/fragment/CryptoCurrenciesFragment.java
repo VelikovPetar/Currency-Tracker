@@ -63,7 +63,8 @@ public class CryptoCurrenciesFragment extends Fragment {
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int start, RecyclerView recyclerView) {
-                ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT);
+                // TODO Read the convert value from shared preferences
+                ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, "EUR");
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
@@ -78,7 +79,8 @@ public class CryptoCurrenciesFragment extends Fragment {
         }
         ccViewModel.getViewState().observe(this, this::updateUi);
         if (savedInstanceState == null) {
-            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT);
+            // TODO Read the convert value from shared preferences
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR");
         }
     }
 

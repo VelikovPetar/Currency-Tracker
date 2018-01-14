@@ -29,9 +29,9 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
     }
 
     @Override
-    public LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit) {
+    public LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit, String convert) {
         MutableLiveData<ApiResponse<List<CryptoCurrency>>> liveData = new MutableLiveData<>();
-        Call<List<CryptoCurrency>> call = coinMarketCapApiService.getAllCurrencies(start, limit);
+        Call<List<CryptoCurrency>> call = coinMarketCapApiService.getAllCurrencies(start, limit, convert);
         call.enqueue(new Callback<List<CryptoCurrency>>() {
             @Override
             public void onResponse(Call<List<CryptoCurrency>> call, Response<List<CryptoCurrency>> response) {

@@ -51,6 +51,9 @@ public class CryptoCurrency {
     @SerializedName("last_updated")
     @Expose
     private String lastUpdated;
+    @SerializedName("price_eur")
+    @Expose
+    private String priceEur;
 
     public String getId() {
         return id;
@@ -170,5 +173,13 @@ public class CryptoCurrency {
 
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
+    }
+
+    public String getPriceEur() {
+        return priceEur;
+    }
+
+    public void setPriceEur(String priceEur) {
+        this.priceEur = priceEur;
     }
 }

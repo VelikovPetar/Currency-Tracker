@@ -1,11 +1,9 @@
 package com.petarvelikov.currencytracker.di.module;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 
 import com.petarvelikov.currencytracker.model.rest.CoinMarketCapApiService;
 import com.petarvelikov.currencytracker.model.rest.CryptoCompareApiService;
-import com.petarvelikov.currencytracker.viewmodel.ViewModelFactory;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

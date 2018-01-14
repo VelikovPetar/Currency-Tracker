@@ -12,5 +12,6 @@ public interface CoinMarketCapApiService {
 
     @GET("ticker/")
     Call<List<CryptoCurrency>> getAllCurrencies(@Query("start") int start,
-                                                @Query("limit") int limit);
+                                                @Query("limit") int limit,
+                                                @Query("convert") String convert);
 }
