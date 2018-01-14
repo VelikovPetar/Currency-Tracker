@@ -11,6 +11,7 @@ public class CryptoCurrenciesViewState {
 
     private List<CryptoCurrency> currencies;
     private boolean isLoading;
+    private boolean isEndReached;
 
     public CryptoCurrenciesViewState() {
         this.currencies = new ArrayList<>();
@@ -29,6 +30,10 @@ public class CryptoCurrenciesViewState {
         return this.isLoading;
     }
 
+    public boolean isEndReached() {
+        return this.isEndReached;
+    }
+
     @NonNull
     public CryptoCurrenciesViewState addCryptoCurrencies(List<CryptoCurrency> currencies) {
         this.currencies.addAll(currencies);
@@ -38,6 +43,12 @@ public class CryptoCurrenciesViewState {
     @NonNull
     public CryptoCurrenciesViewState setLoading(boolean isLoading) {
         this.isLoading = isLoading;
+        return this;
+    }
+
+    @NonNull
+    public CryptoCurrenciesViewState setEndReached(boolean isEndReached) {
+        this.isEndReached = isEndReached;
         return this;
     }
 }

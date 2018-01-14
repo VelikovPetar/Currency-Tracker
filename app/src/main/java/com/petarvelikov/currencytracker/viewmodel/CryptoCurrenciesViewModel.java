@@ -3,8 +3,8 @@ package com.petarvelikov.currencytracker.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
 
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.rest.CryptoCurrenciesApiRepository;
 
 import javax.inject.Inject;
@@ -26,18 +26,28 @@ public class CryptoCurrenciesViewModel extends ViewModel {
     }
 
     public void loadCurrencies(int start, int limit) {
-        currentViewState().setLoading(true);
+        viewState.setValue(currentViewState().setLoading(true));
         viewState.addSource(apiRepository.getAllCurrencies(start, limit), apiResponse -> {
             if (apiResponse != null) {
                 if (apiResponse.getResponse() != null) {
-                    viewState.setValue(
-                            currentViewState().addCryptoCurrencies(apiResponse.getResponse())
-                                    .setLoading(false));
-                } else {
-                    // TODO Error
+                    viewState.setValue(currentViewState()
+                            .addCryptoCurrencies(apiResponse.getResponse())
+                            .setLoading(false));
+                } else if (apiResponse.getError() != null) {
+                    String message = apiResponse.getError().getMessage();
+                    // TODO Test if this works properly
+                    if (Constants.ERROR.HTTP_404_NOT_FOUND.equals(message)) {
+                        viewState.setValue(currentViewState()
+                                .setLoading(false)
+                                .setEndReached(true));
+                    } else {
+                        viewState.setValue(currentViewState()
+                                .setLoading(false)
+                                .setEndReached(false));
+                    }
                 }
             } else {
-                // TODO Error
+                viewState.setValue(currentViewState().setLoading(false));
             }
         });
     }

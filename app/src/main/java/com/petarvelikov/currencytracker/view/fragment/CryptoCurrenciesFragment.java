@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.view.adapter.CryptoCurrenciesAdapter;
 import com.petarvelikov.currencytracker.view.adapter.EndlessRecyclerViewScrollListener;
 import com.petarvelikov.currencytracker.viewmodel.CryptoCurrenciesViewModel;
@@ -26,12 +27,12 @@ import javax.inject.Inject;
 public class CryptoCurrenciesFragment extends Fragment {
 
     private static final String TAG = "CCFragment";
-    private static final int LIMIT = 50;
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
     private RecyclerView recyclerView;
+    private EndlessRecyclerViewScrollListener scrollListener;
     private CryptoCurrenciesAdapter adapter;
     private CryptoCurrenciesViewModel ccViewModel;
 
@@ -59,10 +60,10 @@ public class CryptoCurrenciesFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         adapter = new CryptoCurrenciesAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int start, RecyclerView recyclerView) {
-                ccViewModel.loadCurrencies(start, LIMIT);
+                ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT);
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
@@ -77,11 +78,13 @@ public class CryptoCurrenciesFragment extends Fragment {
         }
         ccViewModel.getViewState().observe(this, this::updateUi);
         if (savedInstanceState == null) {
-            ccViewModel.loadCurrencies(0, LIMIT);
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT);
         }
     }
 
     private void updateUi(CryptoCurrenciesViewState viewState) {
+        scrollListener.setLoading(viewState.isLoading());
+        scrollListener.setEndReached(viewState.isEndReached());
         adapter.setCurrencies(viewState.getCurrencies());
     }
 }

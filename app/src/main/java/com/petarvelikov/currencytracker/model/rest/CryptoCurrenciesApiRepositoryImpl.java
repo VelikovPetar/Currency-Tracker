@@ -3,6 +3,7 @@ package com.petarvelikov.currencytracker.model.rest;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.ApiResponse;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 
@@ -39,10 +40,15 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
                     if (currencies != null) {
                         liveData.setValue(new ApiResponse<>(currencies));
                     } else {
-                        liveData.setValue(new ApiResponse<>(new Throwable(response.message())));
+                        liveData.setValue(new ApiResponse<>(new Throwable(response.toString())));
                     }
                 } else {
-                    liveData.setValue(new ApiResponse<>(new Throwable(response.message())));
+                    if (String.valueOf(response.code()).equals(Constants.ERROR.HTTP_404_NOT_FOUND)) {
+                        liveData.setValue(new ApiResponse<>(
+                                new Throwable(Constants.ERROR.HTTP_404_NOT_FOUND)));
+                    } else {
+                        liveData.setValue(new ApiResponse<>(new Throwable(response.toString())));
+                    }
                 }
             }
 
