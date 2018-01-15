@@ -4,10 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
         holder.setName(currency.getName());
         holder.setSymbol(currency.getSymbol());
         holder.setValue(currency.getPriceEur());
+        holder.setIcon(currency.getImageUrl());
     }
 
     @Override
@@ -46,12 +49,14 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
     static class CryptoCurrencyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView txtName, txtSymbol, txtValue;
+        private ImageView imgIcon;
 
         CryptoCurrencyViewHolder(View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.txtCurrencyName);
             txtSymbol = itemView.findViewById(R.id.txtCurrencySymbol);
             txtValue = itemView.findViewById(R.id.txtCurrencyValue);
+            imgIcon = itemView.findViewById(R.id.imgCurrencyIcon);
         }
 
         void setName(String name) {
@@ -64,6 +69,15 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
 
         void setValue(String value) {
             this.txtValue.setText(value);
+        }
+
+        void setIcon(String url) {
+            Picasso.with(itemView.getContext())
+                    .load("https://www.cryptocompare.com" + url) // TODO Extract
+                    .resize(64, 64)
+                    .placeholder(R.drawable.ic_launcher_foreground)
+                    .centerCrop()
+                    .into(imgIcon);
         }
     }
 }

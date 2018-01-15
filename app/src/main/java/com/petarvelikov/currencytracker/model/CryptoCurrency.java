@@ -55,6 +55,8 @@ public class CryptoCurrency {
     @Expose
     private String priceEur;
 
+    private String imageUrl;
+
     public String getId() {
         return id;
     }
@@ -181,5 +183,13 @@ public class CryptoCurrency {
 
     public void setPriceEur(String priceEur) {
         this.priceEur = priceEur;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
