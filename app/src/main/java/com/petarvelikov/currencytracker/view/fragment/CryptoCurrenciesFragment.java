@@ -11,10 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.consts.Constants;
+import com.petarvelikov.currencytracker.model.network.NetworkUtils;
 import com.petarvelikov.currencytracker.view.adapter.CryptoCurrenciesAdapter;
 import com.petarvelikov.currencytracker.view.adapter.EndlessRecyclerViewScrollListener;
 import com.petarvelikov.currencytracker.viewmodel.CryptoCurrenciesViewModel;
@@ -30,8 +33,12 @@ public class CryptoCurrenciesFragment extends Fragment {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    NetworkUtils networkUtils;
 
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+    private TextView txtError;
     private EndlessRecyclerViewScrollListener scrollListener;
     private CryptoCurrenciesAdapter adapter;
     private CryptoCurrenciesViewModel ccViewModel;
@@ -55,19 +62,7 @@ public class CryptoCurrenciesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_crypto_currencies, container, false);
-        recyclerView = view.findViewById(R.id.recyclerCryptoCurrencies);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new CryptoCurrenciesAdapter(new ArrayList<>());
-        recyclerView.setAdapter(adapter);
-        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int start, RecyclerView recyclerView) {
-                // TODO Read the convert value from shared preferences
-                ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, "EUR");
-            }
-        };
-        recyclerView.addOnScrollListener(scrollListener);
+        bindUi(view);
         return view;
     }
 
@@ -84,7 +79,36 @@ public class CryptoCurrenciesFragment extends Fragment {
         }
     }
 
+    private void bindUi(View view) {
+        recyclerView = view.findViewById(R.id.recyclerCryptoCurrencies);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new CryptoCurrenciesAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int start, RecyclerView recyclerView) {
+                // TODO Read the convert value from shared preferences
+                // TODO Maybe check the network on model level
+                if (networkUtils.isConnected()) {
+                    ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, "EUR");
+                }
+            }
+        };
+        recyclerView.addOnScrollListener(scrollListener);
+        progressBar = view.findViewById(R.id.progressCryptoCurrencies);
+        txtError = view.findViewById(R.id.txtCurrenciesError);
+        txtError.setOnClickListener(event -> {
+            // TODO Read the convert value from shared preferences
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR");
+        });
+    }
+
     private void updateUi(CryptoCurrenciesViewState viewState) {
+        progressBar.setVisibility(viewState.isLoading() && viewState.getCurrenciesCount() == 0 ? View.VISIBLE : View.GONE);
+        if (viewState.getCurrenciesCount() == 0) {
+            txtError.setVisibility(viewState.hasError() ? View.VISIBLE : View.GONE);
+        }
         scrollListener.setLoading(viewState.isLoading());
         scrollListener.setEndReached(viewState.isEndReached());
         adapter.setCurrencies(viewState.getCurrencies());

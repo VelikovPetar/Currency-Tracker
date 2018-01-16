@@ -1,8 +1,7 @@
-package com.petarvelikov.currencytracker.model.rest;
+package com.petarvelikov.currencytracker.model.network;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
 
 import com.petarvelikov.currencytracker.model.ApiResponse;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
@@ -83,7 +82,6 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
                 .toObservable()
                 .takeWhile(rows -> {
                     if (rows > 0) {
-                        Log.d("Icons", "Icons are already loaded");
                         liveData.postValue(new ApiResponse<>(CurrencyIconsResponse.ALREADY_LOADED));
                     }
                     return rows == 0;
@@ -92,7 +90,6 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(response -> {
-                    Log.d("Icons", "Loaded icons after call!");
                     Map<String, CurrencyIcon> data = response.getData();
                     if (data != null) {
                         List<CurrencyIcon> icons = new ArrayList<>();
@@ -101,7 +98,6 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
                         liveData.postValue(new ApiResponse<>(response));
                     }
                 }, throwable -> {
-                    Log.d("Icons", throwable.toString());
                     liveData.postValue(new ApiResponse<>(throwable));
                 });
         return liveData;

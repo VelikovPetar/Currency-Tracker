@@ -23,7 +23,7 @@ public class BootstrapViewState {
         return this;
     }
 
-    public BootstrapViewState setError(boolean hasError) {
+    public BootstrapViewState setHasError(boolean hasError) {
         this.hasError = hasError;
         return this;
     }

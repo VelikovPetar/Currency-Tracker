@@ -2,8 +2,8 @@ package com.petarvelikov.currencytracker.di.module;
 
 import android.arch.lifecycle.ViewModelProvider;
 
-import com.petarvelikov.currencytracker.model.rest.CryptoCurrenciesApiRepository;
-import com.petarvelikov.currencytracker.model.rest.CryptoCurrenciesApiRepositoryImpl;
+import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
+import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepositoryImpl;
 import com.petarvelikov.currencytracker.viewmodel.ViewModelFactory;
 
 import dagger.Binds;

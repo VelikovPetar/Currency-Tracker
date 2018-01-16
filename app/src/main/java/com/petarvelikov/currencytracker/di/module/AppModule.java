@@ -2,10 +2,11 @@ package com.petarvelikov.currencytracker.di.module;
 
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.net.ConnectivityManager;
 
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
-import com.petarvelikov.currencytracker.model.rest.CoinMarketCapApiService;
-import com.petarvelikov.currencytracker.model.rest.CryptoCompareApiService;
+import com.petarvelikov.currencytracker.model.network.CoinMarketCapApiService;
+import com.petarvelikov.currencytracker.model.network.CryptoCompareApiService;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -28,6 +29,18 @@ public class AppModule {
 
     public AppModule(Context context) {
         this.context = context;
+    }
+
+    @Provides
+    @Singleton
+    Context provideContext() {
+        return this.context;
+    }
+
+    @Provides
+    @Singleton
+    ConnectivityManager provideConnectivityManager() {
+        return (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     @Provides

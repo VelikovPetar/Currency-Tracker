@@ -1,4 +1,4 @@
-package com.petarvelikov.currencytracker.model.rest;
+package com.petarvelikov.currencytracker.model.network;
 
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
 

@@ -5,7 +5,7 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.petarvelikov.currencytracker.consts.Constants;
-import com.petarvelikov.currencytracker.model.rest.CryptoCurrenciesApiRepository;
+import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
 
 import javax.inject.Inject;
 
@@ -26,24 +26,29 @@ public class CryptoCurrenciesViewModel extends ViewModel {
     }
 
     public void loadCurrencies(int start, int limit, String convert) {
-        viewState.setValue(currentViewState().setLoading(true));
+        viewState.setValue(currentViewState()
+                .setLoading(true)
+                .setHasError(false));
         viewState.addSource(apiRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
             if (apiResponse != null) {
                 if (apiResponse.getResponse() != null) {
                     viewState.setValue(currentViewState()
                             .addCryptoCurrencies(apiResponse.getResponse())
-                            .setLoading(false));
+                            .setLoading(false)
+                            .setHasError(false));
                 } else if (apiResponse.getError() != null) {
                     String message = apiResponse.getError().getMessage();
                     // TODO Test if this works properly
                     if (Constants.ERROR.HTTP_404_NOT_FOUND.equals(message)) {
                         viewState.setValue(currentViewState()
                                 .setLoading(false)
-                                .setEndReached(true));
+                                .setEndReached(true)
+                                .setHasError(false));
                     } else {
                         viewState.setValue(currentViewState()
                                 .setLoading(false)
-                                .setEndReached(false));
+                                .setEndReached(false)
+                                .setHasError(true));
                     }
                 }
             } else {

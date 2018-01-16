@@ -5,7 +5,7 @@ import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
-import com.petarvelikov.currencytracker.model.rest.CryptoCurrenciesApiRepository;
+import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
 
 import javax.inject.Inject;
 
@@ -34,7 +34,7 @@ public class BootstrapViewModel extends ViewModel {
     public void load() {
         viewState.setValue(currentViewState()
                 .setLoading(true)
-                .setError(false)
+                .setHasError(false)
                 .setErrorMessage(null));
         viewState.addSource(apiRepository.getCurrenciesIcons(), apiResponse -> {
             if (apiResponse != null) {
@@ -42,13 +42,13 @@ public class BootstrapViewModel extends ViewModel {
                 if (response != null) {
                     viewState.setValue(currentViewState()
                             .setLoading(false)
-                            .setError(false)
+                            .setHasError(false)
                             .setErrorMessage(null));
                 } else if (apiResponse.getError() != null) {
                     Throwable throwable = apiResponse.getError();
                     viewState.setValue(currentViewState()
                             .setLoading(false)
-                            .setError(true)
+                            .setHasError(true)
                             .setErrorMessage(throwable.getMessage()));
                 }
             }
