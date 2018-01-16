@@ -68,6 +68,7 @@ public class AppModule {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL_CRYPTO_COMPARE)
                 .addConverterFactory(factory)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

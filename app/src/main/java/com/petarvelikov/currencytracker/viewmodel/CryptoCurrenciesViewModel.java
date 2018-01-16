@@ -27,7 +27,7 @@ public class CryptoCurrenciesViewModel extends ViewModel {
 
     public void loadCurrencies(int start, int limit, String convert) {
         viewState.setValue(currentViewState().setLoading(true));
-        viewState.addSource(apiRepository.getAllCurrenciesSingle(start, limit, convert), apiResponse -> {
+        viewState.addSource(apiRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
             if (apiResponse != null) {
                 if (apiResponse.getResponse() != null) {
                     viewState.setValue(currentViewState()

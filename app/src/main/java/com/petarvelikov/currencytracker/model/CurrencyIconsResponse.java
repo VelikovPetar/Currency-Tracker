@@ -7,6 +7,8 @@ import java.util.Map;
 
 public class CurrencyIconsResponse {
 
+    public static final CurrencyIconsResponse ALREADY_LOADED = new CurrencyIconsResponse();
+
     @SerializedName("Response")
     @Expose
     private String response;

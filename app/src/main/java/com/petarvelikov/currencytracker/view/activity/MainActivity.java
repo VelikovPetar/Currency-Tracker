@@ -1,6 +1,5 @@
 package com.petarvelikov.currencytracker.view.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.petarvelikov.currencytracker.R;
-import com.petarvelikov.currencytracker.service.GetCurrenciesIconsService;
 import com.petarvelikov.currencytracker.view.fragment.CryptoCurrenciesFragment;
 import com.petarvelikov.currencytracker.view.fragment.ExchangeRatesFragment;
 
@@ -21,9 +19,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bindUi(savedInstanceState);
-        // TODO Move to BootstrapActivity
-        Intent intent = new Intent(this, GetCurrenciesIconsService.class);
-        startService(intent);
     }
 
     private void bindUi(Bundle savedInstanceState) {

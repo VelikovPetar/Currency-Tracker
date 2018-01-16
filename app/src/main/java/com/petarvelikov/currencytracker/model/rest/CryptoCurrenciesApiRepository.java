@@ -8,13 +8,11 @@ import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
 
 import java.util.List;
 
-import retrofit2.Call;
-
 public interface CryptoCurrenciesApiRepository {
 
     LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit, String convert);
 
-    Call<CurrencyIconsResponse> getCurrenciesIcons();
+    LiveData<ApiResponse<CurrencyIconsResponse>> getCurrenciesIcons();
 
-    LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrenciesSingle(int start, int limit, String convert);
+    void cancelCalls();
 }
