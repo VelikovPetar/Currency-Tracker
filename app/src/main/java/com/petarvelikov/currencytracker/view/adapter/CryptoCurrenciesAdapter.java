@@ -16,9 +16,11 @@ import java.util.List;
 public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenciesAdapter.CryptoCurrencyViewHolder> {
 
     private List<CryptoCurrency> currencies;
+    private OnClickListener listener;
 
-    public CryptoCurrenciesAdapter(List<CryptoCurrency> currencies) {
+    public CryptoCurrenciesAdapter(List<CryptoCurrency> currencies, OnClickListener listener) {
         this.currencies = currencies;
+        this.listener = listener;
     }
 
     public void setCurrencies(List<CryptoCurrency> currencies) {
@@ -79,5 +81,9 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
                     .centerCrop()
                     .into(imgIcon);
         }
+    }
+
+    public interface OnClickListener {
+        void onClick(String symbol);
     }
 }

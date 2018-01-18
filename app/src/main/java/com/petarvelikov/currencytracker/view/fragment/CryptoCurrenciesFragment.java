@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class CryptoCurrenciesFragment extends Fragment {
+public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenciesAdapter.OnClickListener {
 
     private static final String TAG = "CCFragment";
 
@@ -79,11 +79,16 @@ public class CryptoCurrenciesFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onClick(String symbol) {
+
+    }
+
     private void bindUi(View view) {
         recyclerView = view.findViewById(R.id.recyclerCryptoCurrencies);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new CryptoCurrenciesAdapter(new ArrayList<>());
+        adapter = new CryptoCurrenciesAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
