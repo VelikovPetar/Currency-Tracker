@@ -3,6 +3,7 @@ package com.petarvelikov.currencytracker.view.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.network.NetworkUtils;
+import com.petarvelikov.currencytracker.view.activity.CurrencyDetailsActivity;
 import com.petarvelikov.currencytracker.view.adapter.CryptoCurrenciesAdapter;
 import com.petarvelikov.currencytracker.view.adapter.EndlessRecyclerViewScrollListener;
 import com.petarvelikov.currencytracker.viewmodel.CryptoCurrenciesViewModel;
@@ -80,8 +82,11 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
     }
 
     @Override
-    public void onClick(String symbol) {
-
+    public void onClick(String name, String symbol) {
+        Intent intent = new Intent(getContext(), CurrencyDetailsActivity.class);
+        intent.putExtra(CurrencyDetailsActivity.CURRENCY_NAME, name);
+        intent.putExtra(CurrencyDetailsActivity.CURRENCY_SYMBOL, symbol);
+        startActivity(intent);
     }
 
     private void bindUi(View view) {

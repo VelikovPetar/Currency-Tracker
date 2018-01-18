@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.squareup.picasso.Picasso;
 
@@ -41,6 +42,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
         holder.setSymbol(currency.getSymbol());
         holder.setValue(currency.getPriceEur());
         holder.setIcon(currency.getImageUrl());
+        holder.itemView.setOnClickListener(event -> listener.onClick(currency.getName(), currency.getSymbol()));
     }
 
     @Override
@@ -75,7 +77,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
 
         void setIcon(String url) {
             Picasso.with(itemView.getContext())
-                    .load("https://www.cryptocompare.com" + url) // TODO Extract
+                    .load(Constants.API_CONSTANTS.BASE_URL_ICONS + url)
                     .resize(64, 64)
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .centerCrop()
@@ -84,6 +86,6 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
     }
 
     public interface OnClickListener {
-        void onClick(String symbol);
+        void onClick(String name, String symbol);
     }
 }
