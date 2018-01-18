@@ -8,5 +8,7 @@ public class Constants {
 
     public interface API_CONSTANTS {
         int LIMIT = 50;
+        String BASE_URL_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/";
+        String BASE_URL_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/";
     }
 }
