@@ -1,13 +1,10 @@
 package com.petarvelikov.currencytracker.model;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CryptoCurrency implements Parcelable {
+public class CryptoCurrency {
 
     @SerializedName("id")
     @Expose
@@ -59,38 +56,6 @@ public class CryptoCurrency implements Parcelable {
     private String priceEur;
 
     private String imageUrl;
-
-    protected CryptoCurrency(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        symbol = in.readString();
-        rank = in.readString();
-        priceUsd = in.readString();
-        priceBtc = in.readString();
-        _24hVolumeUsd = in.readString();
-        marketCapUsd = in.readString();
-        availableSupply = in.readString();
-        totalSupply = in.readString();
-        maxSupply = in.readString();
-        percentChange1h = in.readString();
-        percentChange24h = in.readString();
-        percentChange7d = in.readString();
-        lastUpdated = in.readString();
-        priceEur = in.readString();
-        imageUrl = in.readString();
-    }
-
-    public static final Creator<CryptoCurrency> CREATOR = new Creator<CryptoCurrency>() {
-        @Override
-        public CryptoCurrency createFromParcel(Parcel in) {
-            return new CryptoCurrency(in);
-        }
-
-        @Override
-        public CryptoCurrency[] newArray(int size) {
-            return new CryptoCurrency[size];
-        }
-    };
 
     public String getId() {
         return id;
@@ -228,29 +193,4 @@ public class CryptoCurrency implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(id);
-        parcel.writeString(name);
-        parcel.writeString(symbol);
-        parcel.writeString(rank);
-        parcel.writeString(priceUsd);
-        parcel.writeString(priceBtc);
-        parcel.writeString(_24hVolumeUsd);
-        parcel.writeString(marketCapUsd);
-        parcel.writeString(availableSupply);
-        parcel.writeString(totalSupply);
-        parcel.writeString(maxSupply);
-        parcel.writeString(percentChange1h);
-        parcel.writeString(percentChange24h);
-        parcel.writeString(percentChange7d);
-        parcel.writeString(lastUpdated);
-        parcel.writeString(priceEur);
-        parcel.writeString(imageUrl);
-    }
 }

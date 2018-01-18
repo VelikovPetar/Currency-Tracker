@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.consts.Constants;
-import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.petarvelikov.currencytracker.model.network.NetworkUtils;
 import com.petarvelikov.currencytracker.view.activity.CurrencyDetailsActivity;
 import com.petarvelikov.currencytracker.view.adapter.CryptoCurrenciesAdapter;
@@ -83,9 +82,10 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
     }
 
     @Override
-    public void onClick(CryptoCurrency cryptoCurrency) {
+    public void onClick(String name, String symbol) {
         Intent intent = new Intent(getContext(), CurrencyDetailsActivity.class);
-        intent.putExtra(CurrencyDetailsActivity.CURRENCY, cryptoCurrency);
+        intent.putExtra(CurrencyDetailsActivity.CURRENCY_NAME, name);
+        intent.putExtra(CurrencyDetailsActivity.CURRENCY_SYMBOL, symbol);
         startActivity(intent);
     }
 
