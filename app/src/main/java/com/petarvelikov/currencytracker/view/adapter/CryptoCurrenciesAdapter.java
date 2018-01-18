@@ -78,7 +78,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
         void setIcon(String url) {
             Picasso.with(itemView.getContext())
                     .load(Constants.API_CONSTANTS.BASE_URL_ICONS + url)
-                    .resize(64, 64)
+                    .resize(48, 48)
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .centerCrop()
                     .into(imgIcon);
