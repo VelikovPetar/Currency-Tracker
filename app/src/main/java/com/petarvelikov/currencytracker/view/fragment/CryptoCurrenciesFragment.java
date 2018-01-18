@@ -82,8 +82,9 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
     }
 
     @Override
-    public void onClick(String name, String symbol) {
+    public void onClick(String id, String name, String symbol) {
         Intent intent = new Intent(getContext(), CurrencyDetailsActivity.class);
+        intent.putExtra(CurrencyDetailsActivity.CURRENCY_ID, id);
         intent.putExtra(CurrencyDetailsActivity.CURRENCY_NAME, name);
         intent.putExtra(CurrencyDetailsActivity.CURRENCY_SYMBOL, symbol);
         startActivity(intent);
