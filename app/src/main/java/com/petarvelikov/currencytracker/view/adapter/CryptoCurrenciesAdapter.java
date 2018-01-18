@@ -42,7 +42,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
         holder.setSymbol(currency.getSymbol());
         holder.setValue(currency.getPriceEur());
         holder.setIcon(currency.getImageUrl());
-        holder.itemView.setOnClickListener(event -> listener.onClick(currency.getName(), currency.getSymbol()));
+        holder.itemView.setOnClickListener(event -> listener.onClick(currency));
     }
 
     @Override
@@ -86,6 +86,6 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
     }
 
     public interface OnClickListener {
-        void onClick(String name, String symbol);
+        void onClick(CryptoCurrency cryptoCurrency);
     }
 }
