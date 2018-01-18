@@ -9,11 +9,15 @@ import javax.inject.Inject;
 public class ViewModelFactory implements ViewModelProvider.Factory {
     private CryptoCurrenciesViewModel ccViewModel;
     private BootstrapViewModel bootstrapViewModel;
+    private CurrencyDetailsViewModel currencyDetailsViewModel;
 
     @Inject
-    public ViewModelFactory(CryptoCurrenciesViewModel ccViewModel, BootstrapViewModel bootstrapViewModel) {
+    public ViewModelFactory(CryptoCurrenciesViewModel ccViewModel,
+                            BootstrapViewModel bootstrapViewModel,
+                            CurrencyDetailsViewModel currencyDetailsViewModel) {
         this.ccViewModel = ccViewModel;
         this.bootstrapViewModel = bootstrapViewModel;
+        this.currencyDetailsViewModel = currencyDetailsViewModel;
     }
 
     @NonNull
@@ -24,6 +28,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(BootstrapViewModel.class)) {
             return (T) bootstrapViewModel;
+        }
+        if (modelClass.isAssignableFrom(CurrencyDetailsViewModel.class)) {
+            return (T) currencyDetailsViewModel;
         }
         throw new IllegalArgumentException("Unknown class name");
     }

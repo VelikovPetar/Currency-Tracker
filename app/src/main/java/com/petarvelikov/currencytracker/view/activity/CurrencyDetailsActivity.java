@@ -1,11 +1,19 @@
 package com.petarvelikov.currencytracker.view.activity;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
+import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewModel;
+import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewState;
+
+import javax.inject.Inject;
 
 public class CurrencyDetailsActivity extends AppCompatActivity {
 
@@ -19,13 +27,25 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     private static final String DEFAULT_SYMBOL = "BTC";
     private static final String TITLE_FORMAT = "%name (%symbol)";
 
+    @Inject
+    ViewModelProvider.Factory viewModelFactory;
+
     private String currencyId, currencyName, currencySymbol;
+    private CurrencyDetailsViewModel currencyDetailsViewModel;
+    private TextView txtName, txtSymbol, txtPrice, txtMarketCap, txtPercentHourly, txtPercentDaily,
+            txtPercentWeekly;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_currency_details);
+        CurrencyTrackerApplication app = (CurrencyTrackerApplication) getApplication();
         bindUi();
+        app.getAppComponent().inject(this);
+        currencyDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrencyDetailsViewModel.class);
+        currencyDetailsViewModel.getViewState().observe(this, this::updateUi);
+        // TODO Read convert value from preferences
+        currencyDetailsViewModel.load(currencyId, "EUR");
     }
 
     private void bindUi() {
@@ -39,6 +59,13 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
             currencySymbol = DEFAULT_SYMBOL;
         }
         setupToolbar();
+        txtName = findViewById(R.id.txtCurrencyDetailsName);
+        txtSymbol = findViewById(R.id.txtCurrencyDetailsSymbol);
+        txtPrice = findViewById(R.id.txtCurrencyDetailsPrice);
+        txtMarketCap = findViewById(R.id.txtCurrencyDetailsMarketCap);
+        txtPercentHourly = findViewById(R.id.txtCurrencyDetailsPercentHourly);
+        txtPercentDaily = findViewById(R.id.txtCurrencyDetailsPercentDaily);
+        txtPercentWeekly = findViewById(R.id.txtCurrencyDetailsPercentWeekly);
     }
 
     private void setupToolbar() {
@@ -49,5 +76,20 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
         toolbar.setNavigationOnClickListener(view -> CurrencyDetailsActivity.this.finish());
+    }
+
+    private void updateUi(CurrencyDetailsViewState viewState) {
+        // TODO Loading screen
+        if (viewState.getCryptoCurrency() != null) {
+            txtName.setText(viewState.getCryptoCurrency().getName());
+            txtSymbol.setText(viewState.getCryptoCurrency().getSymbol());
+            txtPrice.setText(viewState.getCryptoCurrency().getPriceUsd());
+            txtMarketCap.setText(viewState.getCryptoCurrency().getMarketCapUsd());
+            txtPercentHourly.setText(viewState.getCryptoCurrency().getPercentChange1h());
+            txtPercentDaily.setText(viewState.getCryptoCurrency().getPercentChange24h());
+            txtPercentWeekly.setText(viewState.getCryptoCurrency().getPercentChange7d());
+        } else {
+            // Show error
+        }
     }
 }

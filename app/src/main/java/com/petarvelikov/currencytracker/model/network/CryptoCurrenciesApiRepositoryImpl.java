@@ -18,7 +18,6 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -55,21 +54,10 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
                 })
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleObserver<List<CryptoCurrency>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(List<CryptoCurrency> currencies) {
-                        liveData.setValue(new ApiResponse<>(currencies));
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        liveData.setValue(new ApiResponse<>(e));
-                    }
+                .subscribe(currencies -> {
+                    liveData.setValue(new ApiResponse<>(currencies));
+                }, throwable -> {
+                    liveData.setValue(new ApiResponse<>(throwable));
                 });
         return liveData;
     }
@@ -99,6 +87,20 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
                     }
                 }, throwable -> {
                     liveData.postValue(new ApiResponse<>(throwable));
+                });
+        return liveData;
+    }
+
+    @Override
+    public LiveData<ApiResponse<CryptoCurrency>> getCurrencyById(String id, String convert) {
+        MutableLiveData<ApiResponse<CryptoCurrency>> liveData = new MutableLiveData<>();
+        coinMarketCapApiService.getCurrencyById(id, convert)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(currency -> {
+                    liveData.setValue(new ApiResponse<>(currency.get(0))); // TODO Check size of list
+                }, throwable -> {
+                    liveData.setValue(new ApiResponse<>(throwable));
                 });
         return liveData;
     }

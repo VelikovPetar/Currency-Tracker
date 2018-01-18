@@ -52,7 +52,10 @@ public class CryptoCurrenciesViewModel extends ViewModel {
                     }
                 }
             } else {
-                viewState.setValue(currentViewState().setLoading(false));
+                viewState.setValue(currentViewState()
+                        .setLoading(false)
+                        .setEndReached(false)
+                        .setHasError(true));
             }
         });
     }

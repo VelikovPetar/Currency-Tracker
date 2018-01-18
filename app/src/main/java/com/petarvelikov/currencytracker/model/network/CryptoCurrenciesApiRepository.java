@@ -14,5 +14,8 @@ public interface CryptoCurrenciesApiRepository {
 
     LiveData<ApiResponse<CurrencyIconsResponse>> getCurrenciesIcons();
 
+    LiveData<ApiResponse<CryptoCurrency>> getCurrencyById(String id, String convert);
+
+    // TODO Proper disposal of singles!
     void cancelCalls();
 }
