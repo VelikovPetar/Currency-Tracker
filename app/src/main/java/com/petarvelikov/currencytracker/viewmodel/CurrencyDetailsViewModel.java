@@ -25,9 +25,9 @@ public class CurrencyDetailsViewModel extends ViewModel {
         return this.viewState;
     }
 
-    public void load(String currencyId, String convert) {
+    public void load(String currencyId, String convert, boolean isSwipedDown) {
         viewState.setValue(currentViewState()
-                .setIsLoading(true)
+                .setIsLoading(!isSwipedDown)
                 .setHasError(false));
         viewState.addSource(apiRepository.getCurrencyById(currencyId, convert), apiResponse -> {
             if (apiResponse != null) {

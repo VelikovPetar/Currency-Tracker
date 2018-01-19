@@ -4,6 +4,8 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -39,6 +41,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
             txtPercentWeekly, txtError;
     private ProgressBar progressBar;
     private TableLayout layoutDetails;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,7 +53,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         currencyDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrencyDetailsViewModel.class);
         currencyDetailsViewModel.getViewState().observe(this, this::updateUi);
         // TODO Read convert value from preferences
-        currencyDetailsViewModel.load(currencyId, "EUR");
+        currencyDetailsViewModel.load(currencyId, "EUR", false);
     }
 
     private void bindUi() {
@@ -74,10 +77,16 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         txtError = findViewById(R.id.txtDetailsError);
         txtError.setOnClickListener(view -> {
             // TODO Read convert value from preferences
-            currencyDetailsViewModel.load(currencyId, "EUR");
+            currencyDetailsViewModel.load(currencyId, "EUR", false);
         });
         progressBar = findViewById(R.id.progressCurrencyDetails);
         layoutDetails = findViewById(R.id.layoutCurrencyDetails);
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshCurrencyDetails);
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // TODO Read convert value from preferences
+            currencyDetailsViewModel.load(currencyId, "EUR", true);
+        });
     }
 
     private void setupToolbar() {
@@ -97,6 +106,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
             layoutDetails.setVisibility(View.GONE);
         } else {
             progressBar.setVisibility(View.GONE);
+            swipeRefreshLayout.setRefreshing(false);
             if (viewState.getCryptoCurrency() != null) {
                 txtError.setVisibility(View.GONE);
                 layoutDetails.setVisibility(View.VISIBLE);
