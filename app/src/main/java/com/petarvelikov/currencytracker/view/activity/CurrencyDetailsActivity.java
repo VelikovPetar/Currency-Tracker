@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
@@ -33,7 +36,9 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     private String currencyId, currencyName, currencySymbol;
     private CurrencyDetailsViewModel currencyDetailsViewModel;
     private TextView txtName, txtSymbol, txtPrice, txtMarketCap, txtPercentHourly, txtPercentDaily,
-            txtPercentWeekly;
+            txtPercentWeekly, txtError;
+    private ProgressBar progressBar;
+    private TableLayout layoutDetails;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +71,13 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         txtPercentHourly = findViewById(R.id.txtCurrencyDetailsPercentHourly);
         txtPercentDaily = findViewById(R.id.txtCurrencyDetailsPercentDaily);
         txtPercentWeekly = findViewById(R.id.txtCurrencyDetailsPercentWeekly);
+        txtError = findViewById(R.id.txtDetailsError);
+        txtError.setOnClickListener(view -> {
+            // TODO Read convert value from preferences
+            currencyDetailsViewModel.load(currencyId, "EUR");
+        });
+        progressBar = findViewById(R.id.progressCurrencyDetails);
+        layoutDetails = findViewById(R.id.layoutCurrencyDetails);
     }
 
     private void setupToolbar() {
@@ -79,17 +91,26 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     }
 
     private void updateUi(CurrencyDetailsViewState viewState) {
-        // TODO Loading screen
-        if (viewState.getCryptoCurrency() != null) {
-            txtName.setText(viewState.getCryptoCurrency().getName());
-            txtSymbol.setText(viewState.getCryptoCurrency().getSymbol());
-            txtPrice.setText(viewState.getCryptoCurrency().getPriceUsd());
-            txtMarketCap.setText(viewState.getCryptoCurrency().getMarketCapUsd());
-            txtPercentHourly.setText(viewState.getCryptoCurrency().getPercentChange1h());
-            txtPercentDaily.setText(viewState.getCryptoCurrency().getPercentChange24h());
-            txtPercentWeekly.setText(viewState.getCryptoCurrency().getPercentChange7d());
+        if (viewState.isLoading()) {
+            progressBar.setVisibility(View.VISIBLE);
+            txtError.setVisibility(View.GONE);
+            layoutDetails.setVisibility(View.GONE);
         } else {
-            // Show error
+            progressBar.setVisibility(View.GONE);
+            if (viewState.getCryptoCurrency() != null) {
+                txtError.setVisibility(View.GONE);
+                layoutDetails.setVisibility(View.VISIBLE);
+                txtName.setText(viewState.getCryptoCurrency().getName());
+                txtSymbol.setText(viewState.getCryptoCurrency().getSymbol());
+                txtPrice.setText(viewState.getCryptoCurrency().getPriceUsd());
+                txtMarketCap.setText(viewState.getCryptoCurrency().getMarketCapUsd());
+                txtPercentHourly.setText(viewState.getCryptoCurrency().getPercentChange1h());
+                txtPercentDaily.setText(viewState.getCryptoCurrency().getPercentChange24h());
+                txtPercentWeekly.setText(viewState.getCryptoCurrency().getPercentChange7d());
+            } else if (viewState.hasError()) {
+                txtError.setVisibility(View.VISIBLE);
+                layoutDetails.setVisibility(View.GONE);
+            }
         }
     }
 }
