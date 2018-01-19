@@ -12,7 +12,6 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton

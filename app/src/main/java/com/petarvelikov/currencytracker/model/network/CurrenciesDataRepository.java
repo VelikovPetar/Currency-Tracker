@@ -1,8 +1,5 @@
 package com.petarvelikov.currencytracker.model.network;
 
-import android.arch.lifecycle.LiveData;
-
-import com.petarvelikov.currencytracker.model.ApiResponse;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
 
