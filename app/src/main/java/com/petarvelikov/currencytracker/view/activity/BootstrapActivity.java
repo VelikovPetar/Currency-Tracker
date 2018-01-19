@@ -50,23 +50,21 @@ public class BootstrapActivity extends AppCompatActivity {
     }
 
     private void updateUi(BootstrapViewState viewState) {
-        // TODO Test all interactions and maybe refactor
         if (viewState.isLoading()) {
             progressBar.setVisibility(View.VISIBLE);
-            if (!viewState.hasError()) {
-                txtMessage.setText("");
-            }
+            txtMessage.setVisibility(View.GONE);
+            btnRetry.setVisibility(View.GONE);
         } else {
-            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.INVISIBLE); // TODO Maybe GONE?
             if (!viewState.hasError()) {
+                txtMessage.setVisibility(View.GONE);
                 btnRetry.setVisibility(View.GONE);
                 launchMainActivity();
-                return;
+            } else {
+                txtMessage.setVisibility(View.VISIBLE);
+                txtMessage.setText(viewState.getErrorMessage());
+                btnRetry.setVisibility(View.VISIBLE);
             }
-        }
-        if (viewState.hasError() && viewState.getErrorMessage() != null) {
-            txtMessage.setText(viewState.getErrorMessage());
-            btnRetry.setVisibility(View.VISIBLE);
         }
     }
 

@@ -1,31 +1,45 @@
 package com.petarvelikov.currencytracker.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
-import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
+import com.petarvelikov.currencytracker.model.CurrencyIcon;
+import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
 import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
+
+import io.reactivex.Single;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class BootstrapViewModel extends ViewModel {
 
     private CurrenciesDataRepository dataRepository;
-    private MediatorLiveData<BootstrapViewState> viewState;
+    private CurrencyDatabase currencyDatabase;
+    private MutableLiveData<BootstrapViewState> viewState;
+    private CompositeDisposable compositeDisposable;
 
     @Inject
-    public BootstrapViewModel(CurrenciesDataRepository dataRepository) {
+    public BootstrapViewModel(CurrenciesDataRepository dataRepository, CurrencyDatabase currencyDatabase) {
         this.dataRepository = dataRepository;
-        this.viewState = new MediatorLiveData<>();
+        this.currencyDatabase = currencyDatabase;
+        this.viewState = new MutableLiveData<>();
         this.viewState.setValue(new BootstrapViewState());
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        dataRepository.cancelCalls();
+        compositeDisposable.clear();
     }
 
     @NonNull
@@ -38,26 +52,46 @@ public class BootstrapViewModel extends ViewModel {
                 .setLoading(true)
                 .setHasError(false)
                 .setErrorMessage(null));
-        viewState.addSource(dataRepository.getCurrenciesIcons(), apiResponse -> {
-            if (apiResponse != null) {
-                CurrencyIconsResponse response = apiResponse.getResponse();
-                if (response != null) {
-                    viewState.setValue(currentViewState()
-                            .setLoading(false)
-                            .setHasError(false)
-                            .setErrorMessage(null));
-                } else if (apiResponse.getError() != null) {
-                    Throwable throwable = apiResponse.getError();
-                    viewState.setValue(currentViewState()
-                            .setLoading(false)
-                            .setHasError(true)
-                            .setErrorMessage(throwable.getMessage()));
-                }
-            }
-        });
+        Disposable d = Single.defer(() -> Single.just(currencyDatabase.currencyDao().getNumberOfIcons()))
+                .toObservable()
+                .takeWhile(rows -> {
+                    if (rows > 0) {
+                        setSuccess();
+                    }
+                    return rows == 0;
+                })
+                .flatMapSingle(rows -> dataRepository.getCurrencyIcons())
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(response -> {
+                    Map<String, CurrencyIcon> data = response.getData();
+                    if (data != null) {
+                        List<CurrencyIcon> icons = new ArrayList<>();
+                        icons.addAll(data.values());
+                        currencyDatabase.currencyDao().insertMultiple(icons.toArray(new CurrencyIcon[0]));
+                        setSuccess();
+                    }
+                }, throwable -> {
+                    setFailure(throwable.getMessage());
+                });
+        compositeDisposable.add(d);
     }
 
     private BootstrapViewState currentViewState() {
         return this.viewState.getValue();
+    }
+
+    private void setSuccess() {
+        viewState.postValue(currentViewState()
+                .setLoading(false)
+                .setHasError(false)
+                .setErrorMessage(null));
+    }
+
+    private void setFailure(String message) {
+        viewState.postValue(currentViewState()
+                .setLoading(false)
+                .setHasError(true)
+                .setErrorMessage(message));
     }
 }

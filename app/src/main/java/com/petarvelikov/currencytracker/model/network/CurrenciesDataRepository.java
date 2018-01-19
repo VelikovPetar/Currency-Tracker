@@ -14,10 +14,8 @@ public interface CurrenciesDataRepository {
 
     Single<List<CryptoCurrency>> getAllCurrencies(int start, int limit, String convert);
 
-    LiveData<ApiResponse<CurrencyIconsResponse>> getCurrenciesIcons();
+    Single<CurrencyIconsResponse> getCurrencyIcons();
 
     Single<CryptoCurrency> getCurrencyById(String id, String convert);
 
-    // TODO Proper disposal of singles!
-    void cancelCalls();
 }
