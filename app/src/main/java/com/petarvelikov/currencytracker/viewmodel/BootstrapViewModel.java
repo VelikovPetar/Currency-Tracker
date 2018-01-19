@@ -6,18 +6,18 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
-import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
+import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
 
 import javax.inject.Inject;
 
 public class BootstrapViewModel extends ViewModel {
 
-    private CryptoCurrenciesApiRepository apiRepository;
+    private CurrenciesDataRepository dataRepository;
     private MediatorLiveData<BootstrapViewState> viewState;
 
     @Inject
-    public BootstrapViewModel(CryptoCurrenciesApiRepository apiRepository) {
-        this.apiRepository = apiRepository;
+    public BootstrapViewModel(CurrenciesDataRepository dataRepository) {
+        this.dataRepository = dataRepository;
         this.viewState = new MediatorLiveData<>();
         this.viewState.setValue(new BootstrapViewState());
     }
@@ -25,7 +25,7 @@ public class BootstrapViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        apiRepository.cancelCalls();
+        dataRepository.cancelCalls();
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class BootstrapViewModel extends ViewModel {
                 .setLoading(true)
                 .setHasError(false)
                 .setErrorMessage(null));
-        viewState.addSource(apiRepository.getCurrenciesIcons(), apiResponse -> {
+        viewState.addSource(dataRepository.getCurrenciesIcons(), apiResponse -> {
             if (apiResponse != null) {
                 CurrencyIconsResponse response = apiResponse.getResponse();
                 if (response != null) {

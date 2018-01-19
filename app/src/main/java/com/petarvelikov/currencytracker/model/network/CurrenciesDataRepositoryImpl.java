@@ -23,7 +23,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
-public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRepository {
+public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
 
     @Inject
     CoinMarketCapApiService coinMarketCapApiService;
@@ -35,7 +35,7 @@ public class CryptoCurrenciesApiRepositoryImpl implements CryptoCurrenciesApiRep
     private Disposable disposable;
 
     @Inject
-    public CryptoCurrenciesApiRepositoryImpl() {
+    public CurrenciesDataRepositoryImpl() {
 
     }
 

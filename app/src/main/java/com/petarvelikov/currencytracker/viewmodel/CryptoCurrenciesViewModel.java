@@ -6,18 +6,18 @@ import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
 import com.petarvelikov.currencytracker.consts.Constants;
-import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
+import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
 
 import javax.inject.Inject;
 
 public class CryptoCurrenciesViewModel extends ViewModel {
 
-    private CryptoCurrenciesApiRepository apiRepository;
+    private CurrenciesDataRepository dataRepository;
     private MediatorLiveData<CryptoCurrenciesViewState> viewState;
 
     @Inject
-    public CryptoCurrenciesViewModel(CryptoCurrenciesApiRepository apiRepository) {
-        this.apiRepository = apiRepository;
+    public CryptoCurrenciesViewModel(CurrenciesDataRepository dataRepository) {
+        this.dataRepository = dataRepository;
         this.viewState = new MediatorLiveData<>();
         this.viewState.setValue(new CryptoCurrenciesViewState());
     }
@@ -31,7 +31,7 @@ public class CryptoCurrenciesViewModel extends ViewModel {
         viewState.setValue(currentViewState()
                 .setLoading(!isSwipeRefresh)
                 .setHasError(false));
-        viewState.addSource(apiRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
+        viewState.addSource(dataRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
             if (apiResponse != null) {
                 if (apiResponse.getResponse() != null) {
                     if (start == 0) {

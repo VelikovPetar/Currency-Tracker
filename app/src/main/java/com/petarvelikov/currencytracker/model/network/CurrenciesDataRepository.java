@@ -8,7 +8,7 @@ import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
 
 import java.util.List;
 
-public interface CryptoCurrenciesApiRepository {
+public interface CurrenciesDataRepository {
 
     LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit, String convert);
 
