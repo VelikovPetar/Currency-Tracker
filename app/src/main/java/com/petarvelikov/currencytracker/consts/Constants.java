@@ -3,7 +3,7 @@ package com.petarvelikov.currencytracker.consts;
 public class Constants {
 
     public interface ERROR {
-        String HTTP_404_NOT_FOUND = "404";
+        String HTTP_404_NOT_FOUND = "HTTP 404";
     }
 
     public interface API_CONSTANTS {

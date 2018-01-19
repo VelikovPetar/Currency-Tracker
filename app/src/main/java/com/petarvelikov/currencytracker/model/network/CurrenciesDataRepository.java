@@ -8,13 +8,15 @@ import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface CurrenciesDataRepository {
 
-    LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit, String convert);
+    Single<List<CryptoCurrency>> getAllCurrencies(int start, int limit, String convert);
 
     LiveData<ApiResponse<CurrencyIconsResponse>> getCurrenciesIcons();
 
-    LiveData<ApiResponse<CryptoCurrency>> getCurrencyById(String id, String convert);
+    Single<CryptoCurrency> getCurrencyById(String id, String convert);
 
     // TODO Proper disposal of singles!
     void cancelCalls();

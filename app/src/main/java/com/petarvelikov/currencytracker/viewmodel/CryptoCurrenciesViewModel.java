@@ -1,25 +1,38 @@
 package com.petarvelikov.currencytracker.viewmodel;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+
 public class CryptoCurrenciesViewModel extends ViewModel {
 
     private CurrenciesDataRepository dataRepository;
-    private MediatorLiveData<CryptoCurrenciesViewState> viewState;
+    private MutableLiveData<CryptoCurrenciesViewState> viewState;
+    private CompositeDisposable compositeDisposable;
 
     @Inject
     public CryptoCurrenciesViewModel(CurrenciesDataRepository dataRepository) {
         this.dataRepository = dataRepository;
-        this.viewState = new MediatorLiveData<>();
+        this.viewState = new MutableLiveData<>();
         this.viewState.setValue(new CryptoCurrenciesViewState());
+        this.compositeDisposable = new CompositeDisposable();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        compositeDisposable.clear();
     }
 
     @NonNull
@@ -31,24 +44,26 @@ public class CryptoCurrenciesViewModel extends ViewModel {
         viewState.setValue(currentViewState()
                 .setLoading(!isSwipeRefresh)
                 .setHasError(false));
-        viewState.addSource(dataRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
-            if (apiResponse != null) {
-                if (apiResponse.getResponse() != null) {
+        Disposable d = dataRepository.getAllCurrencies(start, limit, convert)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(response -> {
                     if (start == 0) {
                         viewState.setValue(currentViewState()
-                                .setCryptoCurrencies(apiResponse.getResponse())
+                                .setCryptoCurrencies(response)
                                 .setLoading(false)
                                 .setHasError(false));
+                        Log.d("Update", "New values");
                     } else {
                         viewState.setValue(currentViewState()
-                                .addCryptoCurrencies(apiResponse.getResponse())
+                                .addCryptoCurrencies(response)
                                 .setLoading(false)
                                 .setHasError(false));
+                        Log.d("Update", "Appending values");
                     }
-                } else if (apiResponse.getError() != null) {
-                    String message = apiResponse.getError().getMessage();
+                }, throwable -> {
+                    String message = throwable.getMessage();
                     // TODO Test if this works properly
-                    if (Constants.ERROR.HTTP_404_NOT_FOUND.equals(message)) {
+                    if (Constants.ERROR.HTTP_404_NOT_FOUND.equals(message.trim())) {
                         viewState.setValue(currentViewState()
                                 .setLoading(false)
                                 .setEndReached(true)
@@ -59,14 +74,8 @@ public class CryptoCurrenciesViewModel extends ViewModel {
                                 .setEndReached(false)
                                 .setHasError(true));
                     }
-                }
-            } else {
-                viewState.setValue(currentViewState()
-                        .setLoading(false)
-                        .setEndReached(false)
-                        .setHasError(true));
-            }
-        });
+                });
+        compositeDisposable.add(d);
     }
 
     private CryptoCurrenciesViewState currentViewState() {

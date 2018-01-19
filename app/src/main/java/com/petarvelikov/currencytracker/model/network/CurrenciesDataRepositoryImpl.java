@@ -20,6 +20,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 @Singleton
@@ -40,9 +41,8 @@ public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
     }
 
     @Override
-    public LiveData<ApiResponse<List<CryptoCurrency>>> getAllCurrencies(int start, int limit, String convert) {
-        MutableLiveData<ApiResponse<List<CryptoCurrency>>> liveData = new MutableLiveData<>();
-        coinMarketCapApiService.getAllCurrencies(start, limit, convert)
+    public Single<List<CryptoCurrency>> getAllCurrencies(int start, int limit, String convert) {
+        return coinMarketCapApiService.getAllCurrencies(start, limit, convert)
                 .subscribeOn(Schedulers.io())
                 .flatMapObservable(Observable::fromIterable)
                 .map(currency -> {
@@ -52,14 +52,7 @@ public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
                     }
                     return currency;
                 })
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(currencies -> {
-                    liveData.setValue(new ApiResponse<>(currencies));
-                }, throwable -> {
-                    liveData.setValue(new ApiResponse<>(throwable));
-                });
-        return liveData;
+                .toList();
     }
 
     @Override
@@ -92,17 +85,10 @@ public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
     }
 
     @Override
-    public LiveData<ApiResponse<CryptoCurrency>> getCurrencyById(String id, String convert) {
-        MutableLiveData<ApiResponse<CryptoCurrency>> liveData = new MutableLiveData<>();
-        coinMarketCapApiService.getCurrencyById(id, convert)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(currency -> {
-                    liveData.setValue(new ApiResponse<>(currency.get(0))); // TODO Check size of list
-                }, throwable -> {
-                    liveData.setValue(new ApiResponse<>(throwable));
-                });
-        return liveData;
+    public Single<CryptoCurrency> getCurrencyById(String id, String convert) {
+        return coinMarketCapApiService.getCurrencyById(id, convert)
+                .filter(list -> !list.isEmpty())
+                .flatMapSingle(list -> Single.just(list.get(0)));
     }
 
     @Override
