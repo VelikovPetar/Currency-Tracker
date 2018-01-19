@@ -3,6 +3,7 @@ package com.petarvelikov.currencytracker.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
 import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
@@ -27,6 +28,7 @@ public class BootstrapViewModel extends ViewModel {
         apiRepository.cancelCalls();
     }
 
+    @NonNull
     public LiveData<BootstrapViewState> getViewState() {
         return this.viewState;
     }

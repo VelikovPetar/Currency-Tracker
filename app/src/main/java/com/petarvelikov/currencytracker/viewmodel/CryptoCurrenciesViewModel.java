@@ -3,7 +3,7 @@ package com.petarvelikov.currencytracker.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.util.Log;
+import android.support.annotation.NonNull;
 
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
@@ -22,6 +22,7 @@ public class CryptoCurrenciesViewModel extends ViewModel {
         this.viewState.setValue(new CryptoCurrenciesViewState());
     }
 
+    @NonNull
     public LiveData<CryptoCurrenciesViewState> getViewState() {
         return this.viewState;
     }

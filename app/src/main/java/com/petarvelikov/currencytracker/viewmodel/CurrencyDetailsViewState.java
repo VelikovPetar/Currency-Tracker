@@ -1,5 +1,7 @@
 package com.petarvelikov.currencytracker.viewmodel;
 
+import android.support.annotation.NonNull;
+
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 
 public class CurrencyDetailsViewState {
@@ -24,16 +26,19 @@ public class CurrencyDetailsViewState {
         return hasError;
     }
 
+    @NonNull
     public CurrencyDetailsViewState setCryptoCurrency(CryptoCurrency cryptoCurrency) {
         this.cryptoCurrency = cryptoCurrency;
         return this;
     }
 
+    @NonNull
     public CurrencyDetailsViewState setIsLoading(boolean isLoading) {
         this.isLoading = isLoading;
         return this;
     }
 
+    @NonNull
     public CurrencyDetailsViewState setHasError(boolean hasError) {
         this.hasError = hasError;
         return this;
