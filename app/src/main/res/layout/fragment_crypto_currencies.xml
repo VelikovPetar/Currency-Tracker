@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/layoutCurrencyList"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshCurrencyList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerCryptoCurrencies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <ProgressBar
@@ -26,9 +27,9 @@
         android:id="@+id/txtCurrenciesError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAlignment="center"
         android:gravity="center"
         android:text="@string/error_while_reading_data"
+        android:textAlignment="center"
         android:visibility="gone" />
 
 </FrameLayout>

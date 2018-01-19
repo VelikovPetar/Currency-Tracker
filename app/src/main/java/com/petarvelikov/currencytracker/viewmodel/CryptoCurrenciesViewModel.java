@@ -25,9 +25,9 @@ public class CryptoCurrenciesViewModel extends ViewModel {
         return this.viewState;
     }
 
-    public void loadCurrencies(int start, int limit, String convert) {
+    public void loadCurrencies(int start, int limit, String convert, boolean isSwipeRefresh) {
         viewState.setValue(currentViewState()
-                .setLoading(true)
+                .setLoading(!isSwipeRefresh)
                 .setHasError(false));
         viewState.addSource(apiRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
             if (apiResponse != null) {

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private TextView txtError;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private EndlessRecyclerViewScrollListener scrollListener;
     private CryptoCurrenciesAdapter adapter;
     private CryptoCurrenciesViewModel ccViewModel;
@@ -77,7 +80,7 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
         ccViewModel.getViewState().observe(this, this::updateUi);
         if (savedInstanceState == null) {
             // TODO Read the convert value from shared preferences
-            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR");
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR", false);
         }
     }
 
@@ -102,7 +105,7 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
                 // TODO Read the convert value from shared preferences
                 // TODO Maybe check the network on model level
                 if (networkUtils.isConnected()) {
-                    ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, "EUR");
+                    ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, "EUR", false);
                 }
             }
         };
@@ -111,12 +114,21 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
         txtError = view.findViewById(R.id.txtCurrenciesError);
         txtError.setOnClickListener(event -> {
             // TODO Read the convert value from shared preferences
-            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR");
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR", false);
+        });
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshCurrencyList);
+        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // TODO Read the convert value from shared preferences
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR", true);
         });
     }
 
     private void updateUi(CryptoCurrenciesViewState viewState) {
         progressBar.setVisibility(viewState.isLoading() && viewState.getCurrenciesCount() == 0 ? View.VISIBLE : View.GONE);
+        if (!viewState.isLoading()) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
         if (viewState.getCurrenciesCount() == 0) {
             txtError.setVisibility(viewState.hasError() ? View.VISIBLE : View.GONE);
         }
