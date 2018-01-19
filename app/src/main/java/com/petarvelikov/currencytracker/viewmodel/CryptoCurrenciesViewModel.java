@@ -3,6 +3,7 @@ package com.petarvelikov.currencytracker.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MediatorLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.util.Log;
 
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.network.CryptoCurrenciesApiRepository;
@@ -32,10 +33,17 @@ public class CryptoCurrenciesViewModel extends ViewModel {
         viewState.addSource(apiRepository.getAllCurrencies(start, limit, convert), apiResponse -> {
             if (apiResponse != null) {
                 if (apiResponse.getResponse() != null) {
-                    viewState.setValue(currentViewState()
-                            .addCryptoCurrencies(apiResponse.getResponse())
-                            .setLoading(false)
-                            .setHasError(false));
+                    if (start == 0) {
+                        viewState.setValue(currentViewState()
+                                .setCryptoCurrencies(apiResponse.getResponse())
+                                .setLoading(false)
+                                .setHasError(false));
+                    } else {
+                        viewState.setValue(currentViewState()
+                                .addCryptoCurrencies(apiResponse.getResponse())
+                                .setLoading(false)
+                                .setHasError(false));
+                    }
                 } else if (apiResponse.getError() != null) {
                     String message = apiResponse.getError().getMessage();
                     // TODO Test if this works properly

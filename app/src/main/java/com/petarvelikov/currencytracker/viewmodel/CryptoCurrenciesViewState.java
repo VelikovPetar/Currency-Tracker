@@ -40,6 +40,12 @@ public class CryptoCurrenciesViewState {
     }
 
     @NonNull
+    public CryptoCurrenciesViewState setCryptoCurrencies(List<CryptoCurrency> currencies) {
+        this.currencies = currencies;
+        return this;
+    }
+
+    @NonNull
     public CryptoCurrenciesViewState addCryptoCurrencies(List<CryptoCurrency> currencies) {
         this.currencies.addAll(currencies);
         return this;
