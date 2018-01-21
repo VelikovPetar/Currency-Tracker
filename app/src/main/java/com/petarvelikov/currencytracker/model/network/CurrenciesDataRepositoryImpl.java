@@ -3,6 +3,7 @@ package com.petarvelikov.currencytracker.model.network;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.petarvelikov.currencytracker.model.CurrencyIcon;
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
+import com.petarvelikov.currencytracker.model.HistoricalDataResponse;
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
 
 import java.util.List;
@@ -56,4 +57,21 @@ public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
         return cryptoCompareApiService.getCurrenciesIcons();
     }
 
+    @Override
+    public Single<HistoricalDataResponse> getHistoricalDataDaily(String fromSymbol, String toSymbol) {
+        int dataRecordsCount = 24;
+        return cryptoCompareApiService.getHistoricalDataPerHour(fromSymbol, toSymbol, dataRecordsCount);
+    }
+
+    @Override
+    public Single<HistoricalDataResponse> getHistoricalDataWeekly(String fromSymbol, String toSymbol) {
+        int dataRecordsCount = 7 * 24;
+        return cryptoCompareApiService.getHistoricalDataPerHour(fromSymbol, toSymbol, dataRecordsCount);
+    }
+
+    @Override
+    public Single<HistoricalDataResponse> getHistoricalDataMonthly(String fromSymbol, String toSymbol) {
+        int dataRecordsCount = 31;
+        return cryptoCompareApiService.getHistoricalDataPerDay(fromSymbol, toSymbol, dataRecordsCount);
+    }
 }

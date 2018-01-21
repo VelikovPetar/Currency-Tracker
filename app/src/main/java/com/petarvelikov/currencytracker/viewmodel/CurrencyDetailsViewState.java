@@ -4,11 +4,16 @@ import android.support.annotation.NonNull;
 
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 
+import java.util.List;
+import java.util.Map;
+
 public class CurrencyDetailsViewState {
 
     private CryptoCurrency cryptoCurrency;
     private boolean isLoading;
     private boolean hasError;
+    private Map<Float, Double> chartData;
+    private List<String> chartLabels;
 
     public CurrencyDetailsViewState() {
 
@@ -26,6 +31,14 @@ public class CurrencyDetailsViewState {
         return hasError;
     }
 
+    public Map<Float, Double> getChartData() {
+        return this.chartData;
+    }
+
+    public List<String> getChartLabels() {
+        return this.chartLabels;
+    }
+
     @NonNull
     public CurrencyDetailsViewState setCryptoCurrency(CryptoCurrency cryptoCurrency) {
         this.cryptoCurrency = cryptoCurrency;
@@ -41,6 +54,18 @@ public class CurrencyDetailsViewState {
     @NonNull
     public CurrencyDetailsViewState setHasError(boolean hasError) {
         this.hasError = hasError;
+        return this;
+    }
+
+    @NonNull
+    public CurrencyDetailsViewState setChartData(Map<Float, Double> chartData) {
+        this.chartData = chartData;
+        return this;
+    }
+
+    @NonNull
+    public CurrencyDetailsViewState setChartLabels(List<String> chartLabels) {
+        this.chartLabels = chartLabels;
         return this;
     }
 }
