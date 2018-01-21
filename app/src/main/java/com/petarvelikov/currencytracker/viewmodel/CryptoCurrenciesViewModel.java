@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
@@ -52,13 +51,11 @@ public class CryptoCurrenciesViewModel extends ViewModel {
                                 .setCryptoCurrencies(response)
                                 .setLoading(false)
                                 .setHasError(false));
-                        Log.d("Update", "New values");
                     } else {
                         viewState.setValue(currentViewState()
                                 .addCryptoCurrencies(response)
                                 .setLoading(false)
                                 .setHasError(false));
-                        Log.d("Update", "Appending values");
                     }
                 }, throwable -> {
                     String message = throwable.getMessage();
