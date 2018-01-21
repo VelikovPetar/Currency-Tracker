@@ -2,30 +2,23 @@ package com.petarvelikov.currencytracker.view.activity;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.view.chart.CurrencyHistoryLineChart;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewModel;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewState;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +46,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TableLayout layoutDetails;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private LineChart lineChart;
+    private CurrencyHistoryLineChart lineChart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +60,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         // TODO Read convert value from preferences
         currencyDetailsViewModel.load(currencyId, "EUR", false);
         // TODO Check where to call
-        currencyDetailsViewModel.onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_MONTH, currencySymbol, "USD");
+        currencyDetailsViewModel.onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY, currencySymbol, "USD");
     }
 
     private void bindUi() {
@@ -104,14 +97,8 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         lineChart = findViewById(R.id.lineChart);
     }
 
-    // TODO Real implementation
     private void setupChart(Map<Float, Double> chartData, List<String> chartLabels) {
-        for (String label : chartLabels) {
-            Log.d("Chart", "Label: " + label);
-        }
-        for (Float key : chartData.keySet()) {
-            Log.d("Chart", key + " -> " + chartData.get(key));
-        }
+        lineChart.setHistoricalData(chartData, chartLabels, currencyName);
     }
 
     private void setupToolbar() {

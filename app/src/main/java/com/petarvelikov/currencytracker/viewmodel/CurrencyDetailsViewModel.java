@@ -13,10 +13,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 
@@ -122,7 +122,7 @@ public class CurrencyDetailsViewModel extends ViewModel {
     }
 
     private Map<Float, Double> convertHistoricalDataToChartData(List<HistoricalDataRecord> data) {
-        Map<Float, Double> chartData = new HashMap<>();
+        Map<Float, Double> chartData = new TreeMap<>();
         float i = 0;
         for (HistoricalDataRecord dataRecord : data) {
             chartData.put(i++, dataRecord.getOpen());
@@ -131,7 +131,6 @@ public class CurrencyDetailsViewModel extends ViewModel {
     }
 
     private List<String> generateLabels(List<HistoricalDataRecord> data, String timeRange) {
-        int step = data.size() / 7;
         List<String> labels = new ArrayList<>();
         DateFormat format;
         if (timeRange.equals(TIME_RANGE_DAY)) {
@@ -140,10 +139,8 @@ public class CurrencyDetailsViewModel extends ViewModel {
             format = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
         }
         for (int i = 0; i < data.size(); ++i) {
-            if (i % step == 0) {
-                Date date = new Date(data.get(i).getTime() * 1000L);
-                labels.add(format.format(date));
-            }
+            Date date = new Date(data.get(i).getTime() * 1000L);
+            labels.add(format.format(date));
         }
         return labels;
     }
