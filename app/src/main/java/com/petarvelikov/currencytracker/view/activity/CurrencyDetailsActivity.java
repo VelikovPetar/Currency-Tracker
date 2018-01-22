@@ -9,7 +9,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -39,7 +42,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
 
-    private String currencyId, currencyName, currencySymbol;
+    private String currencyId, currencyName, currencySymbol, selectedTimePeriod;
     private CurrencyDetailsViewModel currencyDetailsViewModel;
     private TextView txtName, txtSymbol, txtPrice, txtMarketCap, txtPercentHourly, txtPercentDaily,
             txtPercentWeekly, txtDataError, txtChartError;
@@ -47,6 +50,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     private TableLayout layoutDetails;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CurrencyHistoryLineChart lineChart;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +64,8 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         // TODO Read convert value from preferences
         currencyDetailsViewModel.load(currencyId, "EUR", false);
         // TODO Check where to call
-        currencyDetailsViewModel.onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY, currencySymbol, "USD");
+        onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY);
+        selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_DAY;
     }
 
     private void bindUi() {
@@ -98,8 +103,9 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         progressBarChart = findViewById(R.id.progressChart);
         txtChartError = findViewById(R.id.txtChartError);
         txtChartError.setOnClickListener(view -> {
-            currencyDetailsViewModel.onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY, currencySymbol, "USD");
+            onTimeRangeChanged(selectedTimePeriod);
         });
+        setupSpinner();
     }
 
     private void setupChart(Map<Float, Double> chartData, List<String> chartLabels) {
@@ -116,11 +122,41 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(view -> CurrencyDetailsActivity.this.finish());
     }
 
+    private void setupSpinner() {
+        spinner = findViewById(R.id.spinnerTimePeriods);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.time_periods, android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                switch (pos) {
+                    case 0:
+                        onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY);
+                        selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_DAY;
+                        break;
+                    case 1:
+                        onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_WEEK);
+                        selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_WEEK;
+                        break;
+                    case 2:
+                        onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_MONTH);
+                        selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_MONTH;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
     private void updateUi(CurrencyDetailsViewState viewState) {
         if (viewState.isLoadingChart()) {
             progressBarChart.setVisibility(View.VISIBLE);
             txtChartError.setVisibility(View.GONE);
-            lineChart.setVisibility(View.GONE);
         } else {
             progressBarChart.setVisibility(View.GONE);
             if (viewState.hasChartError()) {
@@ -156,5 +192,9 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
                 layoutDetails.setVisibility(View.GONE);
             }
         }
+    }
+
+    private void onTimeRangeChanged(String timeRange) {
+        currencyDetailsViewModel.onTimeRangeChanged(timeRange, currencySymbol, "USD");
     }
 }

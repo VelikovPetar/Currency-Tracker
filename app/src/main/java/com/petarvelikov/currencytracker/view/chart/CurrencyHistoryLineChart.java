@@ -35,6 +35,7 @@ public class CurrencyHistoryLineChart extends LineChart {
     private void setup() {
         getAxisRight().setEnabled(false);
         getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        setNoDataText("");
         setTouchEnabled(false);
     }
 
@@ -50,8 +51,8 @@ public class CurrencyHistoryLineChart extends LineChart {
         dataSet.setCircleRadius(1f);
         dataSet.setValueTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
         LineData lineData = new LineData(dataSet);
-        setData(lineData);
         getXAxis().setValueFormatter(new XAxisValueFormatter(chartLabels));
+        setData(lineData);
         invalidate();
     }
 }

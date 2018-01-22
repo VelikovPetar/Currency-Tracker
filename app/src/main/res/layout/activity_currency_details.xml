@@ -51,6 +51,26 @@
                     android:visibility="gone" />
             </FrameLayout>
 
+            <LinearLayout
+                android:id="@+id/layoutSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/graph_time_period"
+                    android:textAlignment="center" />
+
+                <Spinner
+                    android:id="@+id/spinnerTimePeriods"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
             <TableLayout
                 android:id="@+id/layoutCurrencyDetails"
                 android:layout_width="match_parent"
