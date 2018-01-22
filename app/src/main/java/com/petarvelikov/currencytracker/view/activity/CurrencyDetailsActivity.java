@@ -4,8 +4,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -48,7 +46,6 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
             txtPercentWeekly, txtDataError, txtChartError;
     private ProgressBar progressBarData, progressBarChart;
     private TableLayout layoutDetails;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private CurrencyHistoryLineChart lineChart;
     private Spinner spinner;
 
@@ -93,12 +90,6 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         });
         progressBarData = findViewById(R.id.progressCurrencyDetails);
         layoutDetails = findViewById(R.id.layoutCurrencyDetails);
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshCurrencyDetails);
-        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> {
-            // TODO Read convert value from preferences
-            currencyDetailsViewModel.load(currencyId, "EUR", true);
-        });
         lineChart = findViewById(R.id.lineChart);
         progressBarChart = findViewById(R.id.progressChart);
         txtChartError = findViewById(R.id.txtChartError);
@@ -176,7 +167,6 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
             layoutDetails.setVisibility(View.GONE);
         } else {
             progressBarData.setVisibility(View.GONE);
-            swipeRefreshLayout.setRefreshing(false);
             if (viewState.getCryptoCurrency() != null) {
                 txtDataError.setVisibility(View.GONE);
                 layoutDetails.setVisibility(View.VISIBLE);
