@@ -7,6 +7,7 @@
     <string name="error_no_connection">No internet connection.</string>
     <string name="retry">Retry</string>
     <string name="error_while_reading_data">Error while reading data. Tap to refresh.</string>
+    <string name="error_while_reading_chart_data">Error while reading chart data. Tap to refresh.</string>
     <string-array name="currency_values">
         <item>AUD</item>
         <item>BRL</item>

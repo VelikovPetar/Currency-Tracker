@@ -25,24 +25,36 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.petarvelikov.currencytracker.view.chart.CurrencyHistoryLineChart
-                android:id="@+id/lineChart"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="256dp" />
+                android:layout_height="256dp">
 
+                <com.petarvelikov.currencytracker.view.chart.CurrencyHistoryLineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ProgressBar
+                    android:id="@+id/progressChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/txtChartError"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/error_while_reading_chart_data"
+                    android:textAlignment="center"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <TableLayout
                 android:id="@+id/layoutCurrencyDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <!--<TableRow>-->
-
-                <!--<com.github.mikephil.charting.charts.LineChart-->
-                <!--android:id="@+id/lineChart"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="256dp" />-->
-                <!--</TableRow>-->
 
                 <TableRow
                     android:layout_width="match_parent"

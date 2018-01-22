@@ -92,29 +92,33 @@ public class CurrencyDetailsViewModel extends ViewModel {
     }
 
     private void getHistoricalData(Single<HistoricalDataResponse> single, String timeRange) {
+        viewState.setValue(currentViewState()
+                .setIsLoadingChart(true)
+                .setHasChartError(false));
         Disposable d = single
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
-                    if (response != null && response.getData() != null) {
+                    if (response != null && response.getData() != null &&
+                            response.getResponse().equals("Success") && response.getData().size() > 0) {
                         Map<Float, Double> chartData = convertHistoricalDataToChartData(response.getData());
                         List<String> chartLabels = generateLabels(response.getData(), timeRange);
                         viewState.setValue(currentViewState()
-                                .setIsLoading(false)
-                                .setHasError(false)
+                                .setIsLoadingChart(false)
+                                .setHasChartError(false)
                                 .setChartData(chartData)
                                 .setChartLabels(chartLabels));
                     } else {
                         viewState.setValue(currentViewState()
-                                .setIsLoading(false)
-                                .setHasError(true)
+                                .setIsLoadingChart(false)
+                                .setHasChartError(true)
                                 .setChartData(null)
                                 .setChartLabels(null));
                     }
                 }, throwable -> {
                     viewState.setValue(currentViewState()
-                            .setIsLoading(false)
-                            .setHasError(true)
+                            .setIsLoadingChart(false)
+                            .setHasChartError(true)
                             .setChartData(null)
                             .setChartLabels(null));
                 });

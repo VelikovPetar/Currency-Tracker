@@ -42,8 +42,8 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     private String currencyId, currencyName, currencySymbol;
     private CurrencyDetailsViewModel currencyDetailsViewModel;
     private TextView txtName, txtSymbol, txtPrice, txtMarketCap, txtPercentHourly, txtPercentDaily,
-            txtPercentWeekly, txtError;
-    private ProgressBar progressBar;
+            txtPercentWeekly, txtDataError, txtChartError;
+    private ProgressBar progressBarData, progressBarChart;
     private TableLayout layoutDetails;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CurrencyHistoryLineChart lineChart;
@@ -81,12 +81,12 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         txtPercentHourly = findViewById(R.id.txtCurrencyDetailsPercentHourly);
         txtPercentDaily = findViewById(R.id.txtCurrencyDetailsPercentDaily);
         txtPercentWeekly = findViewById(R.id.txtCurrencyDetailsPercentWeekly);
-        txtError = findViewById(R.id.txtDetailsError);
-        txtError.setOnClickListener(view -> {
+        txtDataError = findViewById(R.id.txtDetailsError);
+        txtDataError.setOnClickListener(view -> {
             // TODO Read convert value from preferences
             currencyDetailsViewModel.load(currencyId, "EUR", false);
         });
-        progressBar = findViewById(R.id.progressCurrencyDetails);
+        progressBarData = findViewById(R.id.progressCurrencyDetails);
         layoutDetails = findViewById(R.id.layoutCurrencyDetails);
         swipeRefreshLayout = findViewById(R.id.swipeRefreshCurrencyDetails);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent));
@@ -95,6 +95,11 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
             currencyDetailsViewModel.load(currencyId, "EUR", true);
         });
         lineChart = findViewById(R.id.lineChart);
+        progressBarChart = findViewById(R.id.progressChart);
+        txtChartError = findViewById(R.id.txtChartError);
+        txtChartError.setOnClickListener(view -> {
+            currencyDetailsViewModel.onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY, currencySymbol, "USD");
+        });
     }
 
     private void setupChart(Map<Float, Double> chartData, List<String> chartLabels) {
@@ -112,18 +117,32 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     }
 
     private void updateUi(CurrencyDetailsViewState viewState) {
-        if (viewState.getChartData() != null && viewState.getChartLabels() != null) {
-            setupChart(viewState.getChartData(), viewState.getChartLabels());
+        if (viewState.isLoadingChart()) {
+            progressBarChart.setVisibility(View.VISIBLE);
+            txtChartError.setVisibility(View.GONE);
+            lineChart.setVisibility(View.GONE);
+        } else {
+            progressBarChart.setVisibility(View.GONE);
+            if (viewState.hasChartError()) {
+                txtChartError.setVisibility(View.VISIBLE);
+                lineChart.setVisibility(View.GONE);
+            } else {
+                txtChartError.setVisibility(View.GONE);
+                lineChart.setVisibility(View.VISIBLE);
+                if (viewState.getChartData() != null && viewState.getChartLabels() != null) {
+                    setupChart(viewState.getChartData(), viewState.getChartLabels());
+                }
+            }
         }
         if (viewState.isLoading()) {
-            progressBar.setVisibility(View.VISIBLE);
-            txtError.setVisibility(View.GONE);
+            progressBarData.setVisibility(View.VISIBLE);
+            txtDataError.setVisibility(View.GONE);
             layoutDetails.setVisibility(View.GONE);
         } else {
-            progressBar.setVisibility(View.GONE);
+            progressBarData.setVisibility(View.GONE);
             swipeRefreshLayout.setRefreshing(false);
             if (viewState.getCryptoCurrency() != null) {
-                txtError.setVisibility(View.GONE);
+                txtDataError.setVisibility(View.GONE);
                 layoutDetails.setVisibility(View.VISIBLE);
                 txtName.setText(viewState.getCryptoCurrency().getName());
                 txtSymbol.setText(viewState.getCryptoCurrency().getSymbol());
@@ -133,7 +152,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
                 txtPercentDaily.setText(viewState.getCryptoCurrency().getPercentChange24h());
                 txtPercentWeekly.setText(viewState.getCryptoCurrency().getPercentChange7d());
             } else if (viewState.hasError()) {
-                txtError.setVisibility(View.VISIBLE);
+                txtDataError.setVisibility(View.VISIBLE);
                 layoutDetails.setVisibility(View.GONE);
             }
         }

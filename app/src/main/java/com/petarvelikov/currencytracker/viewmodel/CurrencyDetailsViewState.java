@@ -12,6 +12,8 @@ public class CurrencyDetailsViewState {
     private CryptoCurrency cryptoCurrency;
     private boolean isLoading;
     private boolean hasError;
+    private boolean isLoadingChart;
+    private boolean hasChartError;
     private Map<Float, Double> chartData;
     private List<String> chartLabels;
 
@@ -29,6 +31,14 @@ public class CurrencyDetailsViewState {
 
     public boolean hasError() {
         return hasError;
+    }
+
+    public boolean isLoadingChart() {
+        return this.isLoadingChart;
+    }
+
+    public boolean hasChartError() {
+        return this.hasChartError;
     }
 
     public Map<Float, Double> getChartData() {
@@ -54,6 +64,18 @@ public class CurrencyDetailsViewState {
     @NonNull
     public CurrencyDetailsViewState setHasError(boolean hasError) {
         this.hasError = hasError;
+        return this;
+    }
+
+    @NonNull
+    public CurrencyDetailsViewState setIsLoadingChart(boolean isLoadingChart) {
+        this.isLoadingChart = isLoadingChart;
+        return this;
+    }
+
+    @NonNull
+    CurrencyDetailsViewState setHasChartError(boolean hasChartError) {
+        this.hasChartError = hasChartError;
         return this;
     }
 
