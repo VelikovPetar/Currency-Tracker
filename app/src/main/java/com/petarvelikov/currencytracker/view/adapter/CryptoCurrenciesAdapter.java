@@ -31,7 +31,9 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
 
     @Override
     public CryptoCurrencyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_crypto_currency, parent, false);
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.list_item_crypto_currency, parent, false);
         return new CryptoCurrencyViewHolder(view);
     }
 
