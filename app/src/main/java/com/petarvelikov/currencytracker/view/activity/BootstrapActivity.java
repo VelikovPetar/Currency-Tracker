@@ -50,6 +50,7 @@ public class BootstrapActivity extends AppCompatActivity {
     }
 
     private void updateUi(BootstrapViewState viewState) {
+        // TODO Refactor
         if (viewState.isLoading()) {
             progressBar.setVisibility(View.VISIBLE);
             txtMessage.setVisibility(View.GONE);
