@@ -31,6 +31,7 @@ public class CurrencyDetailsViewModel extends ViewModel {
     private CurrenciesDataRepository dataRepository;
     private MutableLiveData<CurrencyDetailsViewState> viewState;
     private CompositeDisposable compositeDisposable;
+    private Disposable chartDisposable;
 
     public static final String TIME_RANGE_DAY = "com.petarvelikov.currencytracker.TIME_TANGE_DAY";
     public static final String TIME_RANGE_WEEK = "com.petarvelikov.currencytracker.TIME_TANGE_WEEK";
@@ -92,10 +93,13 @@ public class CurrencyDetailsViewModel extends ViewModel {
     }
 
     private void getHistoricalData(Single<HistoricalDataResponse> single, String timeRange) {
+        if (chartDisposable != null && !chartDisposable.isDisposed()) {
+            chartDisposable.dispose();
+        }
         viewState.setValue(currentViewState()
                 .setIsLoadingChart(true)
                 .setHasChartError(false));
-        Disposable d = single
+        chartDisposable = single
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(response -> {
@@ -109,20 +113,20 @@ public class CurrencyDetailsViewModel extends ViewModel {
                                 .setChartData(chartData)
                                 .setChartLabels(chartLabels));
                     } else {
-                        viewState.setValue(currentViewState()
-                                .setIsLoadingChart(false)
-                                .setHasChartError(true)
-                                .setChartData(null)
-                                .setChartLabels(null));
+                        setError();
                     }
                 }, throwable -> {
-                    viewState.setValue(currentViewState()
-                            .setIsLoadingChart(false)
-                            .setHasChartError(true)
-                            .setChartData(null)
-                            .setChartLabels(null));
+                    setError();
                 });
-        compositeDisposable.add(d);
+        compositeDisposable.add(chartDisposable);
+    }
+
+    private void setError() {
+        viewState.setValue(currentViewState()
+                .setIsLoadingChart(false)
+                .setHasChartError(true)
+                .setChartData(null)
+                .setChartLabels(null));
     }
 
     private Map<Float, Double> convertHistoricalDataToChartData(List<HistoricalDataRecord> data) {
