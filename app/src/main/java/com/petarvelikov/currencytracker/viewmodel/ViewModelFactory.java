@@ -5,19 +5,24 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory {
     private CryptoCurrenciesViewModel ccViewModel;
     private BootstrapViewModel bootstrapViewModel;
     private CurrencyDetailsViewModel currencyDetailsViewModel;
+    private ExchangeRatesViewModel exchangeRatesViewModel;
 
     @Inject
     public ViewModelFactory(CryptoCurrenciesViewModel ccViewModel,
                             BootstrapViewModel bootstrapViewModel,
-                            CurrencyDetailsViewModel currencyDetailsViewModel) {
+                            CurrencyDetailsViewModel currencyDetailsViewModel,
+                            ExchangeRatesViewModel exchangeRatesViewModel) {
         this.ccViewModel = ccViewModel;
         this.bootstrapViewModel = bootstrapViewModel;
         this.currencyDetailsViewModel = currencyDetailsViewModel;
+        this.exchangeRatesViewModel = exchangeRatesViewModel;
     }
 
     @NonNull
@@ -31,6 +36,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
         }
         if (modelClass.isAssignableFrom(CurrencyDetailsViewModel.class)) {
             return (T) currencyDetailsViewModel;
+        }
+        if (modelClass.isAssignableFrom(ExchangeRatesViewModel.class)) {
+            return (T) exchangeRatesViewModel;
         }
         throw new IllegalArgumentException("Unknown class name");
     }

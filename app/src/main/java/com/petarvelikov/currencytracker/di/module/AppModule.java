@@ -8,6 +8,7 @@ import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
 import com.petarvelikov.currencytracker.model.network.CoinMarketCapApiService;
 import com.petarvelikov.currencytracker.model.network.CryptoCompareApiService;
+import com.petarvelikov.currencytracker.model.network.FixerApiService;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -23,6 +24,7 @@ public class AppModule {
 
     private static final String RETROFIT_NAME_COIN_MARKET_CAP = "coinmarketcap";
     private static final String RETROFIT_NAME_CRYPTO_COMPARE = "cryptocompare";
+    private static final String RETROFIT_NAME_FIXER = "fixer";
 
     private Context context;
 
@@ -64,23 +66,40 @@ public class AppModule {
 
     @Provides
     @Singleton
+    FixerApiService provideFixerApiService(@Named(RETROFIT_NAME_FIXER) Retrofit retrofit) {
+        return retrofit.create(FixerApiService.class);
+    }
+
+    @Provides
+    @Singleton
     @Named(RETROFIT_NAME_COIN_MARKET_CAP)
-    Retrofit provideCoinMarketCapRetrofit(GsonConverterFactory factory) {
+    Retrofit provideCoinMarketCapRetrofit(GsonConverterFactory gsonFactory, RxJava2CallAdapterFactory rxFactory) {
         return new Retrofit.Builder()
                 .baseUrl(Constants.API_CONSTANTS.BASE_URL_COIN_MARKET_CAP)
-                .addConverterFactory(factory)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(gsonFactory)
+                .addCallAdapterFactory(rxFactory)
                 .build();
     }
 
     @Provides
     @Singleton
     @Named(RETROFIT_NAME_CRYPTO_COMPARE)
-    Retrofit provideCryptoCompareRetrofit(GsonConverterFactory factory) {
+    Retrofit provideCryptoCompareRetrofit(GsonConverterFactory gsonFactory, RxJava2CallAdapterFactory rxFactory) {
         return new Retrofit.Builder()
                 .baseUrl(Constants.API_CONSTANTS.BASE_URL_CRYPTO_COMPARE)
-                .addConverterFactory(factory)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(gsonFactory)
+                .addCallAdapterFactory(rxFactory)
+                .build();
+    }
+
+    @Provides
+    @Singleton
+    @Named(RETROFIT_NAME_FIXER)
+    Retrofit provideFixerRetrofit(GsonConverterFactory gsonFactory, RxJava2CallAdapterFactory rxFactory) {
+        return new Retrofit.Builder()
+                .baseUrl(Constants.API_CONSTANTS.BASE_URL_FIXER)
+                .addConverterFactory(gsonFactory)
+                .addCallAdapterFactory(rxFactory)
                 .build();
     }
 
@@ -88,6 +107,12 @@ public class AppModule {
     @Singleton
     GsonConverterFactory provideGsonConverterFactory() {
         return GsonConverterFactory.create();
+    }
+
+    @Provides
+    @Singleton
+    RxJava2CallAdapterFactory provideRxJava2CallAdapterFactory() {
+        return RxJava2CallAdapterFactory.create();
     }
 
 }

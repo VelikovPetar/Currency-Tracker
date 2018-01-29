@@ -11,5 +11,6 @@ public class Constants {
         String BASE_URL_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/";
         String BASE_URL_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/";
         String BASE_URL_ICONS = "https://www.cryptocompare.com";
+        String BASE_URL_FIXER = "https://api.fixer.io/";
     }
 }
