@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 import com.petarvelikov.currencytracker.view.adapter.ExchangeRatesAdapter;
 import com.petarvelikov.currencytracker.viewmodel.ExchangeRatesViewModel;
 import com.petarvelikov.currencytracker.viewmodel.ExchangeRatesViewState;
@@ -32,6 +33,8 @@ public class ExchangeRatesFragment extends Fragment {
     private static final String TAG = "ExchangeRatesFragment";
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    ExchangeRatesResourcesHelper resourcesHelper;
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -67,20 +70,20 @@ public class ExchangeRatesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         erViewModel.getViewState().observe(this, this::updateUi);
-        erViewModel.load("USD", false); // TODO Read from prefs
+        erViewModel.load("EUR", false); // TODO Read from prefs
     }
 
     private void bindUi(View view) {
         recyclerView = view.findViewById(R.id.recyclerExchangeRates);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ExchangeRatesAdapter(new ArrayList<>());
+        adapter = new ExchangeRatesAdapter(new ArrayList<>(), resourcesHelper);
         recyclerView.setAdapter(adapter);
         progressBar = view.findViewById(R.id.progressExchangeRates);
         txtError = view.findViewById(R.id.txtExchangeRatesError);
-        txtError.setOnClickListener(event -> erViewModel.load("USD", false)); // TODO Read from prefs
+        txtError.setOnClickListener(event -> erViewModel.load("EUR", false)); // TODO Read from prefs
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshExchangeRates);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load("USD", true)); // TODO Read from prefs
+        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load("EUR", true)); // TODO Read from prefs
     }
 
     private void updateUi(ExchangeRatesViewState viewState) {

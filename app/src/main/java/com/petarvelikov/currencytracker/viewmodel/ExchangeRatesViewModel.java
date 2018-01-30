@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 
 import com.petarvelikov.currencytracker.model.ExchangeRate;
 import com.petarvelikov.currencytracker.model.network.ExchangeRatesRepository;
+import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +25,16 @@ public class ExchangeRatesViewModel extends ViewModel {
     private ExchangeRatesRepository exchangeRatesRepository;
     private MutableLiveData<ExchangeRatesViewState> viewState;
     private CompositeDisposable compositeDisposable;
+    private ExchangeRatesResourcesHelper resourcesHelper;
 
     @Inject
-    public ExchangeRatesViewModel(ExchangeRatesRepository exchangeRatesRepository) {
+    public ExchangeRatesViewModel(ExchangeRatesRepository exchangeRatesRepository,
+                                  ExchangeRatesResourcesHelper resourcesHelper) {
         this.exchangeRatesRepository = exchangeRatesRepository;
         this.viewState = new MutableLiveData<>();
         this.viewState.setValue(new ExchangeRatesViewState());
         this.compositeDisposable = new CompositeDisposable();
+        this.resourcesHelper = resourcesHelper;
     }
 
     @Override
@@ -52,7 +56,9 @@ public class ExchangeRatesViewModel extends ViewModel {
                 .map(response -> {
                     List<ExchangeRate> exchangeRates = new ArrayList<>();
                     for (String key : response.getRates().keySet()) {
-                        exchangeRates.add(new ExchangeRate(key, base, 1.0 / response.getRates().get(key)));
+                        if (resourcesHelper.isCurrencyAvailable(key)) {
+                            exchangeRates.add(new ExchangeRate(key, base, 1.0 / response.getRates().get(key)));
+                        }
                     }
                     return exchangeRates;
                 })
