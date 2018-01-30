@@ -10,8 +10,6 @@ import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.inject.Inject;
 
