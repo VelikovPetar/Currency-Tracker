@@ -17,71 +17,36 @@
         <item>Last week</item>
         <item>Last month</item>
     </string-array>
-    <string-array name="currency_values">
-        <item>AUD</item>
-        <item>BRL</item>
-        <item>CAD</item>
-        <item>CHF</item>
-        <item>CLP</item>
-        <item>CNY</item>
-        <item>CZK</item>
-        <item>DKK</item>
-        <item>EUR</item>
-        <item>GBR</item>
-        <item>HKD</item>
-        <item>HUF</item>
-        <item>IDR</item>
-        <item>ILS</item>
-        <item>INR</item>
-        <item>JPY</item>
-        <item>KRW</item>
-        <item>MXN</item>
-        <item>MYR</item>
-        <item>NOK</item>
-        <item>NZD</item>
-        <item>PHP</item>
-        <item>PKR</item>
-        <item>PLN</item>
-        <item>RUB</item>
-        <item>SEK</item>
-        <item>SGD</item>
-        <item>THB</item>
-        <item>TRY</item>
-        <item>TWD</item>
-        <item>ZAR</item>
-    </string-array>
-    <string-array name="currency_names">
-        <!--TODO Find names-->
-        <item>AUD</item>
-        <item>BRL</item>
-        <item>CAD</item>
-        <item>CHF</item>
-        <item>CLP</item>
-        <item>CNY</item>
-        <item>CZK</item>
-        <item>DKK</item>
-        <item>EUR</item>
-        <item>GBR</item>
-        <item>HKD</item>
-        <item>HUF</item>
-        <item>IDR</item>
-        <item>ILS</item>
-        <item>INR</item>
-        <item>JPY</item>
-        <item>KRW</item>
-        <item>MXN</item>
-        <item>MYR</item>
-        <item>NOK</item>
-        <item>NZD</item>
-        <item>PHP</item>
-        <item>PKR</item>
-        <item>PLN</item>
-        <item>RUB</item>
-        <item>SEK</item>
-        <item>SGD</item>
-        <item>THB</item>
-        <item>TRY</item>
-        <item>TWD</item>
-        <item>ZAR</item>
+    <string-array name="available_currencies">
+        <item>AUD|Australia Dollar|$</item>
+        <item>BRL|Brazil Real|R$</item>
+        <item>CAD|Canada Dollar|$</item>
+        <item>CHF|Switzerland Frank|CHF</item>
+        <item>CNY|China Yuan|\u00A5</item> <!--¥-->
+        <item>CZK|Czech Republic Koruna|K\u010D</item> <!--Kč-->
+        <item>DKK|Denmark Krone|kr</item>
+        <item>EUR|Euro|\u20ac</item> <!--€-->
+        <item>GBP|United Kingdom Pound|\u00A3</item> <!--£-->
+        <item>HKD|Hong Kong Dollar|$</item>
+        <item>HUF|Hungary Forint|Ft</item>
+        <item>IDR|Indonesia Rupiah|Rp</item>
+        <item>ILS|Israel Shekel|\u20aa</item> <!--₪-->
+        <item>INR|India Rupee|Rupee</item>
+        <item>JPY|Japan Yen|\u00A5</item> <!--¥-->
+        <item>KRW|Korea Won|\u20A9</item> <!--₩-->
+        <item>MXN|Mexico Peso|$</item>
+        <item>MYR|Malaysia Ringgit|RM</item>
+        <item>NOK|Norway Krone|kr</item>
+        <item>NZD|New Zealand Dollar|$</item>
+        <item>PHP|Philippines Piso|\u20B1</item> <!--₱-->
+        <item>PLN|Poland Zloty|z\u0142</item> <!--zł-->
+        <item>RUB|Russia Ruble|\u20BD</item> <!--₽-->
+        <item>SEK|Sweden Krona|kr</item>
+        <item>SGD|Singapore Dollar|$</item>
+        <item>THB|Thailand Baht|\u0E3F</item> <!--฿-->
+        <item>TRY|Turkey Lira|Lira</item>
+        <!--<item>TWD</item>-->
+        <item>USD|United States Dollar|$</item>
+        <item>ZAR|South Africa Rand|R</item>
     </string-array>
 </resources>
