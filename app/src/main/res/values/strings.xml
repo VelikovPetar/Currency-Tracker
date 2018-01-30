@@ -12,6 +12,7 @@
     <string name="monthly">Monthly</string>
     <string name="weekly">Weekly</string>
     <string name="graph_time_period">Graph time period:</string>
+    <string name="currency_not_supported">Currency not supported!</string>
     <string-array name="time_periods">
         <item>Today</item>
         <item>Last week</item>

@@ -14,7 +14,7 @@ public class CurrencyTrackerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(getApplicationContext()))
+                .appModule(new AppModule(this))
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.petarvelikov.currencytracker.di.module;
 
+import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -26,28 +27,28 @@ public class AppModule {
     private static final String RETROFIT_NAME_CRYPTO_COMPARE = "cryptocompare";
     private static final String RETROFIT_NAME_FIXER = "fixer";
 
-    private Context context;
+    private Application app;
 
-    public AppModule(Context context) {
-        this.context = context;
+    public AppModule(Application app) {
+        this.app = app;
     }
 
     @Provides
     @Singleton
-    Context provideContext() {
-        return this.context;
+    Application provideApplication() {
+        return this.app;
     }
 
     @Provides
     @Singleton
     ConnectivityManager provideConnectivityManager() {
-        return (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return (ConnectivityManager) this.app.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 
     @Provides
     @Singleton
     CurrencyDatabase provideCurrencyDatabase() {
-        return Room.databaseBuilder(context, CurrencyDatabase.class, "icons").build();
+        return Room.databaseBuilder(app, CurrencyDatabase.class, "icons").build();
     }
 
     @Provides
