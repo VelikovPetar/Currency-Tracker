@@ -5,11 +5,13 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.petarvelikov.currencytracker.model.ExchangeRate;
+import com.petarvelikov.currencytracker.model.ExchangeRatesResponse;
 import com.petarvelikov.currencytracker.model.network.ExchangeRatesRepository;
 import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -49,15 +51,8 @@ public class ExchangeRatesViewModel extends ViewModel {
         setLoading(isSwipeRefresh);
         Disposable d = exchangeRatesRepository.getExchangeRates(base)
                 .filter(response -> response.getRates() != null)
-                .map(response -> {
-                    List<ExchangeRate> exchangeRates = new ArrayList<>();
-                    for (String key : response.getRates().keySet()) {
-                        if (resourcesHelper.isCurrencyAvailable(key)) {
-                            exchangeRates.add(new ExchangeRate(key, base, 1.0 / response.getRates().get(key)));
-                        }
-                    }
-                    return exchangeRates;
-                })
+                .map(ExchangeRatesResponse::getRates)
+                .map(exchangeRatesMap -> convertExchangeRatesMapToList(exchangeRatesMap, base))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(exchangeRates -> setSuccess(exchangeRates),
@@ -84,6 +79,16 @@ public class ExchangeRatesViewModel extends ViewModel {
                 .setIsLoading(false)
                 .setHasError(true)
                 .setExchangeRates(null));
+    }
+
+    private List<ExchangeRate> convertExchangeRatesMapToList(Map<String, Double> exchangeRatesMap, String to) {
+        List<ExchangeRate> exchangeRates = new ArrayList<>();
+        for (String from : exchangeRatesMap.keySet()) {
+            if (resourcesHelper.isCurrencyAvailable(from)) {
+                exchangeRates.add(new ExchangeRate(from, to, 1.0 / exchangeRatesMap.get(from)));
+            }
+        }
+        return exchangeRates;
     }
 
     private ExchangeRatesViewState currentViewState() {

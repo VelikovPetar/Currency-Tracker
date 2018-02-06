@@ -115,20 +115,23 @@ public class CurrencyDetailsViewModel extends ViewModel {
                 .subscribe(response -> {
                     if (response != null && response.getData() != null &&
                             response.getResponse().equals("Success") && response.getData().size() > 0) {
-                        Map<Float, Double> chartData = convertHistoricalDataToChartData(response.getData());
-                        List<String> chartLabels = generateLabels(response.getData(), timeRange);
-                        viewState.setValue(currentViewState()
-                                .setIsLoadingChart(false)
-                                .setHasChartError(false)
-                                .setChartData(chartData)
-                                .setChartLabels(chartLabels));
+                        setChartData(timeRange, response);
                     } else {
                         setChartError();
                     }
                 }, throwable -> {
                     setChartError();
                 });
-        compositeDisposable.add(chartDisposable);
+    }
+
+    private void setChartData(String timeRange, HistoricalDataResponse response) {
+        Map<Float, Double> chartData = convertHistoricalDataToChartData(response.getData());
+        List<String> chartLabels = generateLabels(response.getData(), timeRange);
+        viewState.setValue(currentViewState()
+                .setIsLoadingChart(false)
+                .setHasChartError(false)
+                .setChartData(chartData)
+                .setChartLabels(chartLabels));
     }
 
     private void setChartError() {
