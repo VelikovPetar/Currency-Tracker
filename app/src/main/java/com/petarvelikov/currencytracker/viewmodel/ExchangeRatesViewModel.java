@@ -46,9 +46,7 @@ public class ExchangeRatesViewModel extends ViewModel {
     }
 
     public void load(String base, boolean isSwipeRefresh) {
-        viewState.setValue(currentViewState()
-                .setIsLoading(!isSwipeRefresh)
-                .setHasError(false));
+        setLoading(isSwipeRefresh);
         Disposable d = exchangeRatesRepository.getExchangeRates(base)
                 .filter(response -> response.getRates() != null)
                 .map(response -> {
@@ -62,18 +60,30 @@ public class ExchangeRatesViewModel extends ViewModel {
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(exchangeRates -> {
-                    viewState.setValue(currentViewState()
-                            .setIsLoading(false)
-                            .setHasError(false)
-                            .setExchangeRates(exchangeRates));
-                }, throwable -> {
-                    viewState.setValue(currentViewState()
-                            .setIsLoading(false)
-                            .setHasError(true)
-                            .setExchangeRates(null));
-                });
+                .subscribe(exchangeRates -> setSuccess(exchangeRates),
+                        throwable -> setError());
         compositeDisposable.add(d);
+    }
+
+    private void setLoading(boolean isSwipeRefresh) {
+        viewState.setValue(currentViewState()
+                .setIsLoading(!isSwipeRefresh)
+                .setHasError(false));
+    }
+
+
+    private void setSuccess(List<ExchangeRate> exchangeRates) {
+        viewState.setValue(currentViewState()
+                .setIsLoading(false)
+                .setHasError(false)
+                .setExchangeRates(exchangeRates));
+    }
+
+    private void setError() {
+        viewState.setValue(currentViewState()
+                .setIsLoading(false)
+                .setHasError(true)
+                .setExchangeRates(null));
     }
 
     private ExchangeRatesViewState currentViewState() {

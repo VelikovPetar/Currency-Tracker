@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
 
+import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.petarvelikov.currencytracker.model.HistoricalDataRecord;
 import com.petarvelikov.currencytracker.model.HistoricalDataResponse;
 import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
@@ -59,23 +60,32 @@ public class CurrencyDetailsViewModel extends ViewModel {
     }
 
     public void load(String currencyId, String convert, boolean isSwipeRefresh) {
-        viewState.setValue(currentViewState()
-                .setIsLoading(!isSwipeRefresh)
-                .setHasError(false));
+        setLoading(isSwipeRefresh);
         Disposable d = dataRepository.getCurrencyById(currencyId, convert)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(currency -> {
-                    viewState.setValue(currentViewState()
-                            .setCryptoCurrency(currency)
-                            .setIsLoading(false)
-                            .setHasError(false));
-                }, throwable -> {
-                    viewState.setValue(currentViewState()
-                            .setIsLoading(false)
-                            .setHasError(true));
-                });
+                .subscribe(currency -> setSuccess(currency),
+                        throwable -> setError());
         compositeDisposable.add(d);
+    }
+
+    private void setLoading(boolean isSwipeRefresh) {
+        viewState.setValue(currentViewState()
+                .setIsLoading(!isSwipeRefresh)
+                .setHasError(false));
+    }
+
+    private void setSuccess(CryptoCurrency currency) {
+        viewState.setValue(currentViewState()
+                .setCryptoCurrency(currency)
+                .setIsLoading(false)
+                .setHasError(false));
+    }
+
+    private void setError() {
+        viewState.setValue(currentViewState()
+                .setIsLoading(false)
+                .setHasError(true));
     }
 
     public void onTimeRangeChanged(String timeRange, String fromSymbol, String toSymbol) {
@@ -113,15 +123,15 @@ public class CurrencyDetailsViewModel extends ViewModel {
                                 .setChartData(chartData)
                                 .setChartLabels(chartLabels));
                     } else {
-                        setError();
+                        setChartError();
                     }
                 }, throwable -> {
-                    setError();
+                    setChartError();
                 });
         compositeDisposable.add(chartDisposable);
     }
 
-    private void setError() {
+    private void setChartError() {
         viewState.setValue(currentViewState()
                 .setIsLoadingChart(false)
                 .setHasChartError(true)
