@@ -21,6 +21,7 @@ import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.network.NetworkUtils;
+import com.petarvelikov.currencytracker.preferences.PreferencesHelper;
 import com.petarvelikov.currencytracker.view.activity.CurrencyDetailsActivity;
 import com.petarvelikov.currencytracker.view.adapter.CryptoCurrenciesAdapter;
 import com.petarvelikov.currencytracker.view.adapter.EndlessRecyclerViewScrollListener;
@@ -39,6 +40,8 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
     ViewModelProvider.Factory viewModelFactory;
     @Inject
     NetworkUtils networkUtils;
+    @Inject
+    PreferencesHelper preferencesHelper;
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -79,8 +82,7 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
         }
         ccViewModel.getViewState().observe(this, this::updateUi);
         if (savedInstanceState == null) {
-            // TODO Read the convert value from shared preferences
-            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR", false);
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, preferencesHelper.getBaseCurrency(), false);
         }
     }
 
@@ -102,10 +104,9 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int start, RecyclerView recyclerView) {
-                // TODO Read the convert value from shared preferences
                 // TODO Maybe check the network on model level
                 if (networkUtils.isConnected()) {
-                    ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, "EUR", false);
+                    ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, preferencesHelper.getBaseCurrency(), false);
                 }
             }
         };
@@ -113,14 +114,12 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
         progressBar = view.findViewById(R.id.progressCryptoCurrencies);
         txtError = view.findViewById(R.id.txtCurrenciesError);
         txtError.setOnClickListener(event -> {
-            // TODO Read the convert value from shared preferences
-            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR", false);
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, preferencesHelper.getBaseCurrency(), false);
         });
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshCurrencyList);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            // TODO Read the convert value from shared preferences
-            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, "EUR", true);
+            ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, preferencesHelper.getBaseCurrency(), true);
         });
     }
 

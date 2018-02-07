@@ -3,7 +3,9 @@ package com.petarvelikov.currencytracker.di.module;
 import android.app.Application;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.preference.PreferenceManager;
 
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
@@ -37,6 +39,12 @@ public class AppModule {
     @Singleton
     Application provideApplication() {
         return this.app;
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences provideSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(app.getApplicationContext());
     }
 
     @Provides

@@ -42,7 +42,7 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
         CryptoCurrency currency = this.currencies.get(position);
         holder.setName(currency.getName());
         holder.setSymbol(currency.getSymbol());
-        holder.setValue(currency.getPriceUsd());
+        holder.setValue(currency.getPriceUsd()); // TODO get Appropriate price
         holder.setIcon(currency.getImageUrl());
         holder.itemView.setOnClickListener(event -> listener.onClick(currency.getId(), currency.getName(), currency.getSymbol()));
     }

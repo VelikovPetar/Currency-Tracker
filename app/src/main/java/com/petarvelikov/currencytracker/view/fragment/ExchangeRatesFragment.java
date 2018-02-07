@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.preferences.PreferencesHelper;
 import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 import com.petarvelikov.currencytracker.view.adapter.ExchangeRatesAdapter;
 import com.petarvelikov.currencytracker.viewmodel.ExchangeRatesViewModel;
@@ -34,6 +35,8 @@ public class ExchangeRatesFragment extends Fragment {
     ViewModelProvider.Factory viewModelFactory;
     @Inject
     ExchangeRatesResourcesHelper resourcesHelper;
+    @Inject
+    PreferencesHelper preferencesHelper;
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -69,7 +72,7 @@ public class ExchangeRatesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         erViewModel.getViewState().observe(this, this::updateUi);
-        erViewModel.load("EUR", false); // TODO Read from prefs
+        erViewModel.load(preferencesHelper.getBaseCurrency(), false);
     }
 
     private void bindUi(View view) {
@@ -79,10 +82,10 @@ public class ExchangeRatesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         progressBar = view.findViewById(R.id.progressExchangeRates);
         txtError = view.findViewById(R.id.txtExchangeRatesError);
-        txtError.setOnClickListener(event -> erViewModel.load("EUR", false)); // TODO Read from prefs
+        txtError.setOnClickListener(event -> erViewModel.load(preferencesHelper.getBaseCurrency(), false));
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshExchangeRates);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load("EUR", true)); // TODO Read from prefs
+        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load(preferencesHelper.getBaseCurrency(), true));
     }
 
     private void updateUi(ExchangeRatesViewState viewState) {

@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.preferences.PreferencesHelper;
 import com.petarvelikov.currencytracker.view.chart.CurrencyHistoryLineChart;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewModel;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewState;
@@ -39,6 +40,8 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
+    @Inject
+    PreferencesHelper preferencesHelper;
 
     private String currencyId, currencyName, currencySymbol, selectedTimePeriod;
     private CurrencyDetailsViewModel currencyDetailsViewModel;
@@ -58,8 +61,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         app.getAppComponent().inject(this);
         currencyDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrencyDetailsViewModel.class);
         currencyDetailsViewModel.getViewState().observe(this, this::updateUi);
-        // TODO Read convert value from preferences
-        currencyDetailsViewModel.load(currencyId, "EUR", false);
+        currencyDetailsViewModel.load(currencyId, preferencesHelper.getBaseCurrency(), false);
         // TODO Check where to call
         onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY);
         selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_DAY;
@@ -85,8 +87,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         txtPercentWeekly = findViewById(R.id.txtCurrencyDetailsPercentWeekly);
         txtDataError = findViewById(R.id.txtDetailsError);
         txtDataError.setOnClickListener(view -> {
-            // TODO Read convert value from preferences
-            currencyDetailsViewModel.load(currencyId, "EUR", false);
+            currencyDetailsViewModel.load(currencyId, preferencesHelper.getBaseCurrency(), false);
         });
         progressBarData = findViewById(R.id.progressCurrencyDetails);
         layoutDetails = findViewById(R.id.layoutCurrencyDetails);
@@ -185,6 +186,6 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     }
 
     private void onTimeRangeChanged(String timeRange) {
-        currencyDetailsViewModel.onTimeRangeChanged(timeRange, currencySymbol, "USD");
+        currencyDetailsViewModel.onTimeRangeChanged(timeRange, currencySymbol, preferencesHelper.getBaseCurrency());
     }
 }
