@@ -16,13 +16,13 @@ import dagger.Component;
 @Component(modules = {AppModule.class, BinderModule.class})
 public interface AppComponent {
 
-    void inject(BootstrapActivity activity);
+  void inject(BootstrapActivity activity);
 
-    void inject(CurrencyDetailsActivity activity);
+  void inject(CurrencyDetailsActivity activity);
 
-    void inject(CryptoCurrenciesFragment fragment);
+  void inject(CryptoCurrenciesFragment fragment);
 
-    void inject(ExchangeRatesFragment fragment);
+  void inject(ExchangeRatesFragment fragment);
 
-    void inject(TransactionsFragment fragment);
+  void inject(TransactionsFragment fragment);
 }

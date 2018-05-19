@@ -9,85 +9,85 @@ import java.util.Map;
 
 public class CurrencyDetailsViewState {
 
-    private CryptoCurrency cryptoCurrency;
-    private boolean isLoading;
-    private boolean hasError;
-    private boolean isLoadingChart;
-    private boolean hasChartError;
-    private Map<Float, Double> chartData;
-    private List<String> chartLabels;
+  private CryptoCurrency cryptoCurrency;
+  private boolean isLoading;
+  private boolean hasError;
+  private boolean isLoadingChart;
+  private boolean hasChartError;
+  private Map<Float, Double> chartData;
+  private List<String> chartLabels;
 
-    public CurrencyDetailsViewState() {
+  public CurrencyDetailsViewState() {
 
-    }
+  }
 
-    public CryptoCurrency getCryptoCurrency() {
-        return cryptoCurrency;
-    }
+  public CryptoCurrency getCryptoCurrency() {
+    return cryptoCurrency;
+  }
 
-    public boolean isLoading() {
-        return isLoading;
-    }
+  @NonNull
+  public CurrencyDetailsViewState setCryptoCurrency(CryptoCurrency cryptoCurrency) {
+    this.cryptoCurrency = cryptoCurrency;
+    return this;
+  }
 
-    public boolean hasError() {
-        return hasError;
-    }
+  public boolean isLoading() {
+    return isLoading;
+  }
 
-    public boolean isLoadingChart() {
-        return this.isLoadingChart;
-    }
+  public boolean hasError() {
+    return hasError;
+  }
 
-    public boolean hasChartError() {
-        return this.hasChartError;
-    }
+  public boolean isLoadingChart() {
+    return this.isLoadingChart;
+  }
 
-    public Map<Float, Double> getChartData() {
-        return this.chartData;
-    }
+  public boolean hasChartError() {
+    return this.hasChartError;
+  }
 
-    public List<String> getChartLabels() {
-        return this.chartLabels;
-    }
+  public Map<Float, Double> getChartData() {
+    return this.chartData;
+  }
 
-    @NonNull
-    public CurrencyDetailsViewState setCryptoCurrency(CryptoCurrency cryptoCurrency) {
-        this.cryptoCurrency = cryptoCurrency;
-        return this;
-    }
+  @NonNull
+  public CurrencyDetailsViewState setChartData(Map<Float, Double> chartData) {
+    this.chartData = chartData;
+    return this;
+  }
 
-    @NonNull
-    public CurrencyDetailsViewState setIsLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-        return this;
-    }
+  public List<String> getChartLabels() {
+    return this.chartLabels;
+  }
 
-    @NonNull
-    public CurrencyDetailsViewState setHasError(boolean hasError) {
-        this.hasError = hasError;
-        return this;
-    }
+  @NonNull
+  public CurrencyDetailsViewState setChartLabels(List<String> chartLabels) {
+    this.chartLabels = chartLabels;
+    return this;
+  }
 
-    @NonNull
-    public CurrencyDetailsViewState setIsLoadingChart(boolean isLoadingChart) {
-        this.isLoadingChart = isLoadingChart;
-        return this;
-    }
+  @NonNull
+  public CurrencyDetailsViewState setIsLoading(boolean isLoading) {
+    this.isLoading = isLoading;
+    return this;
+  }
 
-    @NonNull
-    CurrencyDetailsViewState setHasChartError(boolean hasChartError) {
-        this.hasChartError = hasChartError;
-        return this;
-    }
+  @NonNull
+  public CurrencyDetailsViewState setHasError(boolean hasError) {
+    this.hasError = hasError;
+    return this;
+  }
 
-    @NonNull
-    public CurrencyDetailsViewState setChartData(Map<Float, Double> chartData) {
-        this.chartData = chartData;
-        return this;
-    }
+  @NonNull
+  public CurrencyDetailsViewState setIsLoadingChart(boolean isLoadingChart) {
+    this.isLoadingChart = isLoadingChart;
+    return this;
+  }
 
-    @NonNull
-    public CurrencyDetailsViewState setChartLabels(List<String> chartLabels) {
-        this.chartLabels = chartLabels;
-        return this;
-    }
+  @NonNull
+  CurrencyDetailsViewState setHasChartError(boolean hasChartError) {
+    this.hasChartError = hasChartError;
+    return this;
+  }
 }

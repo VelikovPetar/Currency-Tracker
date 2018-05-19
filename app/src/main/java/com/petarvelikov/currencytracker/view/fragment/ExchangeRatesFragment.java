@@ -30,72 +30,72 @@ import javax.inject.Inject;
 
 public class ExchangeRatesFragment extends Fragment {
 
-    private static final String TAG = "ExchangeRatesFragment";
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
-    @Inject
-    ExchangeRatesResourcesHelper resourcesHelper;
-    @Inject
-    SharedPreferencesHelper sharedPreferencesHelper;
+  private static final String TAG = "ExchangeRatesFragment";
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
+  @Inject
+  ExchangeRatesResourcesHelper resourcesHelper;
+  @Inject
+  SharedPreferencesHelper sharedPreferencesHelper;
 
-    private RecyclerView recyclerView;
-    private ProgressBar progressBar;
-    private TextView txtError;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ExchangeRatesAdapter adapter;
-    private ExchangeRatesViewModel erViewModel;
+  private RecyclerView recyclerView;
+  private ProgressBar progressBar;
+  private TextView txtError;
+  private SwipeRefreshLayout swipeRefreshLayout;
+  private ExchangeRatesAdapter adapter;
+  private ExchangeRatesViewModel erViewModel;
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        CurrencyTrackerApplication app = (CurrencyTrackerApplication) getActivity().getApplication();
-        app.getAppComponent().inject(this);
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+    CurrencyTrackerApplication app = (CurrencyTrackerApplication) getActivity().getApplication();
+    app.getAppComponent().inject(this);
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    erViewModel = ViewModelProviders
+        .of(this, viewModelFactory)
+        .get(ExchangeRatesViewModel.class);
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    View view = inflater.inflate(R.layout.fragment_exchange_rates, container, false);
+    bindUi(view);
+    return view;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
+    erViewModel.getViewState().observe(this, this::updateUi);
+    erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false);
+  }
+
+  private void bindUi(View view) {
+    recyclerView = view.findViewById(R.id.recyclerExchangeRates);
+    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+    adapter = new ExchangeRatesAdapter(new ArrayList<>(), resourcesHelper);
+    recyclerView.setAdapter(adapter);
+    progressBar = view.findViewById(R.id.progressExchangeRates);
+    txtError = view.findViewById(R.id.txtExchangeRatesError);
+    txtError.setOnClickListener(event -> erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false));
+    swipeRefreshLayout = view.findViewById(R.id.swipeRefreshExchangeRates);
+    swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
+    swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), true));
+  }
+
+  private void updateUi(ExchangeRatesViewState viewState) {
+    progressBar.setVisibility(viewState.isLoading() ? View.VISIBLE : View.GONE);
+    if (!viewState.isLoading()) {
+      swipeRefreshLayout.setRefreshing(false);
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        erViewModel = ViewModelProviders
-                .of(this, viewModelFactory)
-                .get(ExchangeRatesViewModel.class);
+    txtError.setVisibility(viewState.hasError() ? View.VISIBLE : View.GONE);
+    if (viewState.getExchangeRates() != null) {
+      adapter.setExchangeRates(viewState.getExchangeRates());
     }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_exchange_rates, container, false);
-        bindUi(view);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        erViewModel.getViewState().observe(this, this::updateUi);
-        erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false);
-    }
-
-    private void bindUi(View view) {
-        recyclerView = view.findViewById(R.id.recyclerExchangeRates);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new ExchangeRatesAdapter(new ArrayList<>(), resourcesHelper);
-        recyclerView.setAdapter(adapter);
-        progressBar = view.findViewById(R.id.progressExchangeRates);
-        txtError = view.findViewById(R.id.txtExchangeRatesError);
-        txtError.setOnClickListener(event -> erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false));
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshExchangeRates);
-        swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), true));
-    }
-
-    private void updateUi(ExchangeRatesViewState viewState) {
-        progressBar.setVisibility(viewState.isLoading() ? View.VISIBLE : View.GONE);
-        if (!viewState.isLoading()) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
-        txtError.setVisibility(viewState.hasError() ? View.VISIBLE : View.GONE);
-        if (viewState.getExchangeRates() != null) {
-            adapter.setExchangeRates(viewState.getExchangeRates());
-        }
-    }
+  }
 }

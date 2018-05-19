@@ -10,12 +10,12 @@ import com.petarvelikov.currencytracker.model.CurrencyIcon;
 @Dao
 public interface CurrencyIconDao {
 
-    @Query("SELECT * FROM icons WHERE symbol = :symbol")
-    CurrencyIcon getCurrencyIconBySymbol(String symbol);
+  @Query("SELECT * FROM icons WHERE symbol = :symbol")
+  CurrencyIcon getCurrencyIconBySymbol(String symbol);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMultiple(CurrencyIcon... currencyIcons);
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  void insertMultiple(CurrencyIcon... currencyIcons);
 
-    @Query("SELECT COUNT(uid) from icons")
-    int getNumberOfIcons();
+  @Query("SELECT COUNT(uid) from icons")
+  int getNumberOfIcons();
 }

@@ -14,12 +14,12 @@ import dagger.Module;
 @Module
 public abstract class BinderModule {
 
-    @Binds
-    public abstract CurrenciesDataRepository bindCurrencyDataRepository(CurrenciesDataRepositoryImpl impl);
+  @Binds
+  public abstract CurrenciesDataRepository bindCurrencyDataRepository(CurrenciesDataRepositoryImpl impl);
 
-    @Binds
-    public abstract ExchangeRatesRepository bindExchangeRatesRepository(ExchangeRatesRepositoryImpl impl);
+  @Binds
+  public abstract ExchangeRatesRepository bindExchangeRatesRepository(ExchangeRatesRepositoryImpl impl);
 
-    @Binds
-    public abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
+  @Binds
+  public abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
 }

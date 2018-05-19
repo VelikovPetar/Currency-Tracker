@@ -20,58 +20,58 @@ import javax.inject.Inject;
 
 public class BootstrapActivity extends AppCompatActivity {
 
-    @Inject
-    ViewModelProvider.Factory viewModelFactory;
+  @Inject
+  ViewModelProvider.Factory viewModelFactory;
 
-    private ProgressBar progressBar;
-    private TextView txtMessage;
-    private Button btnRetry;
-    private BootstrapViewModel bootstrapViewModel;
+  private ProgressBar progressBar;
+  private TextView txtMessage;
+  private Button btnRetry;
+  private BootstrapViewModel bootstrapViewModel;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bootstrap);
-        CurrencyTrackerApplication app = (CurrencyTrackerApplication) getApplication();
-        app.getAppComponent().inject(this);
-        bindUi();
-        bootstrapViewModel = ViewModelProviders.of(this, viewModelFactory).get(BootstrapViewModel.class);
-        bootstrapViewModel.getViewState().observe(this, this::updateUi);
-        bootstrapViewModel.load();
+  @Override
+  protected void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_bootstrap);
+    CurrencyTrackerApplication app = (CurrencyTrackerApplication) getApplication();
+    app.getAppComponent().inject(this);
+    bindUi();
+    bootstrapViewModel = ViewModelProviders.of(this, viewModelFactory).get(BootstrapViewModel.class);
+    bootstrapViewModel.getViewState().observe(this, this::updateUi);
+    bootstrapViewModel.load();
+  }
+
+  private void bindUi() {
+    this.progressBar = findViewById(R.id.progressBootstrap);
+    this.txtMessage = findViewById(R.id.txtBootstrapMessage);
+    this.btnRetry = findViewById(R.id.btnRetry);
+    this.btnRetry.setOnClickListener(event -> {
+      bootstrapViewModel.load();
+    });
+  }
+
+  private void updateUi(BootstrapViewState viewState) {
+    // TODO Refactor
+    if (viewState.isLoading()) {
+      progressBar.setVisibility(View.VISIBLE);
+      txtMessage.setVisibility(View.GONE);
+      btnRetry.setVisibility(View.GONE);
+    } else {
+      progressBar.setVisibility(View.INVISIBLE); // TODO Maybe GONE?
+      if (!viewState.hasError()) {
+        txtMessage.setVisibility(View.GONE);
+        btnRetry.setVisibility(View.GONE);
+        launchMainActivity();
+      } else {
+        txtMessage.setVisibility(View.VISIBLE);
+        txtMessage.setText(viewState.getErrorMessage());
+        btnRetry.setVisibility(View.VISIBLE);
+      }
     }
+  }
 
-    private void bindUi() {
-        this.progressBar = findViewById(R.id.progressBootstrap);
-        this.txtMessage = findViewById(R.id.txtBootstrapMessage);
-        this.btnRetry = findViewById(R.id.btnRetry);
-        this.btnRetry.setOnClickListener(event -> {
-            bootstrapViewModel.load();
-        });
-    }
-
-    private void updateUi(BootstrapViewState viewState) {
-        // TODO Refactor
-        if (viewState.isLoading()) {
-            progressBar.setVisibility(View.VISIBLE);
-            txtMessage.setVisibility(View.GONE);
-            btnRetry.setVisibility(View.GONE);
-        } else {
-            progressBar.setVisibility(View.INVISIBLE); // TODO Maybe GONE?
-            if (!viewState.hasError()) {
-                txtMessage.setVisibility(View.GONE);
-                btnRetry.setVisibility(View.GONE);
-                launchMainActivity();
-            } else {
-                txtMessage.setVisibility(View.VISIBLE);
-                txtMessage.setText(viewState.getErrorMessage());
-                btnRetry.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    private void launchMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
+  private void launchMainActivity() {
+    Intent intent = new Intent(this, MainActivity.class);
+    startActivity(intent);
+    finish();
+  }
 }

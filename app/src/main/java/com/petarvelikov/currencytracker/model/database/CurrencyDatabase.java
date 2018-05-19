@@ -8,5 +8,5 @@ import com.petarvelikov.currencytracker.model.CurrencyIcon;
 @Database(entities = {CurrencyIcon.class}, version = 1)
 public abstract class CurrencyDatabase extends RoomDatabase {
 
-    public abstract CurrencyIconDao currencyDao();
+  public abstract CurrencyIconDao currencyDao();
 }

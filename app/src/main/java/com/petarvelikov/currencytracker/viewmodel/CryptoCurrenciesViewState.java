@@ -9,63 +9,63 @@ import java.util.List;
 
 public class CryptoCurrenciesViewState {
 
-    private List<CryptoCurrency> currencies;
-    private boolean isLoading;
-    private boolean isEndReached;
-    private boolean hasError;
+  private List<CryptoCurrency> currencies;
+  private boolean isLoading;
+  private boolean isEndReached;
+  private boolean hasError;
 
-    public CryptoCurrenciesViewState() {
-        this.currencies = new ArrayList<>();
-    }
+  public CryptoCurrenciesViewState() {
+    this.currencies = new ArrayList<>();
+  }
 
-    @NonNull
-    public List<CryptoCurrency> getCurrencies() {
-        return this.currencies;
-    }
+  @NonNull
+  public List<CryptoCurrency> getCurrencies() {
+    return this.currencies;
+  }
 
-    public int getCurrenciesCount() {
-        return this.currencies.size();
-    }
+  public int getCurrenciesCount() {
+    return this.currencies.size();
+  }
 
-    public boolean isLoading() {
-        return this.isLoading;
-    }
+  public boolean isLoading() {
+    return this.isLoading;
+  }
 
-    public boolean hasError() {
-        return this.hasError;
-    }
+  @NonNull
+  public CryptoCurrenciesViewState setLoading(boolean isLoading) {
+    this.isLoading = isLoading;
+    return this;
+  }
 
-    public boolean isEndReached() {
-        return this.isEndReached;
-    }
+  public boolean hasError() {
+    return this.hasError;
+  }
 
-    @NonNull
-    public CryptoCurrenciesViewState setCryptoCurrencies(List<CryptoCurrency> currencies) {
-        this.currencies = currencies;
-        return this;
-    }
+  public boolean isEndReached() {
+    return this.isEndReached;
+  }
 
-    @NonNull
-    public CryptoCurrenciesViewState addCryptoCurrencies(List<CryptoCurrency> currencies) {
-        this.currencies.addAll(currencies);
-        return this;
-    }
+  @NonNull
+  public CryptoCurrenciesViewState setEndReached(boolean isEndReached) {
+    this.isEndReached = isEndReached;
+    return this;
+  }
 
-    @NonNull
-    public CryptoCurrenciesViewState setLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-        return this;
-    }
+  @NonNull
+  public CryptoCurrenciesViewState setCryptoCurrencies(List<CryptoCurrency> currencies) {
+    this.currencies = currencies;
+    return this;
+  }
 
-    @NonNull
-    public CryptoCurrenciesViewState setEndReached(boolean isEndReached) {
-        this.isEndReached = isEndReached;
-        return this;
-    }
+  @NonNull
+  public CryptoCurrenciesViewState addCryptoCurrencies(List<CryptoCurrency> currencies) {
+    this.currencies.addAll(currencies);
+    return this;
+  }
 
-    @NonNull
-    public CryptoCurrenciesViewState setHasError(boolean hasError) {
-        this.hasError = hasError;
-        return this;
-    }
+  @NonNull
+  public CryptoCurrenciesViewState setHasError(boolean hasError) {
+    this.hasError = hasError;
+    return this;
+  }
 }

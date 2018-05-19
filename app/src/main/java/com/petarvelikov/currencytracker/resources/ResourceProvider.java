@@ -9,18 +9,18 @@ import javax.inject.Singleton;
 @Singleton
 public class ResourceProvider {
 
-    private Context context;
+  private Context context;
 
-    @Inject
-    public ResourceProvider(Application app) {
-        this.context = app;
-    }
+  @Inject
+  public ResourceProvider(Application app) {
+    this.context = app;
+  }
 
-    public String getString(int resId) {
-        return context.getString(resId);
-    }
+  public String getString(int resId) {
+    return context.getString(resId);
+  }
 
-    public String[] getStringArray(int resId) {
-        return context.getResources().getStringArray(resId);
-    }
+  public String[] getStringArray(int resId) {
+    return context.getResources().getStringArray(resId);
+  }
 }

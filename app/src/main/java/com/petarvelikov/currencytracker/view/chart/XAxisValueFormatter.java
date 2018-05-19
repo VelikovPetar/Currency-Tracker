@@ -7,15 +7,15 @@ import java.util.List;
 
 public class XAxisValueFormatter implements IAxisValueFormatter {
 
-    private List<String> values;
+  private List<String> values;
 
-    public XAxisValueFormatter(List<String> values) {
-        this.values = values;
-    }
+  public XAxisValueFormatter(List<String> values) {
+    this.values = values;
+  }
 
-    @Override
-    public String getFormattedValue(float value, AxisBase axis) {
-        return values.get((int) value);
-    }
+  @Override
+  public String getFormattedValue(float value, AxisBase axis) {
+    return values.get((int) value);
+  }
 
 }

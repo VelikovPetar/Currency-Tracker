@@ -7,37 +7,37 @@ import java.util.Map;
 
 public class ExchangeRatesResponse {
 
-    @SerializedName("success")
-    @Expose
-    private String success;
-    @SerializedName("base")
-    @Expose
-    private String base;
-    @SerializedName("rates")
-    @Expose
-    private Map<String, Double> rates;
+  @SerializedName("success")
+  @Expose
+  private String success;
+  @SerializedName("base")
+  @Expose
+  private String base;
+  @SerializedName("rates")
+  @Expose
+  private Map<String, Double> rates;
 
-    public String getSuccess() {
-        return success;
-    }
+  public String getSuccess() {
+    return success;
+  }
 
-    public void setSuccess(String success) {
-        this.success = success;
-    }
+  public void setSuccess(String success) {
+    this.success = success;
+  }
 
-    public String getBase() {
-        return base;
-    }
+  public String getBase() {
+    return base;
+  }
 
-    public void setBase(String base) {
-        this.base = base;
-    }
+  public void setBase(String base) {
+    this.base = base;
+  }
 
-    public Map<String, Double> getRates() {
-        return rates;
-    }
+  public Map<String, Double> getRates() {
+    return rates;
+  }
 
-    public void setRates(Map<String, Double> rates) {
-        this.rates = rates;
-    }
+  public void setRates(Map<String, Double> rates) {
+    this.rates = rates;
+  }
 }

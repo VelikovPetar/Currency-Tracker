@@ -7,29 +7,29 @@ import java.util.Map;
 
 public class CurrencyIconsResponse {
 
-    public static final CurrencyIconsResponse ALREADY_LOADED = new CurrencyIconsResponse();
+  public static final CurrencyIconsResponse ALREADY_LOADED = new CurrencyIconsResponse();
 
-    @SerializedName("Response")
-    @Expose
-    private String response;
+  @SerializedName("Response")
+  @Expose
+  private String response;
 
-    @SerializedName("Data")
-    @Expose
-    private Map<String, CurrencyIcon> data;
+  @SerializedName("Data")
+  @Expose
+  private Map<String, CurrencyIcon> data;
 
-    public String getResponse() {
-        return response;
-    }
+  public String getResponse() {
+    return response;
+  }
 
-    public void setResponse(String response) {
-        this.response = response;
-    }
+  public void setResponse(String response) {
+    this.response = response;
+  }
 
-    public Map<String, CurrencyIcon> getData() {
-        return data;
-    }
+  public Map<String, CurrencyIcon> getData() {
+    return data;
+  }
 
-    public void setData(Map<String, CurrencyIcon> data) {
-        this.data = data;
-    }
+  public void setData(Map<String, CurrencyIcon> data) {
+    this.data = data;
+  }
 }

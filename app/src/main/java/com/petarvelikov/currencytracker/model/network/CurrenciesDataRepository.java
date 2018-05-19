@@ -10,16 +10,16 @@ import io.reactivex.Single;
 
 public interface CurrenciesDataRepository {
 
-    Single<List<CryptoCurrency>> getAllCurrencies(int start, int limit, String convert);
+  Single<List<CryptoCurrency>> getAllCurrencies(int start, int limit, String convert);
 
-    Single<CurrencyIconsResponse> getCurrencyIcons();
+  Single<CurrencyIconsResponse> getCurrencyIcons();
 
-    Single<CryptoCurrency> getCurrencyById(String id, String convert);
+  Single<CryptoCurrency> getCurrencyById(String id, String convert);
 
-    Single<HistoricalDataResponse> getHistoricalDataDaily(String fromSymbol, String toSymbol);
+  Single<HistoricalDataResponse> getHistoricalDataDaily(String fromSymbol, String toSymbol);
 
-    Single<HistoricalDataResponse> getHistoricalDataWeekly(String fromSymbol, String toSymbol);
+  Single<HistoricalDataResponse> getHistoricalDataWeekly(String fromSymbol, String toSymbol);
 
-    Single<HistoricalDataResponse> getHistoricalDataMonthly(String fromSymbol, String toSymbol);
+  Single<HistoricalDataResponse> getHistoricalDataMonthly(String fromSymbol, String toSymbol);
 
 }

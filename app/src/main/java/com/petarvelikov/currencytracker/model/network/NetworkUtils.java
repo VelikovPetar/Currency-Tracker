@@ -9,15 +9,15 @@ import javax.inject.Singleton;
 @Singleton
 public class NetworkUtils {
 
-    @Inject
-    ConnectivityManager connectivityManager;
+  @Inject
+  ConnectivityManager connectivityManager;
 
-    @Inject
-    public NetworkUtils() {
-    }
+  @Inject
+  public NetworkUtils() {
+  }
 
-    public boolean isConnected() {
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+  public boolean isConnected() {
+    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+  }
 }

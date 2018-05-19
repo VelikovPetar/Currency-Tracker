@@ -4,37 +4,37 @@ import android.support.annotation.NonNull;
 
 public class BootstrapViewState {
 
-    private boolean isLoading;
-    private boolean hasError;
-    private String errorMessage;
+  private boolean isLoading;
+  private boolean hasError;
+  private String errorMessage;
 
-    public boolean isLoading() {
-        return isLoading;
-    }
+  public boolean isLoading() {
+    return isLoading;
+  }
 
-    public boolean hasError() {
-        return hasError;
-    }
+  @NonNull
+  public BootstrapViewState setLoading(boolean isLoading) {
+    this.isLoading = isLoading;
+    return this;
+  }
 
-    public String getErrorMessage() {
-        return errorMessage;
-    }
+  public boolean hasError() {
+    return hasError;
+  }
 
-    @NonNull
-    public BootstrapViewState setLoading(boolean isLoading) {
-        this.isLoading = isLoading;
-        return this;
-    }
+  public String getErrorMessage() {
+    return errorMessage;
+  }
 
-    @NonNull
-    public BootstrapViewState setHasError(boolean hasError) {
-        this.hasError = hasError;
-        return this;
-    }
+  @NonNull
+  public BootstrapViewState setErrorMessage(String errorMessage) {
+    this.errorMessage = errorMessage;
+    return this;
+  }
 
-    @NonNull
-    public BootstrapViewState setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-        return this;
-    }
+  @NonNull
+  public BootstrapViewState setHasError(boolean hasError) {
+    this.hasError = hasError;
+    return this;
+  }
 }

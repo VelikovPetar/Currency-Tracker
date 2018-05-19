@@ -12,43 +12,43 @@ import com.petarvelikov.currencytracker.view.fragment.ExchangeRatesFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+  private static final String TAG = "MainActivity";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        bindUi(savedInstanceState);
-    }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    bindUi(savedInstanceState);
+  }
 
-    private void bindUi(Bundle savedInstanceState) {
-        BottomNavigationView navigationView = findViewById(R.id.bottomNavigationView);
-        navigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.actionCryptoCurrencies:
-                    replaceFragment(new CryptoCurrenciesFragment());
-                    Toast.makeText(MainActivity.this, R.string.crypto_currencies, Toast.LENGTH_SHORT).show();
-                    break;
-                case R.id.actionExchangeRates:
-                    replaceFragment(new ExchangeRatesFragment());
-                    Toast.makeText(MainActivity.this, R.string.exchange_rates, Toast.LENGTH_SHORT).show();
-                    break;
-            }
-            return true;
-        });
-        navigationView.setOnNavigationItemReselectedListener(item -> {
-        });
-        if (savedInstanceState == null) {
-            navigationView.setSelectedItemId(R.id.actionCryptoCurrencies);
-            replaceFragment(new CryptoCurrenciesFragment());
-        }
+  private void bindUi(Bundle savedInstanceState) {
+    BottomNavigationView navigationView = findViewById(R.id.bottomNavigationView);
+    navigationView.setOnNavigationItemSelectedListener(item -> {
+      switch (item.getItemId()) {
+        case R.id.actionCryptoCurrencies:
+          replaceFragment(new CryptoCurrenciesFragment());
+          Toast.makeText(MainActivity.this, R.string.crypto_currencies, Toast.LENGTH_SHORT).show();
+          break;
+        case R.id.actionExchangeRates:
+          replaceFragment(new ExchangeRatesFragment());
+          Toast.makeText(MainActivity.this, R.string.exchange_rates, Toast.LENGTH_SHORT).show();
+          break;
+      }
+      return true;
+    });
+    navigationView.setOnNavigationItemReselectedListener(item -> {
+    });
+    if (savedInstanceState == null) {
+      navigationView.setSelectedItemId(R.id.actionCryptoCurrencies);
+      replaceFragment(new CryptoCurrenciesFragment());
     }
+  }
 
-    private void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frameContainer, fragment)
-                .commit();
-    }
+  private void replaceFragment(Fragment fragment) {
+    getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.frameContainer, fragment)
+        .commit();
+  }
 
 }

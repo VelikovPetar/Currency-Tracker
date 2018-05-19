@@ -7,5 +7,5 @@ import io.reactivex.Single;
 
 public interface ExchangeRatesRepository {
 
-    Single<ExchangeRatesResponse> getExchangeRates(String base);
+  Single<ExchangeRatesResponse> getExchangeRates(String base);
 }

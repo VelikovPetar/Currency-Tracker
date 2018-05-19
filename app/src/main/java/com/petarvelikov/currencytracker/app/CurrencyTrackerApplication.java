@@ -8,17 +8,17 @@ import com.petarvelikov.currencytracker.di.module.AppModule;
 
 public class CurrencyTrackerApplication extends Application {
 
-    private AppComponent appComponent;
+  private AppComponent appComponent;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        appComponent = DaggerAppComponent.builder()
-                .appModule(new AppModule(this))
-                .build();
-    }
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    appComponent = DaggerAppComponent.builder()
+        .appModule(new AppModule(this))
+        .build();
+  }
 
-    public AppComponent getAppComponent() {
-        return this.appComponent;
-    }
+  public AppComponent getAppComponent() {
+    return this.appComponent;
+  }
 }
