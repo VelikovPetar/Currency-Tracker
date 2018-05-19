@@ -9,5 +9,6 @@ import retrofit2.http.Query;
 public interface FixerApiService {
 
     @GET("latest")
-    Single<ExchangeRatesResponse> getExchangeRates(@Query("base") String base);
+    Single<ExchangeRatesResponse> getExchangeRates(@Query("base") String base,
+                                                   @Query("access_key") String accessKey);
 }

@@ -1,5 +1,6 @@
 package com.petarvelikov.currencytracker.model.network;
 
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.ExchangeRatesResponse;
 
 import javax.inject.Inject;
@@ -20,6 +21,6 @@ public class ExchangeRatesRepositoryImpl implements ExchangeRatesRepository {
 
     @Override
     public Single<ExchangeRatesResponse> getExchangeRates(String base) {
-        return fixerApiService.getExchangeRates(base);
+        return fixerApiService.getExchangeRates(base, Constants.API_CONSTANTS.ACCESS_KEY_FIXER);
     }
 }
