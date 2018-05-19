@@ -10,18 +10,27 @@ import android.widget.TextView;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
+import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
+import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Locale;
 
 public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenciesAdapter.CryptoCurrencyViewHolder> {
 
     private List<CryptoCurrency> currencies;
     private OnClickListener listener;
+    private SharedPreferencesHelper sharedPreferencesHelper;
+    private ExchangeRatesResourcesHelper resourcesHelper;
 
-    public CryptoCurrenciesAdapter(List<CryptoCurrency> currencies, OnClickListener listener) {
+    public CryptoCurrenciesAdapter(List<CryptoCurrency> currencies, OnClickListener listener,
+                                   SharedPreferencesHelper sharedPreferencesHelper,
+                                   ExchangeRatesResourcesHelper resourcesHelper) {
         this.currencies = currencies;
         this.listener = listener;
+        this.sharedPreferencesHelper = sharedPreferencesHelper;
+        this.resourcesHelper = resourcesHelper;
     }
 
     public void setCurrencies(List<CryptoCurrency> currencies) {
@@ -40,9 +49,12 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
     @Override
     public void onBindViewHolder(CryptoCurrencyViewHolder holder, int position) {
         CryptoCurrency currency = this.currencies.get(position);
+        String baseCurrency = sharedPreferencesHelper.getBaseCurrency();
         holder.setName(currency.getName());
         holder.setSymbol(currency.getSymbol());
-        holder.setValue(currency.getPriceUsd()); // TODO get Appropriate price
+        holder.setValue(String.format(Locale.getDefault(), "%s %s",
+            resourcesHelper.getCurrencySymbol(baseCurrency),
+            currency.getPriceAnyCurrency(baseCurrency)));
         holder.setIcon(currency.getImageUrl());
         holder.itemView.setOnClickListener(event -> listener.onClick(currency.getId(), currency.getName(), currency.getSymbol()));
     }

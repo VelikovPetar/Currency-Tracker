@@ -45,7 +45,7 @@ public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesAdap
     public void onBindViewHolder(ExchangeRateViewHolder holder, int position) {
         ExchangeRate exchangeRate = exchangeRates.get(position);
         holder.setExchangeFrom(exchangeRate.getFrom());
-        holder.setExchangeRate(String.format(Locale.getDefault(), "%.6f", exchangeRate.getExchangeRate()));
+        holder.setExchangeRate(String.format(Locale.getDefault(), " %.6f", exchangeRate.getExchangeRate()));
         holder.setCurrencySymbol(resourcesHelper.getCurrencySymbol(exchangeRate.getTo()));
         holder.setCurrencyCountryFlag(resourcesHelper.getCurrencyCountry(exchangeRate.getFrom()));
     }

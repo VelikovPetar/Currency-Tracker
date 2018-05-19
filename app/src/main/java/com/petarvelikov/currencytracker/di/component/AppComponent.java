@@ -6,6 +6,7 @@ import com.petarvelikov.currencytracker.view.activity.BootstrapActivity;
 import com.petarvelikov.currencytracker.view.activity.CurrencyDetailsActivity;
 import com.petarvelikov.currencytracker.view.fragment.CryptoCurrenciesFragment;
 import com.petarvelikov.currencytracker.view.fragment.ExchangeRatesFragment;
+import com.petarvelikov.currencytracker.view.fragment.TransactionsFragment;
 
 import javax.inject.Singleton;
 
@@ -22,4 +23,6 @@ public interface AppComponent {
     void inject(CryptoCurrenciesFragment fragment);
 
     void inject(ExchangeRatesFragment fragment);
+
+    void inject(TransactionsFragment fragment);
 }

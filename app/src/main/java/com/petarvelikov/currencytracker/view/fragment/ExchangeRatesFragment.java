@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
-import com.petarvelikov.currencytracker.preferences.PreferencesHelper;
+import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
 import com.petarvelikov.currencytracker.resources.ExchangeRatesResourcesHelper;
 import com.petarvelikov.currencytracker.view.adapter.ExchangeRatesAdapter;
 import com.petarvelikov.currencytracker.viewmodel.ExchangeRatesViewModel;
@@ -36,7 +36,7 @@ public class ExchangeRatesFragment extends Fragment {
     @Inject
     ExchangeRatesResourcesHelper resourcesHelper;
     @Inject
-    PreferencesHelper preferencesHelper;
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
@@ -72,7 +72,7 @@ public class ExchangeRatesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         erViewModel.getViewState().observe(this, this::updateUi);
-        erViewModel.load(preferencesHelper.getBaseCurrency(), false);
+        erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false);
     }
 
     private void bindUi(View view) {
@@ -82,10 +82,10 @@ public class ExchangeRatesFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         progressBar = view.findViewById(R.id.progressExchangeRates);
         txtError = view.findViewById(R.id.txtExchangeRatesError);
-        txtError.setOnClickListener(event -> erViewModel.load(preferencesHelper.getBaseCurrency(), false));
+        txtError.setOnClickListener(event -> erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false));
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshExchangeRates);
         swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(getContext(), R.color.colorAccent));
-        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load(preferencesHelper.getBaseCurrency(), true));
+        swipeRefreshLayout.setOnRefreshListener(() -> erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), true));
     }
 
     private void updateUi(ExchangeRatesViewState viewState) {

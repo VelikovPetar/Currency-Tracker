@@ -6,17 +6,19 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class PreferencesHelper {
+public class SharedPreferencesHelper {
 
     private static final String BASE_CURRENCY_KEY = "base_currency";
-    private static final String BASE_CURRENCY = "EUR";
+    private static final String BASE_CURRENCY = "CHF";
 
     private SharedPreferences sharedPreferences;
 
     @Inject
-    public PreferencesHelper(SharedPreferences sharedPreferences) {
+    public SharedPreferencesHelper(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;
-        setBaseCurrency(BASE_CURRENCY);
+        if (!sharedPreferences.contains(BASE_CURRENCY_KEY)) {
+            setBaseCurrency(BASE_CURRENCY);
+        }
     }
 
     public void setBaseCurrency(String currency) {

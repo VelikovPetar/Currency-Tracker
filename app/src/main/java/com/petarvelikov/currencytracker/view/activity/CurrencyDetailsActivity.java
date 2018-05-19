@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
-import com.petarvelikov.currencytracker.preferences.PreferencesHelper;
+import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
 import com.petarvelikov.currencytracker.view.chart.CurrencyHistoryLineChart;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewModel;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewState;
@@ -41,7 +41,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     @Inject
-    PreferencesHelper preferencesHelper;
+    SharedPreferencesHelper sharedPreferencesHelper;
 
     private String currencyId, currencyName, currencySymbol, selectedTimePeriod;
     private CurrencyDetailsViewModel currencyDetailsViewModel;
@@ -61,7 +61,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         app.getAppComponent().inject(this);
         currencyDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrencyDetailsViewModel.class);
         currencyDetailsViewModel.getViewState().observe(this, this::updateUi);
-        currencyDetailsViewModel.load(currencyId, preferencesHelper.getBaseCurrency(), false);
+        currencyDetailsViewModel.load(currencyId, sharedPreferencesHelper.getBaseCurrency(), false);
         // TODO Check where to call
         onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY);
         selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_DAY;
@@ -87,7 +87,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         txtPercentWeekly = findViewById(R.id.txtCurrencyDetailsPercentWeekly);
         txtDataError = findViewById(R.id.txtDetailsError);
         txtDataError.setOnClickListener(view -> {
-            currencyDetailsViewModel.load(currencyId, preferencesHelper.getBaseCurrency(), false);
+            currencyDetailsViewModel.load(currencyId, sharedPreferencesHelper.getBaseCurrency(), false);
         });
         progressBarData = findViewById(R.id.progressCurrencyDetails);
         layoutDetails = findViewById(R.id.layoutCurrencyDetails);
@@ -186,6 +186,6 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     }
 
     private void onTimeRangeChanged(String timeRange) {
-        currencyDetailsViewModel.onTimeRangeChanged(timeRange, currencySymbol, preferencesHelper.getBaseCurrency());
+        currencyDetailsViewModel.onTimeRangeChanged(timeRange, currencySymbol, sharedPreferencesHelper.getBaseCurrency());
     }
 }

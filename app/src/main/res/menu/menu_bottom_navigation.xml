@@ -11,4 +11,9 @@
         android:icon="@drawable/ic_currency"
         android:title="@string/exchange_rates"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/actionTransactions"
+        android:icon="@drawable/ic_currency"
+        android:title="@string/transactions"
+        app:showAsAction="ifRoom"/>
 </menu>
