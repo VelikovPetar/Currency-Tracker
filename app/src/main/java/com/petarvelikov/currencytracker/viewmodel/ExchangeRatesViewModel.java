@@ -50,12 +50,9 @@ public class ExchangeRatesViewModel extends ViewModel {
     public void load(String base, boolean isSwipeRefresh) {
         setLoading(isSwipeRefresh);
         Disposable d = exchangeRatesRepository.getExchangeRates(base)
-                .filter(response -> response.getRates() != null)
-                .map(ExchangeRatesResponse::getRates)
-                .map(exchangeRatesMap -> convertExchangeRatesMapToList(exchangeRatesMap, base))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(exchangeRates -> setSuccess(exchangeRates),
+                .subscribe(exchangeRates -> setSuccess(exchangeRates, base),
                         throwable -> setError());
         compositeDisposable.add(d);
     }
@@ -66,8 +63,12 @@ public class ExchangeRatesViewModel extends ViewModel {
                 .setHasError(false));
     }
 
-
-    private void setSuccess(List<ExchangeRate> exchangeRates) {
+    private void setSuccess(ExchangeRatesResponse response, String base) {
+        if (response == null || response.getRates() == null) {
+            setError();
+            return;
+        }
+        List<ExchangeRate> exchangeRates = convertExchangeRatesMapToList(response.getRates(), base);
         viewState.setValue(currentViewState()
                 .setIsLoading(false)
                 .setHasError(false)

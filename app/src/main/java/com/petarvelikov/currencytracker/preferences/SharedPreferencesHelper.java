@@ -9,7 +9,7 @@ import javax.inject.Singleton;
 public class SharedPreferencesHelper {
 
     private static final String BASE_CURRENCY_KEY = "base_currency";
-    private static final String BASE_CURRENCY = "CHF";
+    private static final String BASE_CURRENCY = "EUR";
 
     private SharedPreferences sharedPreferences;
 
