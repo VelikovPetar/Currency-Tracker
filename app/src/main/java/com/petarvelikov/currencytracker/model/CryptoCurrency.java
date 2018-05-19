@@ -1,196 +1,196 @@
 package com.petarvelikov.currencytracker.model;
 
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import java.util.HashMap;
 
-public class CryptoCurrency {
+public class CryptoCurrency extends HashMap<String, String> {
 
-    @SerializedName("id")
-    @Expose
-    private String id;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("symbol")
-    @Expose
-    private String symbol;
-    @SerializedName("rank")
-    @Expose
-    private String rank;
-    @SerializedName("price_usd")
-    @Expose
-    private String priceUsd;
-    @SerializedName("price_btc")
-    @Expose
-    private String priceBtc;
-    @SerializedName("24h_volume_usd")
-    @Expose
-    private String _24hVolumeUsd;
-    @SerializedName("market_cap_usd")
-    @Expose
-    private String marketCapUsd;
-    @SerializedName("available_supply")
-    @Expose
-    private String availableSupply;
-    @SerializedName("total_supply")
-    @Expose
-    private String totalSupply;
-    @SerializedName("max_supply")
-    @Expose
-    private String maxSupply;
-    @SerializedName("percent_change_1h")
-    @Expose
-    private String percentChange1h;
-    @SerializedName("percent_change_24h")
-    @Expose
-    private String percentChange24h;
-    @SerializedName("percent_change_7d")
-    @Expose
-    private String percentChange7d;
-    @SerializedName("last_updated")
-    @Expose
-    private String lastUpdated;
-    @SerializedName("price_eur")
-    @Expose
-    private String priceEur;
+  private static final String TAG = "CryptoCurrency";
 
-    private String imageUrl;
+  private static final String CURRENCY_PLACEHOLDER = "%currency%";
 
-    public String getId() {
-        return id;
-    }
+  private static final String KEY_ID = "id";
+  private static final String KEY_NAME = "name";
+  private static final String KEY_SYMBOL = "symbol";
+  private static final String KEY_RANK = "rank";
+  private static final String KEY_PRICE_USD = "price_usd";
+  private static final String KEY_PRICE_BTC = "price_btc";
+  private static final String KEY_24H_VOLUME_USD = "24h_volume_usd";
+  private static final String KEY_MARKET_CAP_USD = "market_cap_usd";
+  private static final String KEY_TOTAL_SUPPLY = "total_supply";
+  private static final String KEY_AVAILABLE_SUPPLY = "available_supply";
+  private static final String KEY_MAX_SUPPLY = "max_supply";
+  private static final String KEY_PERCENT_CHANGE_1H = "percent_change_1h";
+  private static final String KEY_PERCENT_CHANGE_24H = "percent_change_24h";
+  private static final String KEY_PERCENT_CHANGE_7D = "percent_change_7d";
+  private static final String KEY_LAST_UPDATED = "last_updated";
+  private static final String KEY_PRICE_ANY_CURRENCY = "price_" + CURRENCY_PLACEHOLDER;
+  private static final String KEY_24H_VOLUME_ANY_CURRENCY = "24h_volume_" + CURRENCY_PLACEHOLDER;
+  private static final String KEY_MARKET_CAP_ANY_CURRENCY = "market_cap_" + CURRENCY_PLACEHOLDER;
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
-    public String getName() {
-        return name;
-    }
+  private String imageUrl;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public String getId() {
+    return get(KEY_ID);
+  }
 
-    public String getSymbol() {
-        return symbol;
-    }
+  public void setId(String id) {
+    put(KEY_ID, id);
+  }
 
-    public void setSymbol(String symbol) {
-        this.symbol = symbol;
-    }
+  public String getName() {
+    return get(KEY_NAME);
+  }
 
-    public String getRank() {
-        return rank;
-    }
+  public void setName(String name) {
+    put(KEY_NAME, name);
+  }
 
-    public void setRank(String rank) {
-        this.rank = rank;
-    }
+  public String getSymbol() {
+    return get(KEY_SYMBOL);
+  }
 
-    public String getPriceUsd() {
-        return priceUsd;
-    }
+  public void setSymbol(String symbol) {
+    put(KEY_SYMBOL, symbol);
+  }
 
-    public void setPriceUsd(String priceUsd) {
-        this.priceUsd = priceUsd;
-    }
+  public String getRank() {
+    return get(KEY_RANK);
+  }
 
-    public String getPriceBtc() {
-        return priceBtc;
-    }
+  public void setRank(String rank) {
+    put(KEY_RANK, rank);
+  }
 
-    public void setPriceBtc(String priceBtc) {
-        this.priceBtc = priceBtc;
-    }
+  public String getPriceUsd() {
+    return get(KEY_PRICE_USD);
+  }
 
-    public String get24hVolumeUsd() {
-        return _24hVolumeUsd;
-    }
+  public void setPriceUsd(String priceUsd) {
+    put(KEY_PRICE_USD, priceUsd);
+  }
 
-    public void set24hVolumeUsd(String _24hVolumeUsd) {
-        this._24hVolumeUsd = _24hVolumeUsd;
-    }
+  public String getPriceBtc() {
+    return get(KEY_PRICE_BTC);
+  }
 
-    public String getMarketCapUsd() {
-        return marketCapUsd;
-    }
+  public void setPriceBtc(String priceBtc) {
+    put(KEY_PRICE_BTC, priceBtc);
+  }
 
-    public void setMarketCapUsd(String marketCapUsd) {
-        this.marketCapUsd = marketCapUsd;
-    }
+  public String get24hVolumeUsd() {
+    return get(KEY_24H_VOLUME_USD);
+  }
 
-    public String getAvailableSupply() {
-        return availableSupply;
-    }
+  public void set24hVolumeUsd(String _24hVolumeUsd) {
+    put(KEY_24H_VOLUME_USD, _24hVolumeUsd);
+  }
 
-    public void setAvailableSupply(String availableSupply) {
-        this.availableSupply = availableSupply;
-    }
+  public String getMarketCapUsd() {
+    return get(KEY_MARKET_CAP_USD);
+  }
 
-    public String getTotalSupply() {
-        return totalSupply;
-    }
+  public void setMarketCapUsd(String marketCapUsd) {
+    put(KEY_MARKET_CAP_USD, marketCapUsd);
+  }
 
-    public void setTotalSupply(String totalSupply) {
-        this.totalSupply = totalSupply;
-    }
+  public String getAvailableSupply() {
+    return get(KEY_AVAILABLE_SUPPLY);
+  }
 
-    public String getMaxSupply() {
-        return maxSupply;
-    }
+  public void setAvailableSupply(String availableSupply) {
+    put(KEY_AVAILABLE_SUPPLY, availableSupply);
+  }
 
-    public void setMaxSupply(String maxSupply) {
-        this.maxSupply = maxSupply;
-    }
+  public String getTotalSupply() {
+    return get(KEY_TOTAL_SUPPLY);
+  }
 
-    public String getPercentChange1h() {
-        return percentChange1h;
-    }
+  public void setTotalSupply(String totalSupply) {
+    put(KEY_TOTAL_SUPPLY, totalSupply);
+  }
 
-    public void setPercentChange1h(String percentChange1h) {
-        this.percentChange1h = percentChange1h;
-    }
+  public String getMaxSupply() {
+    return get(KEY_MAX_SUPPLY);
+  }
 
-    public String getPercentChange24h() {
-        return percentChange24h;
-    }
+  public void setMaxSupply(String maxSupply) {
+    put(KEY_MAX_SUPPLY, maxSupply);
+  }
 
-    public void setPercentChange24h(String percentChange24h) {
-        this.percentChange24h = percentChange24h;
-    }
+  public String getPercentChange1h() {
+    return get(KEY_PERCENT_CHANGE_1H);
+  }
 
-    public String getPercentChange7d() {
-        return percentChange7d;
-    }
+  public void setPercentChange1h(String percentChange1h) {
+    put(KEY_PERCENT_CHANGE_1H, percentChange1h);
+  }
 
-    public void setPercentChange7d(String percentChange7d) {
-        this.percentChange7d = percentChange7d;
-    }
+  public String getPercentChange24h() {
+    return get(KEY_PERCENT_CHANGE_24H);
+  }
 
-    public String getLastUpdated() {
-        return lastUpdated;
-    }
+  public void setPercentChange24h(String percentChange24h) {
+    put(KEY_PERCENT_CHANGE_24H, percentChange24h);
+  }
 
-    public void setLastUpdated(String lastUpdated) {
-        this.lastUpdated = lastUpdated;
-    }
+  public String getPercentChange7d() {
+    return get(KEY_PERCENT_CHANGE_7D);
+  }
 
-    public String getPriceEur() {
-        return priceEur;
-    }
+  public void setPercentChange7d(String percentChange7d) {
+    put(KEY_PERCENT_CHANGE_7D, percentChange7d);
+  }
 
-    public void setPriceEur(String priceEur) {
-        this.priceEur = priceEur;
-    }
+  public String getLastUpdated() {
+    return get(KEY_LAST_UPDATED);
+  }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+  public void setLastUpdated(String lastUpdated) {
+    put(KEY_LAST_UPDATED, lastUpdated);
+  }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+  public String getPriceAnyCurrency(String currency) {
+    String key = createKey(KEY_PRICE_ANY_CURRENCY, currency);
+    return get(key);
+  }
+
+  public void setPriceAnyCurrency(String currency, String price) {
+    String key = createKey(KEY_PRICE_ANY_CURRENCY, currency);
+    put(key, price);
+  }
+
+  public String get24hVolumeAnyCurrency(String currency) {
+    String key = createKey(KEY_24H_VOLUME_ANY_CURRENCY, currency);
+    return get(key);
+  }
+
+  public void set24hVolumeANyCurrency(String currency, String volume) {
+    String key = createKey(KEY_24H_VOLUME_ANY_CURRENCY, currency);
+    put(key, volume);
+  }
+
+  public String getMarketCapAnyCurrency(String currency) {
+    String key = createKey(KEY_MARKET_CAP_ANY_CURRENCY, currency);
+    return get(key);
+  }
+
+  public void setMarketCapAnyCurrency(String currency, String marketCap) {
+    String key = createKey(KEY_MARKET_CAP_ANY_CURRENCY, currency);
+    put(key, marketCap);
+  }
+
+  private String createKey(String base, String replacement) {
+    return base.replace(CURRENCY_PLACEHOLDER, replacement.toLowerCase().trim());
+  }
+
+  public String getImageUrl() {
+    return imageUrl;
+  }
+
+  public void setImageUrl(String imageUrl) {
+    this.imageUrl = imageUrl;
+  }
 
 }
