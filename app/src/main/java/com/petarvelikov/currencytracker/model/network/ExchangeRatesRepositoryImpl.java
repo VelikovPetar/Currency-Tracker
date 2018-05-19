@@ -1,5 +1,6 @@
 package com.petarvelikov.currencytracker.model.network;
 
+import com.petarvelikov.currencytracker.BuildConfig;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.ExchangeRatesResponse;
 
@@ -21,6 +22,10 @@ public class ExchangeRatesRepositoryImpl implements ExchangeRatesRepository {
 
     @Override
     public Single<ExchangeRatesResponse> getExchangeRates(String base) {
-        return fixerApiService.getExchangeRates(base, Constants.API_CONSTANTS.ACCESS_KEY_FIXER);
+        if (BuildConfig.FIXER_API_VERSION == 1) {
+            return fixerApiService.getExchangeRates(base);
+        } else {
+            return fixerApiService.getExchangeRates(base, Constants.API_CONSTANTS.ACCESS_KEY_FIXER);
+        }
     }
 }

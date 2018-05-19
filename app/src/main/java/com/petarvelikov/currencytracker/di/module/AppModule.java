@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 
+import com.petarvelikov.currencytracker.BuildConfig;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
 import com.petarvelikov.currencytracker.model.network.CoinMarketCapApiService;
@@ -18,6 +20,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -93,9 +97,12 @@ public class AppModule {
     @Provides
     @Singleton
     @Named(RETROFIT_NAME_CRYPTO_COMPARE)
-    Retrofit provideCryptoCompareRetrofit(GsonConverterFactory gsonFactory, RxJava2CallAdapterFactory rxFactory) {
+    Retrofit provideCryptoCompareRetrofit(GsonConverterFactory gsonFactory,
+                                          RxJava2CallAdapterFactory rxFactory,
+                                          OkHttpClient client) {
         return new Retrofit.Builder()
                 .baseUrl(Constants.API_CONSTANTS.BASE_URL_CRYPTO_COMPARE)
+                .client(client)
                 .addConverterFactory(gsonFactory)
                 .addCallAdapterFactory(rxFactory)
                 .build();
@@ -104,12 +111,44 @@ public class AppModule {
     @Provides
     @Singleton
     @Named(RETROFIT_NAME_FIXER)
-    Retrofit provideFixerRetrofit(GsonConverterFactory gsonFactory, RxJava2CallAdapterFactory rxFactory) {
+    Retrofit provideFixerRetrofit(GsonConverterFactory gsonFactory,
+                                  RxJava2CallAdapterFactory rxFactory,
+                                  OkHttpClient client) {
+        String baseUrl;
+        if (BuildConfig.FIXER_API_VERSION == 1) {
+            baseUrl = Constants.API_CONSTANTS.BASE_URL_FIXER_v1;
+        } else {
+            baseUrl = Constants.API_CONSTANTS.BASE_URL_FIXER_v2;
+        }
         return new Retrofit.Builder()
-                .baseUrl(Constants.API_CONSTANTS.BASE_URL_FIXER)
+                .baseUrl(baseUrl)
+                .client(client)
                 .addConverterFactory(gsonFactory)
                 .addCallAdapterFactory(rxFactory)
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
+    OkHttpClient provideHttpClient(HttpLoggingInterceptor interceptor) {
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build();
+        return okHttpClient;
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
+    HttpLoggingInterceptor provideHttpLoggingInterceptor() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        if (BuildConfig.DEBUG) {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        } else {
+            interceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        }
+        return interceptor;
     }
 
     @Provides
