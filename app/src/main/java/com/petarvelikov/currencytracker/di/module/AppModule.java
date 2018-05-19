@@ -116,9 +116,9 @@ public class AppModule {
                                 OkHttpClient client) {
     String baseUrl;
     if (BuildConfig.FIXER_API_VERSION == 1) {
-      baseUrl = Constants.API_CONSTANTS.BASE_URL_FIXER_v1;
+      baseUrl = Constants.API_CONSTANTS.BASE_URL_FIXER_V1;
     } else {
-      baseUrl = Constants.API_CONSTANTS.BASE_URL_FIXER_v2;
+      baseUrl = Constants.API_CONSTANTS.BASE_URL_FIXER_V2;
     }
     return new Retrofit.Builder()
         .baseUrl(baseUrl)
