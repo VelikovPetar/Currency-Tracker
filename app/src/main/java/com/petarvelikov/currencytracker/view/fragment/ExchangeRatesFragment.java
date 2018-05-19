@@ -71,6 +71,9 @@ public class ExchangeRatesFragment extends Fragment {
   @Override
   public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+    if (erViewModel.getViewState().hasObservers()) {
+      erViewModel.getViewState().removeObservers(this);
+    }
     erViewModel.getViewState().observe(this, this::updateUi);
     erViewModel.load(sharedPreferencesHelper.getBaseCurrency(), false);
   }

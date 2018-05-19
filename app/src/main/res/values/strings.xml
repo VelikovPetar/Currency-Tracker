@@ -8,12 +8,14 @@
   <string name="retry">Retry</string>
   <string name="error_while_reading_data">Error while reading data. Tap to refresh.</string>
   <string name="error_while_reading_chart_data">Error while reading chart data. Tap to refresh.</string>
+  <string name="error_while_reading_transactions">Error while reading transactions. Tap to refresh.</string>
   <string name="daily">Daily</string>
   <string name="monthly">Monthly</string>
   <string name="weekly">Weekly</string>
   <string name="graph_time_period">Graph time period:</string>
   <string name="currency_not_supported">Currency not supported!</string>
   <string name="transactions">Transactions</string>
+  <string name="no_transactions">You don\'t have any transactions.</string>
   <string-array name="time_periods">
     <item>Today</item>
     <item>Last week</item>

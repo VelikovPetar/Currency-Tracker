@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/recyclerTransactions"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />
+
+  <ProgressBar
+    android:id="@+id/progressTransactions"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone" />
+
+  <TextView
+    android:id="@+id/txtTransactionsMessage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="@string/error_while_reading_transactions"
+    android:textAlignment="center"
+    android:visibility="gone" />
+
+  <com.github.clans.fab.FloatingActionButton
+    android:id="@+id/fabAddTransaction"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:src="@drawable/ic_action_add"
+    app:fab_colorNormal="@color/colorAccent"
+    app:fab_colorPressed="@color/colorAccent" />
+</FrameLayout>

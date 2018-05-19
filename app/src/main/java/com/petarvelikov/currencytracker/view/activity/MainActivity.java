@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.view.fragment.CryptoCurrenciesFragment;
 import com.petarvelikov.currencytracker.view.fragment.ExchangeRatesFragment;
+import com.petarvelikov.currencytracker.view.fragment.TransactionsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
         case R.id.actionExchangeRates:
           replaceFragment(new ExchangeRatesFragment());
           Toast.makeText(MainActivity.this, R.string.exchange_rates, Toast.LENGTH_SHORT).show();
+          break;
+        case R.id.actionTransactions:
+          replaceFragment(new TransactionsFragment());
           break;
       }
       return true;

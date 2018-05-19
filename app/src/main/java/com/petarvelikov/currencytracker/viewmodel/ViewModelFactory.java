@@ -13,16 +13,19 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
   private BootstrapViewModel bootstrapViewModel;
   private CurrencyDetailsViewModel currencyDetailsViewModel;
   private ExchangeRatesViewModel exchangeRatesViewModel;
+  private TransactionsViewModel transactionsViewModel;
 
   @Inject
   public ViewModelFactory(CryptoCurrenciesViewModel ccViewModel,
                           BootstrapViewModel bootstrapViewModel,
                           CurrencyDetailsViewModel currencyDetailsViewModel,
-                          ExchangeRatesViewModel exchangeRatesViewModel) {
+                          ExchangeRatesViewModel exchangeRatesViewModel,
+                          TransactionsViewModel transactionsViewModel) {
     this.ccViewModel = ccViewModel;
     this.bootstrapViewModel = bootstrapViewModel;
     this.currencyDetailsViewModel = currencyDetailsViewModel;
     this.exchangeRatesViewModel = exchangeRatesViewModel;
+    this.transactionsViewModel = transactionsViewModel;
   }
 
   @NonNull
@@ -39,6 +42,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
     if (modelClass.isAssignableFrom(ExchangeRatesViewModel.class)) {
       return (T) exchangeRatesViewModel;
+    }
+    if (modelClass.isAssignableFrom(TransactionsViewModel.class)) {
+      return (T) transactionsViewModel;
     }
     throw new IllegalArgumentException("Unknown class name");
   }
