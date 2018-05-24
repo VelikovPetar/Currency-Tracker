@@ -193,4 +193,8 @@ public class CryptoCurrency extends HashMap<String, String> {
     this.imageUrl = imageUrl;
   }
 
+  @Override
+  public String toString() {
+    return getName();
+  }
 }

@@ -32,7 +32,13 @@ public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
 
   @Override
   public Single<List<CryptoCurrency>> getAllCurrencies(int start, int limit, String convert) {
-    return coinMarketCapApiService.getAllCurrencies(start, limit, convert)
+    Single<List<CryptoCurrency>> single;
+    if (limit == -1) {
+      single = coinMarketCapApiService.getAllCurrencies(start, convert);
+    } else {
+      single = coinMarketCapApiService.getAllCurrencies(start, limit, convert);
+    }
+    return single
         .subscribeOn(Schedulers.io())
         .flatMapObservable(Observable::fromIterable)
         .map(currency -> {

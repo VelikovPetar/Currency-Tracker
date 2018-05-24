@@ -7,8 +7,13 @@ import android.arch.persistence.room.Query;
 
 import com.petarvelikov.currencytracker.model.CurrencyIcon;
 
+import java.util.List;
+
 @Dao
 public interface CurrencyIconDao {
+
+  @Query("SELECT * FROM icons")
+  List<CurrencyIcon> getAll();
 
   @Query("SELECT * FROM icons WHERE symbol = :symbol")
   CurrencyIcon getCurrencyIconBySymbol(String symbol);
@@ -18,4 +23,8 @@ public interface CurrencyIconDao {
 
   @Query("SELECT COUNT(uid) from icons")
   int getNumberOfIcons();
+
+  @Query("DELETE FROM icons")
+  void deleteAll();
+
 }

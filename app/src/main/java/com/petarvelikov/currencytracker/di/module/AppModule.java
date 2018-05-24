@@ -61,7 +61,7 @@ public class AppModule {
   @Singleton
   CurrencyDatabase provideCurrencyDatabase() {
     return Room.databaseBuilder(app, CurrencyDatabase.class, "icons")
-        .fallbackToDestructiveMigration() // This destroys user data -> do it with a migration
+        .addMigrations(CurrencyDatabase.Migrations.all())
         .build();
   }
 

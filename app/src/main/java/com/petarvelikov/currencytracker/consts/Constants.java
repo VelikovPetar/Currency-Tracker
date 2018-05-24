@@ -8,6 +8,7 @@ public class Constants {
 
   public interface API_CONSTANTS {
     int LIMIT = 50;
+    long ONE_WEEK_IN_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
     String BASE_URL_COIN_MARKET_CAP = "https://api.coinmarketcap.com/v1/";
     String BASE_URL_CRYPTO_COMPARE = "https://min-api.cryptocompare.com/";
     String BASE_URL_ICONS = "https://www.cryptocompare.com";

@@ -4,10 +4,13 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.CurrencyIcon;
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
 import com.petarvelikov.currencytracker.model.network.CurrenciesDataRepository;
+import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +25,24 @@ import io.reactivex.schedulers.Schedulers;
 
 public class BootstrapViewModel extends ViewModel {
 
+  private static final String TAG = BootstrapViewModel.class.getSimpleName();
+
   private CurrenciesDataRepository dataRepository;
   private CurrencyDatabase currencyDatabase;
   private MutableLiveData<BootstrapViewState> viewState;
   private CompositeDisposable compositeDisposable;
+  private SharedPreferencesHelper sharedPreferencesHelper;
 
   @Inject
-  public BootstrapViewModel(CurrenciesDataRepository dataRepository, CurrencyDatabase currencyDatabase) {
+  public BootstrapViewModel(CurrenciesDataRepository dataRepository,
+                            CurrencyDatabase currencyDatabase,
+                            SharedPreferencesHelper sharedPreferencesHelper) {
     this.dataRepository = dataRepository;
     this.currencyDatabase = currencyDatabase;
     this.viewState = new MutableLiveData<>();
     this.viewState.setValue(new BootstrapViewState());
     this.compositeDisposable = new CompositeDisposable();
+    this.sharedPreferencesHelper = sharedPreferencesHelper;
   }
 
   @Override
@@ -55,10 +64,10 @@ public class BootstrapViewModel extends ViewModel {
     Disposable d = Single.defer(() -> Single.just(currencyDatabase.currencyDao().getNumberOfIcons()))
         .toObservable()
         .takeWhile(rows -> {
-          if (rows > 0) {
+          if (rows > 0 && !shouldUpdateIcons()) {
             setSuccess();
           }
-          return rows == 0;
+          return rows == 0 || shouldUpdateIcons();
         })
         .flatMapSingle(rows -> dataRepository.getCurrencyIcons())
         .subscribeOn(Schedulers.io())
@@ -69,6 +78,7 @@ public class BootstrapViewModel extends ViewModel {
             List<CurrencyIcon> icons = new ArrayList<>();
             icons.addAll(data.values());
             currencyDatabase.currencyDao().insertMultiple(icons.toArray(new CurrencyIcon[0]));
+            sharedPreferencesHelper.setLastTimeOfIconsLoaded(System.currentTimeMillis());
             setSuccess();
           }
         }, throwable -> {
@@ -93,5 +103,12 @@ public class BootstrapViewModel extends ViewModel {
         .setLoading(false)
         .setHasError(true)
         .setErrorMessage(message));
+    Log.e(TAG, message);
+  }
+
+  private boolean shouldUpdateIcons() {
+    long lastUpdateTime = sharedPreferencesHelper.getLastTimeOfIconsLoad();
+    long currentTime = System.currentTimeMillis();
+    return currentTime - lastUpdateTime >= Constants.API_CONSTANTS.ONE_WEEK_IN_MILLISECONDS;
   }
 }

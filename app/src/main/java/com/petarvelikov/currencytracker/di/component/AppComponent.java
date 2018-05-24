@@ -2,6 +2,7 @@ package com.petarvelikov.currencytracker.di.component;
 
 import com.petarvelikov.currencytracker.di.module.AppModule;
 import com.petarvelikov.currencytracker.di.module.BinderModule;
+import com.petarvelikov.currencytracker.view.activity.AddTransactionActivity;
 import com.petarvelikov.currencytracker.view.activity.BootstrapActivity;
 import com.petarvelikov.currencytracker.view.activity.CurrencyDetailsActivity;
 import com.petarvelikov.currencytracker.view.fragment.CryptoCurrenciesFragment;
@@ -25,4 +26,6 @@ public interface AppComponent {
   void inject(ExchangeRatesFragment fragment);
 
   void inject(TransactionsFragment fragment);
+
+  void inject(AddTransactionActivity activity);
 }

@@ -14,39 +14,56 @@
     android:padding="16dp">
 
     <ImageView
-      android:id="@+id/imgCurrencyIcon"
+      android:id="@+id/imgTransactionCurrencyIcon"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_alignParentStart="true"
       android:layout_alignParentTop="true"
-      android:layout_below="@id/txtCurrencyValue"
       android:adjustViewBounds="true"
       android:maxHeight="48dp"
-      android:maxWidth="48dp" />
+      android:maxWidth="48dp"
+      android:src="@drawable/fab_add" />
 
     <TextView
-      android:id="@+id/txtCurrencyName"
+      android:id="@+id/txtTransactionCurrencyName"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginStart="8dp"
-      android:layout_toEndOf="@+id/imgCurrencyIcon"
+      android:layout_toEndOf="@id/imgTransactionCurrencyIcon"
+      android:text="Bitcoin"
       android:textSize="18sp"
       android:textStyle="bold" />
 
     <TextView
-      android:id="@+id/txtCurrencySymbol"
+      android:id="@+id/txtTransactionDate"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/txtCurrencyName"
+      android:layout_below="@id/imgTransactionCurrencyIcon"
+      android:text="Made od 12.03.2012"
       android:textSize="15sp" />
 
     <TextView
-      android:id="@+id/txtCurrencyValue"
+      android:id="@+id/txtTransactionCoinAmount"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/txtCurrencySymbol"
+      android:layout_below="@id/txtTransactionDate"
+      android:text="Amount purchased:"
       android:textSize="15sp" />
 
+    <TextView
+      android:id="@+id/txtCoinValueAtPurchaseTime"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/txtTransactionCoinAmount"
+      android:text="Coin value at purchase time: 8000"
+      android:textSize="15sp" />
+
+    <TextView
+      android:id="@+id/txtCurrentCoinValue"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/txtCoinValueAtPurchaseTime"
+      android:text="Coin value: 16283"
+      android:textSize="15sp" />
   </RelativeLayout>
-
-
 </android.support.v7.widget.CardView>

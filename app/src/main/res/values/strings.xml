@@ -16,6 +16,14 @@
   <string name="currency_not_supported">Currency not supported!</string>
   <string name="transactions">Transactions</string>
   <string name="no_transactions">You don\'t have any transactions.</string>
+  <string name="transaction_date">Transaction date:</string>
+  <string name="amount_purchased">Amount purchased:</string>
+  <string name="amount_sold">Amount sold:</string>
+  <string name="coin_value_at_purchase_time">Coin value at purchase time:</string>
+  <string name="coin_value_at_sell_time">Coin value at sell time:</string>
+  <string name="current_coin_value">Current coin value:</string>
+  <string name="add_transaction">Add transaction</string>
+  <string name="coin">Coin</string>
   <string-array name="time_periods">
     <item>Today</item>
     <item>Last week</item>

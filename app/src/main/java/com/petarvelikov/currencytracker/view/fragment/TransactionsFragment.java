@@ -3,6 +3,7 @@ package com.petarvelikov.currencytracker.view.fragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,12 +20,16 @@ import com.github.clans.fab.FloatingActionButton;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
+import com.petarvelikov.currencytracker.view.activity.AddTransactionActivity;
+import com.petarvelikov.currencytracker.view.adapter.TransactionsAdapter;
 import com.petarvelikov.currencytracker.viewmodel.TransactionsViewModel;
 import com.petarvelikov.currencytracker.viewmodel.TransactionsViewState;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
-public class TransactionsFragment extends Fragment {
+public class TransactionsFragment extends Fragment implements TransactionsAdapter.OnTransactionClickListener {
 
   @Inject
   SharedPreferencesHelper sharedPreferencesHelper;
@@ -36,6 +41,8 @@ public class TransactionsFragment extends Fragment {
   private ProgressBar progressBarTransactions;
   private TextView textViewTransactionsMessage;
   private FloatingActionButton fabAddTransaction;
+
+  private TransactionsAdapter adapter;
 
   @Override
   public void onAttach(Context context) {
@@ -70,16 +77,21 @@ public class TransactionsFragment extends Fragment {
     viewModel.loadTransactions();
   }
 
+  @Override
+  public void onTransactionClick(int transactionId) {
+    Toast.makeText(getContext(), "Transaction clicked", Toast.LENGTH_SHORT).show();
+  }
+
   private void bindUi(View view) {
     recyclerViewTransactions = view.findViewById(R.id.recyclerTransactions);
     recyclerViewTransactions.setLayoutManager(new LinearLayoutManager(getContext()));
-    // TODO: Adapter
+    adapter = new TransactionsAdapter(new ArrayList<>(), this);
+    recyclerViewTransactions.setAdapter(adapter);
     progressBarTransactions = view.findViewById(R.id.progressTransactions);
     textViewTransactionsMessage = view.findViewById(R.id.txtTransactionsMessage);
     fabAddTransaction = view.findViewById(R.id.fabAddTransaction);
     fabAddTransaction.setOnClickListener(clickedView -> {
-      // TODO: Launch screen for new transaction
-      Toast.makeText(getContext(), "Fab click.", Toast.LENGTH_SHORT).show();
+      startAddTransactionActivity();
     });
   }
 
@@ -104,6 +116,12 @@ public class TransactionsFragment extends Fragment {
         textViewTransactionsMessage.setVisibility(View.GONE);
         recyclerViewTransactions.setVisibility(View.VISIBLE);
       }
+      adapter.setTransactions(viewState.getTransactions());
     }
+  }
+
+  private void startAddTransactionActivity() {
+    Intent intent = new Intent(getContext(), AddTransactionActivity.class);
+    startActivity(intent);
   }
 }

@@ -9,23 +9,27 @@ import javax.inject.Singleton;
 
 @Singleton
 public class ViewModelFactory implements ViewModelProvider.Factory {
+
   private CryptoCurrenciesViewModel ccViewModel;
   private BootstrapViewModel bootstrapViewModel;
   private CurrencyDetailsViewModel currencyDetailsViewModel;
   private ExchangeRatesViewModel exchangeRatesViewModel;
   private TransactionsViewModel transactionsViewModel;
+  private AddTransactionViewModel addTransactionViewModel;
 
   @Inject
   public ViewModelFactory(CryptoCurrenciesViewModel ccViewModel,
                           BootstrapViewModel bootstrapViewModel,
                           CurrencyDetailsViewModel currencyDetailsViewModel,
                           ExchangeRatesViewModel exchangeRatesViewModel,
-                          TransactionsViewModel transactionsViewModel) {
+                          TransactionsViewModel transactionsViewModel,
+                          AddTransactionViewModel addTransactionViewModel) {
     this.ccViewModel = ccViewModel;
     this.bootstrapViewModel = bootstrapViewModel;
     this.currencyDetailsViewModel = currencyDetailsViewModel;
     this.exchangeRatesViewModel = exchangeRatesViewModel;
     this.transactionsViewModel = transactionsViewModel;
+    this.addTransactionViewModel = addTransactionViewModel;
   }
 
   @NonNull
@@ -45,6 +49,9 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     }
     if (modelClass.isAssignableFrom(TransactionsViewModel.class)) {
       return (T) transactionsViewModel;
+    }
+    if (modelClass.isAssignableFrom(AddTransactionViewModel.class)) {
+      return (T) addTransactionViewModel;
     }
     throw new IllegalArgumentException("Unknown class name");
   }

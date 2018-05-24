@@ -2,6 +2,7 @@ package com.petarvelikov.currencytracker.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity(tableName = "transactions")
@@ -21,6 +22,18 @@ public class Transaction {
 
   @ColumnInfo(name = "date_of_transaction")
   private long dateOfTransaction;
+
+  @ColumnInfo(name = "is_purchase")
+  private int isPurchase = 0;
+
+  @ColumnInfo(name = "base_currency")
+  private String baseCurrency;
+
+  @Ignore
+  private double currentCoinValue;
+
+  @Ignore
+  private String coinImageUrl;
 
   public int getUid() {
     return uid;
@@ -62,6 +75,38 @@ public class Transaction {
     this.dateOfTransaction = dateOfTransaction;
   }
 
+  public int getIsPurchase() {
+    return isPurchase;
+  }
+
+  public void setIsPurchase(int isPurchase) {
+    this.isPurchase = isPurchase;
+  }
+
+  public String getBaseCurrency() {
+    return baseCurrency;
+  }
+
+  public void setBaseCurrency(String baseCurrency) {
+    this.baseCurrency = baseCurrency;
+  }
+
+  public double getCurrentCoinValue() {
+    return currentCoinValue;
+  }
+
+  public void setCurrentCoinValue(double currentCoinValue) {
+    this.currentCoinValue = currentCoinValue;
+  }
+
+  public String getCoinImageUrl() {
+    return coinImageUrl;
+  }
+
+  public void setCoinImageUrl(String coinImageUrl) {
+    this.coinImageUrl = coinImageUrl;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
@@ -73,7 +118,8 @@ public class Transaction {
     if (Double.compare(that.currencyPrice, currencyPrice) != 0) return false;
     if (Double.compare(that.quantity, quantity) != 0) return false;
     if (dateOfTransaction != that.dateOfTransaction) return false;
-    return currency.equals(that.currency);
+    if (isPurchase != that.isPurchase) return false;
+    return currency != null ? currency.equals(that.currency) : that.currency == null;
   }
 
   @Override
@@ -81,12 +127,13 @@ public class Transaction {
     int result;
     long temp;
     result = uid;
-    result = 31 * result + currency.hashCode();
+    result = 31 * result + (currency != null ? currency.hashCode() : 0);
     temp = Double.doubleToLongBits(currencyPrice);
     result = 31 * result + (int) (temp ^ (temp >>> 32));
     temp = Double.doubleToLongBits(quantity);
     result = 31 * result + (int) (temp ^ (temp >>> 32));
     result = 31 * result + (int) (dateOfTransaction ^ (dateOfTransaction >>> 32));
+    result = 31 * result + isPurchase;
     return result;
   }
 }
