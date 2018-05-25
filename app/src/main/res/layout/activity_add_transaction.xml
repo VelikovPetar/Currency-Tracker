@@ -46,6 +46,7 @@
     android:lines="1" />
 
   <TextView
+    android:id="@+id/textViewLabelCoinPrice"
     style="@style/FormLabelStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

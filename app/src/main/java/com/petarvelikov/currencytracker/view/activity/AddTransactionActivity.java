@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
+import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
 import com.petarvelikov.currencytracker.utils.CalendarUtils;
 import com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinAdapter;
 import com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinTextView;
@@ -34,6 +35,8 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
 
   @Inject
   ViewModelProvider.Factory viewModelFactory;
+  @Inject
+  SharedPreferencesHelper sharedPreferencesHelper;
 
   private AutoCompleteCoinTextView autoCompleteCoin;
   private EditText editTextCoinAmount;
@@ -98,6 +101,11 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
   }
 
   private void setupEditTextCoinPrice() {
+    TextView textViewLabel = findViewById(R.id.textViewLabelCoinPrice);
+    String labelText = String.format(Locale.getDefault(),
+        getString(R.string.label_coin_price),
+        sharedPreferencesHelper.getBaseCurrency());
+    textViewLabel.setText(labelText);
     editTextCoinPrice = findViewById(R.id.editTextCoinPrice);
   }
 
@@ -120,6 +128,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     buttonAddTransaction.setOnClickListener(view -> {
       String errorMessage = getString(R.string.error_empty_field);
       if (mandatoryFieldsValidator.validateAndShowErrors(errorMessage)) {
+        // TODO:
         Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
       }
     });

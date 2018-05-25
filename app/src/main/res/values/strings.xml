@@ -26,7 +26,7 @@
   <string name="label_date">Date:</string>
   <string name="label_coin">Coin:</string>
   <string name="label_amount">Amount:</string>
-  <string name="label_coin_price">Coin price:</string>
+  <string name="label_coin_price">Coin price(%1$s):</string>
   <string name="hint_coin">Bitcoin, Ripple…</string>
   <string name="hint_amount">1, 2</string>
   <string name="hint_coin_price">$1000</string>
