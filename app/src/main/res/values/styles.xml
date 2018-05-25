@@ -11,4 +11,16 @@
     <item name="android:actionMenuTextColor">@color/colorText</item>
   </style>
 
+  <style name="FormTextViewStyle">
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">@color/colorText</item>
+  </style>
+
+  <style name="FormLabelStyle" parent="FormTextViewStyle">
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="FormButtonStyle" parent="FormTextViewStyle">
+
+  </style>
 </resources>

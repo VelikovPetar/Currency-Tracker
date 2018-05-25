@@ -1,24 +1,34 @@
 package com.petarvelikov.currencytracker.view.activity;
 
+import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
+import com.petarvelikov.currencytracker.utils.CalendarUtils;
 import com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinAdapter;
 import com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinTextView;
+import com.petarvelikov.currencytracker.view.validation.MandatoryFieldsValidator;
 import com.petarvelikov.currencytracker.viewmodel.AddTransactionViewModel;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class AddTransactionActivity extends AppCompatActivity {
+public class AddTransactionActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
   private static final String TAG = AddTransactionActivity.class.getSimpleName();
 
@@ -26,6 +36,13 @@ public class AddTransactionActivity extends AppCompatActivity {
   ViewModelProvider.Factory viewModelFactory;
 
   private AutoCompleteCoinTextView autoCompleteCoin;
+  private EditText editTextCoinAmount;
+  private EditText editTextCoinPrice;
+  private TextView textViewDatePicker;
+  private RadioGroup radioGroupTransactionType;
+  private Button buttonAddTransaction;
+
+  private MandatoryFieldsValidator mandatoryFieldsValidator;
 
   private AddTransactionViewModel viewModel;
 
@@ -42,9 +59,25 @@ public class AddTransactionActivity extends AppCompatActivity {
     bindUi();
   }
 
+  @Override
+  public void onDateSet(DatePicker view, int year, int month, int day) {
+    updateDateField(year, month, day);
+  }
+
+  private void updateDateField(int year, int month, int day) {
+    String dateText = String.format(Locale.getDefault(), "%02d.%02d.%02d", day, month, year);
+    textViewDatePicker.setText(dateText);
+  }
+
   private void bindUi() {
     setupToolbar();
     setupAutoCompleteCoin();
+    setupEditTextCoinAmount();
+    setupEditTextCoinPrice();
+    setupTextViewDatePicker();
+    setupRadioGroupTransactionType();
+    setupButtonAddTransaction();
+    setupValidator();
   }
 
   private void setupToolbar() {
@@ -58,6 +91,43 @@ public class AddTransactionActivity extends AppCompatActivity {
   private void setupAutoCompleteCoin() {
     autoCompleteCoin = findViewById(R.id.autocompleteCoin);
     viewModel.loadAvailableCoins();
+  }
+
+  private void setupEditTextCoinAmount() {
+    editTextCoinAmount = findViewById(R.id.editTextCoinAmount);
+  }
+
+  private void setupEditTextCoinPrice() {
+    editTextCoinPrice = findViewById(R.id.editTextCoinPrice);
+  }
+
+  private void setupTextViewDatePicker() {
+    textViewDatePicker = findViewById(R.id.textViewDatePicker);
+    int year = CalendarUtils.currentYear();
+    int month = CalendarUtils.currentMonth();
+    int day = CalendarUtils.currentDayOfMonth();
+    updateDateField(year, month, day);
+    DatePickerDialog datePickerDialog = new DatePickerDialog(this, this, year, month, day);
+    textViewDatePicker.setOnClickListener(view -> datePickerDialog.show());
+  }
+
+  private void setupRadioGroupTransactionType() {
+    radioGroupTransactionType = findViewById(R.id.radioGroupTransactionType);
+  }
+
+  private void setupButtonAddTransaction() {
+    buttonAddTransaction = findViewById(R.id.buttonAddTransaction);
+    buttonAddTransaction.setOnClickListener(view -> {
+      String errorMessage = getString(R.string.error_empty_field);
+      if (mandatoryFieldsValidator.validateAndShowErrors(errorMessage)) {
+        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+      }
+    });
+  }
+
+  private void setupValidator() {
+    mandatoryFieldsValidator = new MandatoryFieldsValidator();
+    mandatoryFieldsValidator.addFields(autoCompleteCoin, editTextCoinAmount, editTextCoinPrice);
   }
 
   private void updateAutoCompleteCoinAdapter(List<CryptoCurrency> cryptoCurrencies) {

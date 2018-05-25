@@ -14,6 +14,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class AddTransactionViewModel extends ViewModel {
@@ -23,6 +25,7 @@ public class AddTransactionViewModel extends ViewModel {
   private MutableLiveData<List<CryptoCurrency>> currencies;
   private CurrenciesDataRepository dataRepository;
   private SharedPreferencesHelper sharedPreferencesHelper;
+  private CompositeDisposable compositeDisposable;
 
   @Inject
   public AddTransactionViewModel(CurrenciesDataRepository dataRepository,
@@ -31,6 +34,13 @@ public class AddTransactionViewModel extends ViewModel {
     this.sharedPreferencesHelper = sharedPreferencesHelper;
     this.currencies = new MutableLiveData<>();
     this.currencies.setValue(new ArrayList<>());
+    this.compositeDisposable = new CompositeDisposable();
+  }
+
+  @Override
+  protected void onCleared() {
+    super.onCleared();
+    compositeDisposable.clear();
   }
 
   public LiveData<List<CryptoCurrency>> getCurrencies() {
@@ -38,7 +48,7 @@ public class AddTransactionViewModel extends ViewModel {
   }
 
   public void loadAvailableCoins() {
-    dataRepository.getAllCurrencies(0, -1, sharedPreferencesHelper.getBaseCurrency())
+    Disposable d = dataRepository.getAllCurrencies(0, -1, sharedPreferencesHelper.getBaseCurrency())
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
@@ -47,5 +57,6 @@ public class AddTransactionViewModel extends ViewModel {
             },
             throwable -> {
             });
+    compositeDisposable.add(d);
   }
 }

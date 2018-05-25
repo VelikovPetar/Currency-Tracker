@@ -23,7 +23,17 @@
   <string name="coin_value_at_sell_time">Coin value at sell time:</string>
   <string name="current_coin_value">Current coin value:</string>
   <string name="add_transaction">Add transaction</string>
-  <string name="coin">Coin</string>
+  <string name="label_date">Date:</string>
+  <string name="label_coin">Coin:</string>
+  <string name="label_amount">Amount:</string>
+  <string name="label_coin_price">Coin price:</string>
+  <string name="hint_coin">Bitcoin, Ripple…</string>
+  <string name="hint_amount">1, 2</string>
+  <string name="hint_coin_price">$1000</string>
+  <string name="purchase">Purchase</string>
+  <string name="sell">Sell</string>
+  <string name="label_transaction">Transaction type:</string>
+  <string name="error_empty_field">Field cannot be empty.</string>
   <string-array name="time_periods">
     <item>Today</item>
     <item>Last week</item>
