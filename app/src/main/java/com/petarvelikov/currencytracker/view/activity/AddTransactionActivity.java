@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -17,10 +18,12 @@ import android.widget.Toast;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
+import com.petarvelikov.currencytracker.model.TransactionStatus;
 import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
 import com.petarvelikov.currencytracker.utils.CalendarUtils;
 import com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinAdapter;
 import com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinTextView;
+import com.petarvelikov.currencytracker.view.validation.DoubleValueValidator;
 import com.petarvelikov.currencytracker.view.validation.MandatoryFieldsValidator;
 import com.petarvelikov.currencytracker.viewmodel.AddTransactionViewModel;
 
@@ -44,8 +47,10 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
   private TextView textViewDatePicker;
   private RadioGroup radioGroupTransactionType;
   private Button buttonAddTransaction;
+  private View loadingScreen;
 
   private MandatoryFieldsValidator mandatoryFieldsValidator;
+  private DoubleValueValidator doubleValueValidator;
 
   private AddTransactionViewModel viewModel;
 
@@ -59,7 +64,9 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
         .of(this, viewModelFactory)
         .get(AddTransactionViewModel.class);
     viewModel.getCurrencies().observe(this, this::updateAutoCompleteCoinAdapter);
+    viewModel.getTransactionStatus().observe(this, this::updateUiOnTransactionStatusChange);
     bindUi();
+    setupValidators();
   }
 
   @Override
@@ -80,7 +87,7 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     setupTextViewDatePicker();
     setupRadioGroupTransactionType();
     setupButtonAddTransaction();
-    setupValidator();
+    setupLoadingScreen();
   }
 
   private void setupToolbar() {
@@ -128,20 +135,60 @@ public class AddTransactionActivity extends AppCompatActivity implements DatePic
     buttonAddTransaction.setOnClickListener(view -> {
       String errorMessage = getString(R.string.error_empty_field);
       if (mandatoryFieldsValidator.validateAndShowErrors(errorMessage)) {
-        // TODO:
-        Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+        errorMessage = getString(R.string.error_invalid_real_number);
+        if (doubleValueValidator.validateAndShowErrors(errorMessage)) {
+          parseInput();
+        }
       }
     });
   }
 
-  private void setupValidator() {
+  private void setupLoadingScreen() {
+    loadingScreen = findViewById(R.id.loading_screen);
+  }
+
+  private void setupValidators() {
     mandatoryFieldsValidator = new MandatoryFieldsValidator();
     mandatoryFieldsValidator.addFields(autoCompleteCoin, editTextCoinAmount, editTextCoinPrice);
+    doubleValueValidator = new DoubleValueValidator();
+    doubleValueValidator.addFields(editTextCoinAmount, editTextCoinPrice);
+  }
+
+  private void parseInput() {
+    String coinName = autoCompleteCoin.getText().toString().trim();
+    double coinAmount = Double.parseDouble(editTextCoinAmount.getText().toString().trim());
+    double coinPrice = Double.parseDouble(editTextCoinPrice.getText().toString().trim());
+    String date = textViewDatePicker.getText().toString().trim();
+    int checkedRadioButtonId = radioGroupTransactionType.getCheckedRadioButtonId();
+    boolean isPurchase = checkedRadioButtonId == R.id.radioButtonPurchase;
+    viewModel.onCompleteTransactionDataEntered(coinName, coinAmount, coinPrice, date, isPurchase);
+  }
+
+  private void updateUiOnTransactionStatusChange(TransactionStatus transactionStatus) {
+    switch (transactionStatus) {
+      case LOADING:
+        loadingScreen.setVisibility(View.VISIBLE);
+        break;
+      case INITIAL:
+        loadingScreen.setVisibility(View.GONE);
+        break;
+      case SUCCESS:
+        loadingScreen.setVisibility(View.GONE);
+        finish();
+        break;
+      case ERROR:
+        showError();
+        break;
+    }
   }
 
   private void updateAutoCompleteCoinAdapter(List<CryptoCurrency> cryptoCurrencies) {
     AutoCompleteCoinAdapter adapter =
         new AutoCompleteCoinAdapter(this, R.layout.item_autocomplete_coin, cryptoCurrencies);
     autoCompleteCoin.setAdapter(adapter);
+  }
+
+  private void showError() {
+    Toast.makeText(this, R.string.error_while_saving_transaction, Toast.LENGTH_LONG).show();
   }
 }

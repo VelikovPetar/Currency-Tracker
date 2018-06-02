@@ -34,6 +34,8 @@
   <string name="sell">Sell</string>
   <string name="label_transaction">Transaction type:</string>
   <string name="error_empty_field">Field cannot be empty.</string>
+  <string name="error_invalid_real_number">Invalid number value.</string>
+  <string name="error_while_saving_transaction">An error occured while saving the transaction.</string>
   <string-array name="time_periods">
     <item>Today</item>
     <item>Last week</item>

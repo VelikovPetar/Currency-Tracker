@@ -1,7 +1,10 @@
 package com.petarvelikov.currencytracker.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class CalendarUtils {
 
@@ -32,5 +35,10 @@ public class CalendarUtils {
     Calendar calendar = Calendar.getInstance();
     calendar.set(year, month, day);
     return calendar.getTime();
+  }
+
+  public static String dateToSimpleDateString(Date date) {
+    DateFormat dateFormat = new SimpleDateFormat("dd.mm.yyyy", Locale.ENGLISH);
+    return dateFormat.format(date);
   }
 }

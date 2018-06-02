@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
+import com.petarvelikov.currencytracker.model.CurrencyIcon;
 import com.petarvelikov.currencytracker.model.Transaction;
 import com.petarvelikov.currencytracker.model.database.CurrencyDatabase;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -48,6 +50,15 @@ public class TransactionsViewModel extends ViewModel {
     viewState.setValue(TransactionsViewState.loading());
     Disposable d = Single.defer(() -> Single.just(currencyDatabase.transactionsDao().getAll()))
         .subscribeOn(Schedulers.io())
+        .flatMapObservable(Observable::fromIterable)
+        .map(transaction -> {
+          CurrencyIcon icon = currencyDatabase.currencyDao().getCurrencyIconByName(transaction.getCoinName());
+          if (icon != null && icon.getImageUrl() != null) {
+            transaction.setCoinImageUrl(icon.getImageUrl());
+          }
+          return transaction;
+        })
+        .toList()
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(
             this::handleSuccess,

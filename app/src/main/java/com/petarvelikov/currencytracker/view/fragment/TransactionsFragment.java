@@ -74,6 +74,11 @@ public class TransactionsFragment extends Fragment implements TransactionsAdapte
       viewModel.getViewState().removeObservers(this);
     }
     viewModel.getViewState().observe(this, this::updateUi);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
     viewModel.loadTransactions();
   }
 
@@ -104,6 +109,7 @@ public class TransactionsFragment extends Fragment implements TransactionsAdapte
     if (viewState.hasError()) {
       textViewTransactionsMessage.setText(R.string.error_while_reading_transactions);
       textViewTransactionsMessage.setVisibility(View.VISIBLE);
+      recyclerViewTransactions.setVisibility(View.GONE);
     } else {
       textViewTransactionsMessage.setVisibility(View.GONE);
     }

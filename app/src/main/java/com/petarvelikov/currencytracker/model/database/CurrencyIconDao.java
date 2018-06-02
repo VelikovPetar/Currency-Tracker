@@ -18,6 +18,9 @@ public interface CurrencyIconDao {
   @Query("SELECT * FROM icons WHERE symbol = :symbol")
   CurrencyIcon getCurrencyIconBySymbol(String symbol);
 
+  @Query("SELECT * FROM icons WHERE name COLLATE NOCASE = :name")
+  CurrencyIcon getCurrencyIconByName(String name);
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   void insertMultiple(CurrencyIcon... currencyIcons);
 

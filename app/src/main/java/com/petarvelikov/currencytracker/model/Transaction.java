@@ -12,13 +12,13 @@ public class Transaction {
   private int uid;
 
   @ColumnInfo(name = "currency")
-  private String currency;
+  private String coinName;
 
   @ColumnInfo(name = "currency_price")
-  private double currencyPrice;
+  private double coinPrice;
 
   @ColumnInfo(name = "quantity")
-  private double quantity;
+  private double coinAmount;
 
   @ColumnInfo(name = "date_of_transaction")
   private long dateOfTransaction;
@@ -35,6 +35,19 @@ public class Transaction {
   @Ignore
   private String coinImageUrl;
 
+  public Transaction() {
+
+  }
+
+  private Transaction(Builder builder) {
+    this.coinName = builder.coinName;
+    this.coinAmount = builder.coinAmount;
+    this.coinPrice = builder.coinPrice;
+    this.dateOfTransaction = builder.dateOfTransaction;
+    this.isPurchase = builder.isPurchase ? 1 : 0;
+    this.baseCurrency = builder.baseCurrency;
+  }
+
   public int getUid() {
     return uid;
   }
@@ -43,28 +56,28 @@ public class Transaction {
     this.uid = uid;
   }
 
-  public String getCurrency() {
-    return currency;
+  public String getCoinName() {
+    return coinName;
   }
 
-  public void setCurrency(String currency) {
-    this.currency = currency;
+  public void setCoinName(String coinName) {
+    this.coinName = coinName;
   }
 
-  public double getCurrencyPrice() {
-    return currencyPrice;
+  public double getCoinPrice() {
+    return coinPrice;
   }
 
-  public void setCurrencyPrice(double currencyPrice) {
-    this.currencyPrice = currencyPrice;
+  public void setCoinPrice(double coinPrice) {
+    this.coinPrice = coinPrice;
   }
 
-  public double getQuantity() {
-    return quantity;
+  public double getCoinAmount() {
+    return coinAmount;
   }
 
-  public void setQuantity(double quantity) {
-    this.quantity = quantity;
+  public void setCoinAmount(double coinAmount) {
+    this.coinAmount = coinAmount;
   }
 
   public long getDateOfTransaction() {
@@ -115,11 +128,11 @@ public class Transaction {
     Transaction that = (Transaction) o;
 
     if (uid != that.uid) return false;
-    if (Double.compare(that.currencyPrice, currencyPrice) != 0) return false;
-    if (Double.compare(that.quantity, quantity) != 0) return false;
+    if (Double.compare(that.coinPrice, coinPrice) != 0) return false;
+    if (Double.compare(that.coinAmount, coinAmount) != 0) return false;
     if (dateOfTransaction != that.dateOfTransaction) return false;
     if (isPurchase != that.isPurchase) return false;
-    return currency != null ? currency.equals(that.currency) : that.currency == null;
+    return coinName != null ? coinName.equals(that.coinName) : that.coinName == null;
   }
 
   @Override
@@ -127,13 +140,56 @@ public class Transaction {
     int result;
     long temp;
     result = uid;
-    result = 31 * result + (currency != null ? currency.hashCode() : 0);
-    temp = Double.doubleToLongBits(currencyPrice);
+    result = 31 * result + (coinName != null ? coinName.hashCode() : 0);
+    temp = Double.doubleToLongBits(coinPrice);
     result = 31 * result + (int) (temp ^ (temp >>> 32));
-    temp = Double.doubleToLongBits(quantity);
+    temp = Double.doubleToLongBits(coinAmount);
     result = 31 * result + (int) (temp ^ (temp >>> 32));
     result = 31 * result + (int) (dateOfTransaction ^ (dateOfTransaction >>> 32));
     result = 31 * result + isPurchase;
     return result;
+  }
+
+  public static class Builder {
+    private String coinName;
+    private double coinAmount;
+    private double coinPrice;
+    private long dateOfTransaction;
+    private boolean isPurchase;
+    private String baseCurrency;
+
+    public Builder setCoinName(String coinName) {
+      this.coinName = coinName;
+      return this;
+    }
+
+    public Builder setCoinAmount(double coinAmount) {
+      this.coinAmount = coinAmount;
+      return this;
+    }
+
+    public Builder setCoinPrice(double coinPrice) {
+      this.coinPrice = coinPrice;
+      return this;
+    }
+
+    public Builder setDateOfTransaction(long dateOfTransaction) {
+      this.dateOfTransaction = dateOfTransaction;
+      return this;
+    }
+
+    public Builder setIsPurchase(boolean purchase) {
+      isPurchase = purchase;
+      return this;
+    }
+
+    public Builder setBaseCurrency(String baseCurrency) {
+      this.baseCurrency = baseCurrency;
+      return this;
+    }
+
+    public Transaction build() {
+      return new Transaction(this);
+    }
   }
 }

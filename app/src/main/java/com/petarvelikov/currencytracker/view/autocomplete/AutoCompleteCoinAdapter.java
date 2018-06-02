@@ -45,7 +45,7 @@ public class AutoCompleteCoinAdapter extends ArrayAdapter<CryptoCurrency> {
     Picasso.with(getContext())
         .load(Constants.API_CONSTANTS.BASE_URL_ICONS + cryptoCurrency.getImageUrl())
         .resize(48, 48)
-        .placeholder(R.drawable.ic_launcher_foreground)
+        .placeholder(R.drawable.ic_placeholder)
         .centerCrop()
         .into(coinIcon);
     coinName.setText(cryptoCurrency.getName());

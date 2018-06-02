@@ -1,131 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:orientation="vertical">
+  android:layout_height="match_parent">
 
-  <include layout="@layout/toolbar_title" />
-
-  <TextView
-    style="@style/FormLabelStyle"
+  <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="16dp"
-    android:text="@string/label_coin" />
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-  <com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinTextView
-    android:id="@+id/autocompleteCoin"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:hint="@string/hint_coin"
-    android:imeOptions="actionNext"
-    android:inputType="text"
-    android:lines="1" />
+    <include layout="@layout/toolbar_title" />
 
-  <TextView
-    style="@style/FormLabelStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:text="@string/label_amount" />
-
-  <EditText
-    android:id="@+id/editTextCoinAmount"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:hint="@string/hint_amount"
-    android:imeOptions="actionNext"
-    android:inputType="numberDecimal"
-    android:lines="1" />
-
-  <TextView
-    android:id="@+id/textViewLabelCoinPrice"
-    style="@style/FormLabelStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:text="@string/label_coin_price" />
-
-  <EditText
-    android:id="@+id/editTextCoinPrice"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:hint="@string/hint_coin_price"
-    android:imeOptions="actionDone"
-    android:inputType="numberDecimal"
-    android:lines="1" />
-
-  <TextView
-    style="@style/FormLabelStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:text="@string/label_date" />
-
-  <TextView
-    android:id="@+id/textViewDatePicker"
-    style="@style/FormTextViewStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:text="12.20.2056" />
-
-  <TextView
-    style="@style/FormLabelStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:text="@string/label_transaction" />
-
-  <RadioGroup
-    android:id="@+id/radioGroupTransactionType"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:orientation="horizontal">
-
-    <RadioButton
-      android:id="@+id/radioButtonPurchase"
-      android:layout_width="0dp"
+    <TextView
+      style="@style/FormLabelStyle"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:checked="true"
-      android:text="@string/purchase" />
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:text="@string/label_coin" />
 
-    <RadioButton
-      android:id="@+id/radioButtonSell"
-      android:layout_width="0dp"
+    <com.petarvelikov.currencytracker.view.autocomplete.AutoCompleteCoinTextView
+      android:id="@+id/autocompleteCoin"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:text="@string/sell" />
-  </RadioGroup>
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:hint="@string/hint_coin"
+      android:imeOptions="actionNext"
+      android:inputType="text"
+      android:lines="1" />
 
-  <Button
-    android:id="@+id/buttonAddTransaction"
-    style="@style/FormButtonStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginEnd="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginTop="8dp"
-    android:background="@drawable/selector_button"
-    android:text="@string/add_transaction" />
-</LinearLayout>
+    <TextView
+      style="@style/FormLabelStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:text="@string/label_amount" />
+
+    <EditText
+      android:id="@+id/editTextCoinAmount"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:hint="@string/hint_amount"
+      android:imeOptions="actionNext"
+      android:inputType="numberDecimal"
+      android:lines="1" />
+
+    <TextView
+      android:id="@+id/textViewLabelCoinPrice"
+      style="@style/FormLabelStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:text="@string/label_coin_price" />
+
+    <EditText
+      android:id="@+id/editTextCoinPrice"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:hint="@string/hint_coin_price"
+      android:imeOptions="actionDone"
+      android:inputType="numberDecimal"
+      android:lines="1" />
+
+    <TextView
+      style="@style/FormLabelStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:text="@string/label_date" />
+
+    <TextView
+      android:id="@+id/textViewDatePicker"
+      style="@style/FormTextViewStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:drawableEnd="@drawable/ic_action_edit_color_accent"
+      android:drawablePadding="8dp"
+      android:gravity="center_vertical"
+      android:text="12.20.2056" />
+
+    <TextView
+      style="@style/FormLabelStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:text="@string/label_transaction" />
+
+    <RadioGroup
+      android:id="@+id/radioGroupTransactionType"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:orientation="horizontal">
+
+      <RadioButton
+        android:id="@+id/radioButtonPurchase"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:checked="true"
+        android:text="@string/purchase" />
+
+      <RadioButton
+        android:id="@+id/radioButtonSell"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/sell" />
+    </RadioGroup>
+
+    <Button
+      android:id="@+id/buttonAddTransaction"
+      style="@style/FormButtonStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginEnd="16dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="8dp"
+      android:background="@drawable/selector_button"
+      android:text="@string/add_transaction" />
+  </LinearLayout>
+
+  <include layout="@layout/loading_screen" />
+</FrameLayout>

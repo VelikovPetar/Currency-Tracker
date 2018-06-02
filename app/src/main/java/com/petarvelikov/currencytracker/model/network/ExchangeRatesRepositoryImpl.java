@@ -25,7 +25,8 @@ public class ExchangeRatesRepositoryImpl implements ExchangeRatesRepository {
     if (BuildConfig.FIXER_API_VERSION == 1) {
       return fixerApiService.getExchangeRates(base);
     } else {
-      return fixerApiService.getExchangeRates(base, Constants.API_CONSTANTS.ACCESS_KEY_FIXER);
+      // 'EUR' is the only base currency supported on the free api access.
+      return fixerApiService.getExchangeRates("EUR", Constants.API_CONSTANTS.ACCESS_KEY_FIXER);
     }
   }
 }

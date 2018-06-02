@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.Transaction;
+import com.petarvelikov.currencytracker.utils.CalendarUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.Date;
@@ -41,11 +42,11 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
   public void onBindViewHolder(TransactionViewHolder holder, int position) {
     Transaction transaction = transactions.get(position);
     holder.setCurrencyIcon(transaction.getCoinImageUrl());
-    holder.setCurrencyName(transaction.getCurrency());
-    holder.setTransactionDate(new Date(transaction.getDateOfTransaction()).toString());
-    holder.setCoinAmount("" + transaction.getQuantity(), transaction.getIsPurchase());
-    holder.setCoinValueAtPurchaseTime("" + transaction.getCurrencyPrice(), transaction.getBaseCurrency(), transaction.getIsPurchase());
-    holder.setCurrentCoinValue("" + transaction.getCurrentCoinValue());
+    holder.setCurrencyName(transaction.getCoinName());
+    String dateText = CalendarUtils.dateToSimpleDateString(new Date(transaction.getDateOfTransaction()));
+    holder.setTransactionDate(dateText);
+    holder.setCoinAmount("" + transaction.getCoinAmount(), transaction.getIsPurchase());
+    holder.setCoinValueAtPurchaseTime("" + transaction.getCoinPrice(), transaction.getBaseCurrency(), transaction.getIsPurchase());
     holder.itemView.setOnClickListener(v -> {
       listener.onTransactionClick(transaction.getUid());
     });
@@ -67,7 +68,6 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
     private TextView txtTransactionDate;
     private TextView txtCoinAmount;
     private TextView txtCoinValueAtPurchaseTime;
-    private TextView txtCurrentCoinValue;
 
     public TransactionViewHolder(View itemView) {
       super(itemView);
@@ -76,14 +76,13 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
       txtTransactionDate = itemView.findViewById(R.id.txtTransactionDate);
       txtCoinAmount = itemView.findViewById(R.id.txtTransactionCoinAmount);
       txtCoinValueAtPurchaseTime = itemView.findViewById(R.id.txtCoinValueAtPurchaseTime);
-      txtCurrentCoinValue = itemView.findViewById(R.id.txtCurrentCoinValue);
     }
 
     public void setCurrencyIcon(String url) {
       Picasso.with(itemView.getContext())
           .load(Constants.API_CONSTANTS.BASE_URL_ICONS + url)
           .resize(48, 48)
-          .placeholder(R.drawable.ic_launcher_foreground)
+          .placeholder(R.drawable.ic_placeholder)
           .centerCrop()
           .into(imgCurrencyIcon);
     }
@@ -110,12 +109,6 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
       String text = String.format(Locale.getDefault(), "%s %s %s",
           itemView.getContext().getString(textId), value, baseCurrency);
       txtCoinValueAtPurchaseTime.setText(text);
-    }
-
-    public void setCurrentCoinValue(String value) {
-      String text = String.format(Locale.getDefault(), "%s %s",
-          itemView.getContext().getString(R.string.current_coin_value), value);
-      txtCurrentCoinValue.setText(text);
     }
   }
 }
