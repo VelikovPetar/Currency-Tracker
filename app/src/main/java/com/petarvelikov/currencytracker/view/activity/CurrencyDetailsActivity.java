@@ -166,14 +166,15 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
       txtDataError.setVisibility(View.GONE);
       layoutDetails.setVisibility(View.GONE);
     } else {
+      String baseCurrency = sharedPreferencesHelper.getBaseCurrency();
       progressBarData.setVisibility(View.GONE);
       if (viewState.getCryptoCurrency() != null) {
         txtDataError.setVisibility(View.GONE);
         layoutDetails.setVisibility(View.VISIBLE);
         txtName.setText(viewState.getCryptoCurrency().getName());
         txtSymbol.setText(viewState.getCryptoCurrency().getSymbol());
-        txtPrice.setText(viewState.getCryptoCurrency().getPriceUsd());
-        txtMarketCap.setText(viewState.getCryptoCurrency().getMarketCapUsd());
+        txtPrice.setText(viewState.getCryptoCurrency().getPriceAnyCurrency(baseCurrency));
+        txtMarketCap.setText(viewState.getCryptoCurrency().getMarketCapAnyCurrency(baseCurrency));
         txtPercentHourly.setText(viewState.getCryptoCurrency().getPercentChange1h());
         txtPercentDaily.setText(viewState.getCryptoCurrency().getPercentChange24h());
         txtPercentWeekly.setText(viewState.getCryptoCurrency().getPercentChange7d());

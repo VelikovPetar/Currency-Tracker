@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class TransactionsFragment extends Fragment implements TransactionsAdapter.OnTransactionClickListener {
+public class TransactionsFragment extends CurrencyTrackerBaseFragment implements TransactionsAdapter.OnTransactionClickListener {
 
   @Inject
   SharedPreferencesHelper sharedPreferencesHelper;
@@ -80,6 +79,11 @@ public class TransactionsFragment extends Fragment implements TransactionsAdapte
   public void onResume() {
     super.onResume();
     viewModel.loadTransactions();
+  }
+
+  @Override
+  public void onBaseCurrencyChanged() {
+    // Do nothing
   }
 
   @Override

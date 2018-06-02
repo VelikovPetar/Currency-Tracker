@@ -50,6 +50,17 @@ public class CryptoCurrenciesAdapter extends RecyclerView.Adapter<CryptoCurrenci
   public void onBindViewHolder(CryptoCurrencyViewHolder holder, int position) {
     CryptoCurrency currency = this.currencies.get(position);
     String baseCurrency = sharedPreferencesHelper.getBaseCurrency();
+    /**
+     * Edge case which happens when changing base currency.
+     * Changing the currency initiates loading of new data.
+     * Between the time of launch of the request and the time the response is received calling
+     * {@link CryptoCurrency#getPriceAnyCurrency(String)} results in null since the
+     * {@link CryptoCurrency} instance still holds data for the previous base currency,
+     * and we are trying to get info for the new base currency.
+     */
+    if (currency.getPriceAnyCurrency(baseCurrency) == null) {
+      return;
+    }
     holder.setName(currency.getName());
     holder.setSymbol(currency.getSymbol());
     holder.setValue(String.format(Locale.getDefault(), "%s %s",

@@ -59,7 +59,6 @@ public class CryptoCurrenciesViewModel extends ViewModel {
           }
         }, throwable -> {
           String message = throwable.getMessage();
-          // TODO Test if this works properly
           if (Constants.ERROR.HTTP_404_NOT_FOUND.equals(message.trim())) {
             viewState.setValue(currentViewState()
                 .setLoading(false)

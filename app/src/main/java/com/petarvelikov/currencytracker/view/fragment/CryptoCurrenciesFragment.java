@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +32,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenciesAdapter.OnClickListener {
+public class CryptoCurrenciesFragment extends CurrencyTrackerBaseFragment implements CryptoCurrenciesAdapter.OnClickListener {
 
   private static final String TAG = "CCFragment";
 
@@ -90,6 +89,12 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
   }
 
   @Override
+  public void onBaseCurrencyChanged() {
+    adapter.setCurrencies(new ArrayList<>());
+    ccViewModel.loadCurrencies(0, Constants.API_CONSTANTS.LIMIT, sharedPreferencesHelper.getBaseCurrency(), false);
+  }
+
+  @Override
   public void onClick(String id, String name, String symbol) {
     Intent intent = new Intent(getContext(), CurrencyDetailsActivity.class);
     intent.putExtra(CurrencyDetailsActivity.CURRENCY_ID, id);
@@ -108,7 +113,6 @@ public class CryptoCurrenciesFragment extends Fragment implements CryptoCurrenci
     scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
       @Override
       public void onLoadMore(int start, RecyclerView recyclerView) {
-        // TODO Maybe check the network on model level
         if (networkUtils.isConnected()) {
           ccViewModel.loadCurrencies(start, Constants.API_CONSTANTS.LIMIT, sharedPreferencesHelper.getBaseCurrency(), false);
         }

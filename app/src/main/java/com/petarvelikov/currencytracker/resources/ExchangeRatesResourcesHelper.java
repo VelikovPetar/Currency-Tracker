@@ -2,8 +2,11 @@ package com.petarvelikov.currencytracker.resources;
 
 import com.petarvelikov.currencytracker.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -22,7 +25,7 @@ public class ExchangeRatesResourcesHelper {
 
   private void prepareData(String[] currencyData) {
     currencyNames = new HashMap<>();
-    currencySymbols = new HashMap<>();
+    currencySymbols = new TreeMap<>();
     currencyCountries = new HashMap<>();
     for (String currency : currencyData) {
       String[] parts = currency.split("\\|");
@@ -58,5 +61,15 @@ public class ExchangeRatesResourcesHelper {
       return country;
     }
     throw new IllegalArgumentException(resourceProvider.getString(R.string.currency_not_supported));
+  }
+
+  public List<CharSequence> getSupportedCurrencies() {
+    List<CharSequence> supportedCurrencies = new ArrayList<>();
+    supportedCurrencies.addAll(currencyNames.keySet());
+    return supportedCurrencies;
+  }
+
+  public Map<String, String> getCurrencySymbols() {
+    return currencySymbols;
   }
 }
