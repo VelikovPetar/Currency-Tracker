@@ -9,18 +9,18 @@ import retrofit2.http.Query;
 
 public interface CryptoCompareApiService {
 
-  // TODO Add app name to the requests
-
   @GET("data/all/coinlist")
-  Single<CurrencyIconsResponse> getCurrenciesIcons();
+  Single<CurrencyIconsResponse> getCurrenciesIcons(@Query("extraParams") String extraParams);
 
   @GET("data/histohour")
   Single<HistoricalDataResponse> getHistoricalDataPerHour(@Query("fsym") String fromSymbol,
                                                           @Query("tsym") String toSymbol,
-                                                          @Query("limit") int limit);
+                                                          @Query("limit") int limit,
+                                                          @Query("extraParams") String extraParams);
 
   @GET("data/histoday")
   Single<HistoricalDataResponse> getHistoricalDataPerDay(@Query("fsym") String fromSymbol,
                                                          @Query("tsym") String toSymbol,
-                                                         @Query("limit") int limit);
+                                                         @Query("limit") int limit,
+                                                         @Query("extraParams") String extraParams);
 }

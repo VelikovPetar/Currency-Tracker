@@ -17,4 +17,8 @@ public class Constants {
     String ACCESS_KEY_FIXER = "5b369c8be90cfe8add19c07bb069a26d";
     String BASE_URL_COUNTRY_FLAGS = "http://www.countryflags.io/%country_code%/flat/48.png";
   }
+
+  public interface APP {
+    String APP_NAME = "com.petarvelikov.currencytracker";
+  }
 }

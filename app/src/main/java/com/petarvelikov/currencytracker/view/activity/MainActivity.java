@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
@@ -87,12 +86,10 @@ public class MainActivity extends AppCompatActivity {
         case R.id.actionCryptoCurrencies:
           replaceFragment(new CryptoCurrenciesFragment());
           setToolbarTitle(R.string.crypto_currencies);
-          Toast.makeText(MainActivity.this, R.string.crypto_currencies, Toast.LENGTH_SHORT).show();
           break;
         case R.id.actionExchangeRates:
           replaceFragment(new ExchangeRatesFragment());
           setToolbarTitle(R.string.exchange_rates);
-          Toast.makeText(MainActivity.this, R.string.exchange_rates, Toast.LENGTH_SHORT).show();
           break;
         case R.id.actionTransactions:
           setToolbarTitle(R.string.transactions);

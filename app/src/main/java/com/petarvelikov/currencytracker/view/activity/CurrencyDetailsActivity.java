@@ -2,8 +2,10 @@ package com.petarvelikov.currencytracker.view.activity;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,11 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.app.CurrencyTrackerApplication;
+import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.petarvelikov.currencytracker.preferences.SharedPreferencesHelper;
 import com.petarvelikov.currencytracker.view.chart.CurrencyHistoryLineChart;
 import com.petarvelikov.currencytracker.viewmodel.CurrencyDetailsViewModel;
@@ -47,7 +49,7 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
   private TextView txtName, txtSymbol, txtPrice, txtMarketCap, txtPercentHourly, txtPercentDaily,
       txtPercentWeekly, txtDataError, txtChartError;
   private ProgressBar progressBarData, progressBarChart;
-  private TableLayout layoutDetails;
+  private View layoutDetails;
   private CurrencyHistoryLineChart lineChart;
   private Spinner spinner;
 
@@ -61,7 +63,6 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
     currencyDetailsViewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrencyDetailsViewModel.class);
     currencyDetailsViewModel.getViewState().observe(this, this::updateUi);
     currencyDetailsViewModel.load(currencyId, sharedPreferencesHelper.getBaseCurrency(), false);
-    // TODO Check where to call
     onTimeRangeChanged(CurrencyDetailsViewModel.TIME_RANGE_DAY);
     selectedTimePeriod = CurrencyDetailsViewModel.TIME_RANGE_DAY;
   }
@@ -175,13 +176,31 @@ public class CurrencyDetailsActivity extends AppCompatActivity {
         txtSymbol.setText(viewState.getCryptoCurrency().getSymbol());
         txtPrice.setText(viewState.getCryptoCurrency().getPriceAnyCurrency(baseCurrency));
         txtMarketCap.setText(viewState.getCryptoCurrency().getMarketCapAnyCurrency(baseCurrency));
-        txtPercentHourly.setText(viewState.getCryptoCurrency().getPercentChange1h());
-        txtPercentDaily.setText(viewState.getCryptoCurrency().getPercentChange24h());
-        txtPercentWeekly.setText(viewState.getCryptoCurrency().getPercentChange7d());
+        updatePercentChangeTextView(txtPercentHourly, viewState.getCryptoCurrency().getPercentChange1h());
+        updatePercentChangeTextView(txtPercentDaily, viewState.getCryptoCurrency().getPercentChange24h());
+        updatePercentChangeTextView(txtPercentWeekly, viewState.getCryptoCurrency().getPercentChange7d());
       } else if (viewState.hasError()) {
         txtDataError.setVisibility(View.VISIBLE);
         layoutDetails.setVisibility(View.GONE);
       }
+    }
+  }
+
+  private void updatePercentChangeTextView(TextView textView, String value) {
+    boolean isPositiveChange = !value.startsWith("-");
+    if (isPositiveChange) {
+      value = "+" + value;
+    }
+    value = String.format("%s%%", value);
+    textView.setText(value);
+    updatePercentChangeTextViewColor(textView, isPositiveChange);
+  }
+
+  private void updatePercentChangeTextViewColor(TextView textView, boolean isPositiveChange) {
+    if (isPositiveChange) {
+      textView.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
+    } else {
+      textView.setTextColor(ContextCompat.getColor(this, R.color.colorRed));
     }
   }
 

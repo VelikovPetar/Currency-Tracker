@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.petarvelikov.currencytracker.BuildConfig;
 import com.petarvelikov.currencytracker.R;
 import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.ExchangeRate;
@@ -46,7 +47,11 @@ public class ExchangeRatesAdapter extends RecyclerView.Adapter<ExchangeRatesAdap
     ExchangeRate exchangeRate = exchangeRates.get(position);
     holder.setExchangeFrom(exchangeRate.getFrom());
     holder.setExchangeRate(String.format(Locale.getDefault(), " %.6f", exchangeRate.getExchangeRate()));
-    holder.setCurrencySymbol(resourcesHelper.getCurrencySymbol(exchangeRate.getTo()));
+    if (BuildConfig.FIXER_API_VERSION == 2) {
+      holder.setCurrencySymbol(resourcesHelper.getCurrencySymbol("EUR"));
+    } else {
+      holder.setCurrencySymbol(resourcesHelper.getCurrencySymbol(exchangeRate.getTo()));
+    }
     holder.setCurrencyCountryFlag(resourcesHelper.getCurrencyCountry(exchangeRate.getFrom()));
   }
 

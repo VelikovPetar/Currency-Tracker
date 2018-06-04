@@ -36,6 +36,13 @@
   <string name="error_empty_field">Field cannot be empty.</string>
   <string name="error_invalid_real_number">Invalid number value.</string>
   <string name="error_while_saving_transaction">An error occured while saving the transaction.</string>
+  <string name="label_coin_name">Coin name:</string>
+  <string name="label_coin_symbol">Coin symbol:</string>
+  <string name="label_coin_price_simple">Coin price:</string>
+  <string name="label_coin_market_cap">Market cap:</string>
+  <string name="label_percent_change_hourly">Percent change hourly:</string>
+  <string name="label_percent_change_daily">Percent change daily:</string>
+  <string name="label_percent_change_weekly">Percent change weekly:</string>
   <string-array name="time_periods">
     <item>Today</item>
     <item>Last week</item>

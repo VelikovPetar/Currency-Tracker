@@ -8,12 +8,12 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionExchangeRates"
-        android:icon="@drawable/ic_currency"
+        android:icon="@drawable/ic_action_exchange_rates"
         android:title="@string/exchange_rates"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/actionTransactions"
-        android:icon="@drawable/ic_currency"
+        android:icon="@drawable/ic_action_transactions"
         android:title="@string/transactions"
         app:showAsAction="ifRoom"/>
 </menu>

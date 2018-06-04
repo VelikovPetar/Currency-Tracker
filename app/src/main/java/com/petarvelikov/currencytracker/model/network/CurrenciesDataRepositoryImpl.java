@@ -1,5 +1,6 @@
 package com.petarvelikov.currencytracker.model.network;
 
+import com.petarvelikov.currencytracker.consts.Constants;
 import com.petarvelikov.currencytracker.model.CryptoCurrency;
 import com.petarvelikov.currencytracker.model.CurrencyIcon;
 import com.petarvelikov.currencytracker.model.CurrencyIconsResponse;
@@ -60,24 +61,27 @@ public class CurrenciesDataRepositoryImpl implements CurrenciesDataRepository {
 
   @Override
   public Single<CurrencyIconsResponse> getCurrencyIcons() {
-    return cryptoCompareApiService.getCurrenciesIcons();
+    return cryptoCompareApiService.getCurrenciesIcons(Constants.APP.APP_NAME);
   }
 
   @Override
   public Single<HistoricalDataResponse> getHistoricalDataDaily(String fromSymbol, String toSymbol) {
     int dataRecordsCount = 24;
-    return cryptoCompareApiService.getHistoricalDataPerHour(fromSymbol, toSymbol, dataRecordsCount);
+    return cryptoCompareApiService.getHistoricalDataPerHour(fromSymbol, toSymbol, dataRecordsCount,
+        Constants.APP.APP_NAME);
   }
 
   @Override
   public Single<HistoricalDataResponse> getHistoricalDataWeekly(String fromSymbol, String toSymbol) {
     int dataRecordsCount = 7 * 24;
-    return cryptoCompareApiService.getHistoricalDataPerHour(fromSymbol, toSymbol, dataRecordsCount);
+    return cryptoCompareApiService.getHistoricalDataPerHour(fromSymbol, toSymbol, dataRecordsCount,
+        Constants.APP.APP_NAME);
   }
 
   @Override
   public Single<HistoricalDataResponse> getHistoricalDataMonthly(String fromSymbol, String toSymbol) {
     int dataRecordsCount = 31;
-    return cryptoCompareApiService.getHistoricalDataPerDay(fromSymbol, toSymbol, dataRecordsCount);
+    return cryptoCompareApiService.getHistoricalDataPerDay(fromSymbol, toSymbol, dataRecordsCount,
+        Constants.APP.APP_NAME);
   }
 }
